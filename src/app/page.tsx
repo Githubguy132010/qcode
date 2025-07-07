@@ -1,15 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
-import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { DiscountCodeCard } from '@/components/DiscountCodeCard'
 import { AddCodeModal } from '@/components/AddCodeModal'
 import { StatsOverview } from '@/components/StatsOverview'
 import { EmptyState } from '@/components/EmptyState'
-import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
@@ -45,7 +42,6 @@ export default function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
-  const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
   const filteredCodes = filterCodes(searchFilters)
   const stats = getStats()

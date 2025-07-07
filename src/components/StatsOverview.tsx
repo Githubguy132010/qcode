@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { DiscountCode } from '@/types/discount-code'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { SearchAndFilter } from './SearchAndFilter'
 import { Plus } from 'lucide-react'
 

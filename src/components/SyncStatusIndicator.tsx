@@ -1,6 +1,6 @@
 'use client'
 
-import { Cloud, CloudOff, RefreshCw, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Cloud } from 'lucide-react'
 import { useCloudSync } from '@/hooks/useCloudSync'
 
 interface SyncStatusIndicatorProps {
