@@ -24,25 +24,28 @@ export function StatsOverview({ stats, expiringSoon, filters, onFiltersChange, o
   const { t } = useTranslation()
   const fabRef = useRef<HTMLButtonElement>(null)
 
+  // Define event listeners outside useEffect to avoid re-creation on every render
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      fabRef.current?.classList.add('ring-4', 'ring-blue-400');
+    }
+  };
+  const handleBlur = () => {
+    fabRef.current?.classList.remove('ring-4', 'ring-blue-400');
+  };
+
   // Focus ring for accessibility
   useEffect(() => {
-    if (!fabRef.current) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        fabRef.current?.classList.add('ring-4', 'ring-blue-400');
-      }
-    };
-    const handleBlur = () => {
-      fabRef.current?.classList.remove('ring-4', 'ring-blue-400');
-    };
-
-    fabRef.current.addEventListener('keydown', handleKeyDown);
-    fabRef.current.addEventListener('blur', handleBlur);
-
+    const node = fabRef.current;
+    if (!node) return;
+    node.addEventListener('keydown', handleKeyDown);
+    node.addEventListener('blur', handleBlur);
     return () => {
-      fabRef.current?.removeEventListener('keydown', handleKeyDown);
-      fabRef.current?.removeEventListener('blur', handleBlur);
+      // Check if node is still valid before removing listeners
+      if (node) {
+        node.removeEventListener('keydown', handleKeyDown);
+        node.removeEventListener('blur', handleBlur);
+      }
     };
   }, []);
   
