@@ -86,14 +86,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)] border">
         <div className="flex items-center justify-between p-6 border-b border-[var(--card-border)]">
-          <h2 className="text-xl font-semibold theme-text-primary">
+          <h2 className="text-xl font-semibold text-[var(--text-primary)] dark:text-[var(--text-primary)]">
             {t('addCode.title')}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 theme-text-muted hover:theme-text-secondary transition-colors"
+            className="p-2 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
           >
             <X size={20} />
           </button>
@@ -102,7 +102,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Code */}
           <div>
-            <label htmlFor="code" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="code" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.codeLabel')}
             </label>
             <input
@@ -111,7 +111,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               value={formData.code}
               onChange={(e) => handleChange('code', e.target.value)}
               placeholder={t('addCode.codePlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+              className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.code ? 'border-red-500' : ''
               }`}
             />
@@ -122,7 +122,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
           {/* Store */}
           <div>
-            <label htmlFor="store" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="store" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.storeLabel')}
             </label>
             <input
@@ -131,7 +131,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               value={formData.store}
               onChange={(e) => handleChange('store', e.target.value)}
               placeholder={t('addCode.storePlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+              className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.store ? 'border-red-500' : ''
               }`}
             />
@@ -142,7 +142,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
           {/* Discount */}
           <div>
-            <label htmlFor="discount" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="discount" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.discountLabel')}
             </label>
             <input
@@ -151,7 +151,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               value={formData.discount}
               onChange={(e) => handleChange('discount', e.target.value)}
               placeholder={t('addCode.discountPlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+              className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.discount ? 'border-red-500' : ''
               }`}
             />
@@ -162,14 +162,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
           {/* Category */}
           <div>
-            <label htmlFor="category" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="category" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.categoryLabel')}
             </label>
             <select
               id="category"
               value={formData.category}
               onChange={(e) => handleChange('category', e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent"
+              className="w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent"
             >
               {DISCOUNT_CATEGORIES.map((category) => (
                 <option key={category} value={category}>
@@ -181,7 +181,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
           {/* Expiry Date */}
           <div>
-            <label htmlFor="expiryDate" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="expiryDate" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.expiryDateLabel')}
             </label>
             <input
@@ -190,7 +190,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               value={formData.expiryDate}
               onChange={(e) => handleChange('expiryDate', e.target.value)}
               min={new Date().toISOString().split('T')[0]}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+              className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.expiryDate ? 'border-red-500' : ''
               }`}
             />
@@ -201,7 +201,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
 
           {/* Description */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium theme-text-secondary mb-1">
+            <label htmlFor="description" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.descriptionLabel')}
             </label>
             <textarea
@@ -210,7 +210,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               onChange={(e) => handleChange('description', e.target.value)}
               placeholder={t('addCode.descriptionPlaceholder')}
               rows={3}
-              className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent resize-none"
+              className="w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent resize-none"
             />
           </div>
 
@@ -219,7 +219,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-[var(--input-border)] theme-text-secondary rounded-lg hover:bg-[var(--filter-bg)] transition-colors"
+              className="flex-1 px-4 py-2 border border-[var(--input-border)] text-[var(--text-secondary)] dark:text-[var(--text-secondary)] rounded-lg hover:bg-[var(--filter-bg)] transition-colors"
             >
               {t('common.cancel')}
             </button>

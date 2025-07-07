@@ -95,11 +95,11 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)] border">
         <div className="flex items-center justify-between p-6 border-b dark:border-gray-700">
           <div className="flex items-center gap-3">
             {getStatusIcon()}
-            <h2 className="text-xl font-semibold theme-text-primary">Cloud Sync</h2>
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] dark:text-[var(--text-primary)]">Cloud Sync</h2>
           </div>
           <button
             onClick={onClose}
@@ -109,23 +109,23 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
           </button>
         </div>
 
-        <div className="p-6 theme-text-primary">
+        <div className="p-6 text-[var(--text-primary)] dark:text-[var(--text-primary)]">
           {/* Sync Status */}
           <div className="space-y-3">
-            <h3 className="text-lg font-medium theme-text-primary">Sync Status</h3>
+            <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Sync Status</h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="theme-filter p-3 rounded-lg">
-                <div className="text-sm theme-text-secondary">Status</div>
-                <div className="font-medium theme-text-primary">
+              <div className="bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] p-3 rounded-lg">
+                <div className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">Status</div>
+                <div className="font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">
                   {cloudSync.syncStatus.isSyncing ? 'Syncing...' :
                    !cloudSync.syncStatus.isOnline ? 'Offline' :
                    cloudSync.syncStatus.error ? 'Error' :
                    cloudSync.syncStatus.lastSync ? 'Synced' : 'Not synced'}
                 </div>
               </div>
-              <div className="theme-filter p-3 rounded-lg">
-                <div className="text-sm theme-text-secondary">Last Sync</div>
-                <div className="font-medium theme-text-primary">
+              <div className="bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] p-3 rounded-lg">
+                <div className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">Last Sync</div>
+                <div className="font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">
                   {cloudSync.syncStatus.lastSync 
                     ? cloudSync.syncStatus.lastSync.toLocaleString()
                     : 'Never'
@@ -153,7 +153,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
 
           {/* Manual Sync */}
           <div className="space-y-3">
-            <h3 className="text-lg font-medium theme-text-primary">Manual Sync</h3>
+            <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Manual Sync</h3>
             <button
               onClick={handleManualSync}
               disabled={cloudSync.syncStatus.isSyncing || !cloudSync.syncStatus.isOnline}
@@ -166,7 +166,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
 
           {/* Auto Sync Settings */}
           <div className="space-y-3">
-            <h3 className="text-lg font-medium theme-text-primary">Auto Sync</h3>
+            <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Auto Sync</h3>
             <div className="space-y-4">
               <label className="flex items-center gap-3">
                 <input
@@ -175,18 +175,18 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
                   onChange={handleAutoSyncToggle}
                   className="w-4 h-4 text-blue-500 rounded border-gray-300 focus:ring-blue-500"
                 />
-                <span className="theme-text-primary">Enable automatic sync</span>
+                <span className="text-[var(--text-primary)]">Enable automatic sync</span>
               </label>
               
               {cloudSync.syncSettings.autoSync && (
                 <div>
-                  <label className="block text-sm font-medium theme-text-primary mb-2">
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                     Sync Interval
                   </label>
                   <select
                     value={cloudSync.syncSettings.syncInterval}
                     onChange={(e) => handleSyncIntervalChange(Number(e.target.value))}
-                    className="w-full theme-input p-2 border rounded-lg"
+                    className="w-full p-2 border rounded-lg"
                   >
                     <option value={5}>Every 5 minutes</option>
                     <option value={15}>Every 15 minutes</option>
@@ -201,7 +201,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
 
           {/* Conflict Resolution */}
           <div className="space-y-3">
-            <h3 className="text-lg font-medium theme-text-primary">Conflict Resolution</h3>
+            <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Conflict Resolution</h3>
             <div className="space-y-2">
               {(['local', 'remote', 'merge'] as ConflictResolution[]).map((resolution) => (
                 <label key={resolution} className="flex items-center gap-3">
@@ -213,7 +213,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
                     onChange={() => handleConflictResolutionChange(resolution)}
                     className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500"
                   />
-                  <span className="theme-text-primary capitalize">
+                  <span className="text-[var(--text-primary)] capitalize">
                     {resolution === 'local' && 'Prefer local changes'}
                     {resolution === 'remote' && 'Prefer remote changes'}
                     {resolution === 'merge' && 'Smart merge (recommended)'}
@@ -226,7 +226,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
           {/* Cloud Providers */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium theme-text-primary">Cloud Providers</h3>
+              <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Cloud Providers</h3>
               <button
                 onClick={() => setShowProviderSetup(!showProviderSetup)}
                 className="text-blue-500 hover:text-blue-600 text-sm font-medium"
@@ -237,10 +237,10 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
             
             <div className="space-y-2">
               {cloudSync.providers.map((provider) => (
-                <div key={provider.id} className="flex items-center justify-between p-3 theme-filter rounded-lg">
+                <div key={provider.id} className="flex items-center justify-between p-3 rounded-lg bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)]">
                   <div className="flex items-center gap-3">
                     {getProviderIcon(provider.id)}
-                    <span className="font-medium theme-text-primary">{provider.name}</span>
+                    <span className="font-medium text-[var(--text-primary)]">{provider.name}</span>
                   </div>
                   <label className="flex items-center gap-2">
                     <input
@@ -249,7 +249,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
                       onChange={() => handleToggleProvider(provider.id)}
                       className="w-4 h-4 text-blue-500 rounded border-gray-300 focus:ring-blue-500"
                     />
-                    <span className="text-sm theme-text-secondary">Enabled</span>
+                    <span className="text-sm text-[var(--text-secondary)]">Enabled</span>
                   </label>
                 </div>
               ))}
@@ -257,10 +257,10 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
 
             {showProviderSetup && (
               <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-4">
-                <h4 className="font-medium theme-text-primary">Add GitHub Gist Provider</h4>
+                <h4 className="font-medium text-[var(--text-primary)]">Add GitHub Gist Provider</h4>
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium theme-text-primary mb-1">
+                    <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">
                       GitHub Personal Access Token
                     </label>
                     <div className="relative">
@@ -279,7 +279,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
                         {isTokenVisible ? '👁️' : '👁️‍🗨️'}
                       </button>
                     </div>
-                    <p className="text-xs theme-text-secondary mt-1">
+                    <p className="text-xs text-[var(--text-secondary)] mt-1">
                       Create a token at github.com/settings/tokens with &apos;gist&apos; scope
                     </p>
                   </div>
@@ -307,7 +307,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
           {cloudSync.syncEvents.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium theme-text-primary">Recent Activity</h3>
+                <h3 className="text-lg font-medium text-[var(--text-primary)] dark:text-[var(--text-primary)]">Recent Activity</h3>
                 <button
                   onClick={cloudSync.clearSyncEvents}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm"
@@ -317,7 +317,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
               </div>
               <div className="space-y-2 max-h-32 overflow-y-auto">
                 {cloudSync.syncEvents.map((event, index) => (
-                  <div key={index} className="text-xs p-2 theme-filter rounded">
+                  <div key={index} className="text-xs p-2 rounded-lg bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)]">
                     <div className="flex items-center gap-2">
                       <span className={`
                         inline-block w-2 h-2 rounded-full
@@ -326,7 +326,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
                           event.type === 'conflict_detected' ? 'bg-amber-500' :
                           'bg-blue-500'}
                       `} />
-                      <span className="theme-text-secondary">{event.message}</span>
+                      <span className="text-[var(--text-secondary)]">{event.message}</span>
                     </div>
                   </div>
                 ))}

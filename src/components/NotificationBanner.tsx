@@ -31,10 +31,10 @@ export function NotificationBanner({ expiringSoon, onClose }: NotificationBanner
   // Show a message if there are no notifications
   if (visibleCodes.length === 0) {
     return (
-      <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500 flex items-center justify-between">
+      <div className="rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500 flex items-center justify-between bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)]">
         <div className="flex items-center gap-3">
           <AlertTriangle className="h-5 w-5 text-orange-500" />
-          <span className="theme-text-secondary text-sm font-medium">
+          <span className="text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">
             {t('notifications.none', 'No notifications')}
           </span>
         </div>
@@ -50,7 +50,7 @@ export function NotificationBanner({ expiringSoon, onClose }: NotificationBanner
   }
 
   return (
-    <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500">
+    <div className="rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500 bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)]">
       <div className="flex">
         <div className="flex-shrink-0">
           <div className="bg-orange-500 dark:from-orange-500 dark:to-amber-500 p-2 rounded-lg shadow-md">
@@ -58,7 +58,7 @@ export function NotificationBanner({ expiringSoon, onClose }: NotificationBanner
           </div>
         </div>
         <div className="ml-4 flex-1">
-          <h3 className="text-base font-bold theme-text-primary mb-2 leading-tight">
+          <h3 className="text-base font-bold mb-2 leading-tight text-[var(--text-primary)] dark:text-[var(--text-primary)]">
             {visibleCodes.length === 1 
               ? t('notifications.singleExpiring', 'Discount code expiring soon') 
               : t('notifications.multipleExpiring', '{{count}} discount codes expiring soon', { count: visibleCodes.length })
@@ -71,8 +71,8 @@ export function NotificationBanner({ expiringSoon, onClose }: NotificationBanner
                 : 0
 
               return (
-                <div key={code.id} className="flex items-center justify-between py-2 px-3 theme-code-display border rounded-xl">
-                  <span className="text-sm theme-text-primary">
+                <div key={code.id} className="flex items-center justify-between py-2 px-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-[var(--code-display-bg)] dark:to-[var(--code-display-bg-light)] border border-[var(--code-display-border)] dark:border-[var(--code-display-border)] rounded-xl">
+                  <span className="text-sm text-[var(--text-primary)] dark:text-[var(--text-primary)]">
                     <strong className="font-semibold">{code.store}</strong> 
                     <span className="font-mono text-xs ml-1">({code.code})</span> - 
                     <span className="ml-1">
@@ -91,7 +91,7 @@ export function NotificationBanner({ expiringSoon, onClose }: NotificationBanner
               )
             })}
             {visibleCodes.length > 3 && (
-              <p className="text-xs theme-text-secondary font-medium mt-2">
+              <p className="text-xs font-medium mt-2 text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">
                 {t('notifications.andMore', 'And {{count}} more...', { count: visibleCodes.length - 3 })}
               </p>
             )}

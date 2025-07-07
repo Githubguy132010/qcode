@@ -60,9 +60,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/20">
+      <div className="rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/20 bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)]">
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[var(--card-border)]">
-          <h2 className="text-xl font-semibold theme-text-primary">{t('settings.title')}</h2>
+          <h2 className="text-xl font-semibold text-[var(--text-primary)] dark:text-[var(--text-primary)]">{t('settings.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
@@ -124,29 +124,29 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Heart className="w-8 h-8 text-blue-700 dark:text-blue-300" />
                 </div>
-                <h3 className="text-xl font-semibold theme-text-primary mb-2">{t('common.appName')}</h3>
-                <p className="theme-text-secondary mb-1">{t('settings.about.version')}</p>
-                <p className="text-sm theme-text-muted">
+                <h3 className="text-xl font-semibold mb-2 text-[var(--text-primary)] dark:text-[var(--text-primary)]">{t('common.appName')}</h3>
+                <p className="mb-1 text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">{t('settings.about.version')}</p>
+                <p className="text-sm text-[var(--text-muted)] dark:text-[var(--text-muted)]">
                   {t('settings.about.subtitle')}
                 </p>
               </div>
 
-              <div className="theme-filter rounded-lg p-4">
-                <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
+              <div className="bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] rounded-lg p-4">
+                <h4 className="font-medium mb-2 flex items-center gap-2 text-[var(--text-primary)] dark:text-[var(--text-primary)]">
                   <Info size={16} />
                   {t('settings.about.aboutApp')}
                 </h4>
-                <p className="text-sm theme-text-secondary leading-relaxed">
+                <p className="text-sm leading-relaxed text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">
                   {t('settings.about.aboutText')}
                 </p>
               </div>
 
-              <div className="theme-filter rounded-lg p-4">
-                <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
+              <div className="bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] rounded-lg p-4">
+                <h4 className="font-medium mb-2 flex items-center gap-2 text-[var(--text-primary)] dark:text-[var(--text-primary)]">
                   <Shield size={16} />
                   {t('settings.about.privacy')}
                 </h4>
-                <ul className="text-sm theme-text-secondary space-y-1">
+                <ul className="text-sm space-y-1 text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">
                   <li>• {t('settings.about.privacyPoints.0')}</li>
                   <li>• {t('settings.about.privacyPoints.1')}</li>
                   <li>• {t('settings.about.privacyPoints.2')}</li>
@@ -155,7 +155,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               </div>
 
               <div className="text-center">
-                <p className="text-sm theme-text-muted">
+                <p className="text-sm text-[var(--text-muted)] dark:text-[var(--text-muted)]">
                   {t('settings.about.footer')}
                 </p>
               </div>
@@ -167,10 +167,10 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {activeTab === 'export' && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-medium theme-text-primary mb-2">
+                <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
                   {t('settings.export.title')}
                 </h3>
-                <p className="text-sm theme-text-secondary mb-4">
+                <p className="text-sm text-[var(--text-secondary)] mb-4">
                   {t('settings.export.subtitle')}
                 </p>
               </div>
@@ -195,7 +195,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 </div>
               </div>
 
-              <div className="text-sm theme-text-muted">
+              <div className="text-sm text-[var(--text-muted)]">
                 <p>{t('settings.export.tip')}</p>
               </div>
             </div>
@@ -204,16 +204,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {activeTab === 'import' && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-medium theme-text-primary mb-2">
+                <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">
                   {t('settings.import.title')}
                 </h3>
-                <p className="text-sm theme-text-secondary mb-4">
+                <p className="text-sm text-[var(--text-secondary)] mb-4">
                   {t('settings.import.subtitle')}
                 </p>
               </div>
 
               <div className="space-y-3">
-                <div className="theme-code-display border-2 border-dashed rounded-lg p-6 text-center">
+                <div className="border-2 border-dashed rounded-lg p-6 text-center">
                   <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
                   <label htmlFor="import-file" className="cursor-pointer">
                     <span className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
@@ -228,7 +228,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                       className="hidden"
                     />
                   </label>
-                  <p className="text-sm theme-text-muted mt-2">
+                  <p className="text-sm text-[var(--text-muted)] mt-2">
                     {t('settings.import.onlyJson')}
                   </p>
                 </div>

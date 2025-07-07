@@ -83,11 +83,11 @@ export function DiscountCodeCard({
   }
 
   return (
-    <div className={`theme-card rounded-xl shadow-lg border p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
+    <div className={`rounded-xl shadow-lg border p-6 transition-all duration-300 bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)] ${isExpired ? 'opacity-75' : ''}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-bold theme-text-primary text-lg">{code.store}</h3>
+            <h3 className="font-bold text-lg text-[var(--text-primary)] dark:text-[var(--text-primary)]">{code.store}</h3>
             <span className="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-700">
               {t(`categories.${code.category}`, code.category)}
             </span>
@@ -95,7 +95,7 @@ export function DiscountCodeCard({
               <Heart className="w-5 h-5 text-red-500 fill-current drop-shadow-sm" />
             )}
           </div>
-          <div className="flex items-center gap-3 text-sm theme-text-secondary">
+          <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">
             <div className="flex items-center gap-1.5">
               <Store size={14} className="text-gray-400" />
               <span className="font-medium">{code.discount}</span>
@@ -119,13 +119,13 @@ export function DiscountCodeCard({
             <MoreVertical size={16} />
           </button>
           {showMenu && (
-            <div className="absolute right-0 top-10 theme-menu border rounded-xl shadow-xl py-2 z-10 min-w-[180px]">
+            <div className="absolute right-0 top-10 bg-white dark:bg-[var(--menu-bg)] border border-[var(--menu-border)] dark:border-[var(--menu-border)] rounded-xl shadow-xl py-2 z-10 min-w-[180px]">
               <button
                 onClick={() => {
                   onToggleFavorite()
                   setShowMenu(false)
                 }}
-                className="w-full px-4 py-2.5 text-left text-sm theme-menu-hover flex items-center gap-3 theme-text-secondary transition-colors"
+                className="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-[var(--menu-hover)] flex items-center gap-3 text-[var(--text-secondary)] dark:text-[var(--text-secondary)] transition-colors"
               >
                 <Heart size={14} className={code.isFavorite ? 'text-red-500 fill-current' : 'text-gray-400'} />
                 {code.isFavorite ? t('codeCard.unfavorite', 'Remove from favorites') : t('codeCard.favorite', 'Add to favorites')}
@@ -135,7 +135,7 @@ export function DiscountCodeCard({
                   onToggleArchived()
                   setShowMenu(false)
                 }}
-                className="w-full px-4 py-2.5 text-left text-sm theme-menu-hover flex items-center gap-3 theme-text-secondary transition-colors"
+                className="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-[var(--menu-hover)] flex items-center gap-3 text-[var(--text-secondary)] dark:text-[var(--text-secondary)] transition-colors"
               >
                 {code.isArchived ? (
                   <>
@@ -165,11 +165,11 @@ export function DiscountCodeCard({
       </div>
 
       {/* Code Display */}
-      <div className="theme-code-display border-2 border-dashed rounded-xl p-4 mb-4">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-[var(--code-display-bg)] dark:to-[var(--code-display-bg-light)] border-2 border-dashed border-[var(--code-display-border)] dark:border-[var(--code-display-border)] rounded-xl p-4 mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs theme-text-muted mb-1 font-semibold uppercase tracking-wide">{t('codeCard.discountCodeLabel', 'DISCOUNT CODE')}</p>
-            <p className="font-mono text-xl font-bold theme-text-primary tracking-wider">{code.code}</p>
+            <p className="text-xs text-[var(--text-muted)] dark:text-[var(--text-muted)] mb-1 font-semibold uppercase tracking-wide">{t('codeCard.discountCodeLabel', 'DISCOUNT CODE')}</p>
+            <p className="font-mono text-xl font-bold text-[var(--text-primary)] dark:text-[var(--text-primary)] tracking-wider">{code.code}</p>
           </div>
           <button
             onClick={handleCopyCode}
@@ -192,12 +192,12 @@ export function DiscountCodeCard({
 
       {/* Description */}
       {code.description && (
-        <p className="text-sm theme-text-secondary mb-4 leading-relaxed">{code.description}</p>
+        <p className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-4 leading-relaxed">{code.description}</p>
       )}
 
       {/* Footer */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 text-xs theme-text-muted">
+        <div className="flex items-center gap-4 text-xs text-[var(--text-muted)] dark:text-[var(--text-muted)]">
           <span className="font-medium">{t('codeCard.used', 'Used')}: {code.timesUsed}x</span>
           <span className="font-medium">{t('codeCard.added', 'Added')}: {format(code.dateAdded, 'd MMM yyyy', { locale: dateLocale })}</span>
         </div>

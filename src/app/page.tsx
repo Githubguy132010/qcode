@@ -68,7 +68,6 @@ export default function HomePage() {
       <OnlineStatusBanner />
       
       <Header 
-        onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
         onSyncClick={() => setIsCloudSyncOpen(true)}
       />
@@ -78,12 +77,9 @@ export default function HomePage() {
         <InstallPrompt />
 
         {/* Notification Banner */}
-        {showNotificationBanner && (
-          <NotificationBanner expiringSoon={expiringSoon} onClose={() => setShowNotificationBanner(false)} />
-        )}
 
         {/* Statistics Overview */}
-        <StatsOverview stats={stats} />
+        <StatsOverview stats={stats} expiringSoon={expiringSoon} />
 
         {/* Search and Filter */}
         <div className="mb-8">
