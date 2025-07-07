@@ -208,5 +208,11 @@
     "Wonen & Tuin": "Wonen & Tuin",
     "Speelgoed": "Speelgoed",
     "Anders": "Anders"
+  },
+  "installPrompt": {
+    "title": "Installeer QCode als app",
+    "description": "Krijg snelle toegang vanaf je startscherm en gebruik de app offline. Geen app store nodig!",
+    "installButton": "Installeren",
+    "dismissButton": "Niet nu"
   }
 }

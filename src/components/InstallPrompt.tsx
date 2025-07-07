@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Download, X, Smartphone } from 'lucide-react'
 import { usePWA } from '../hooks/usePWA'
+import { useTranslation } from 'react-i18next'
 
 export function InstallPrompt() {
   const { isInstallable, isInstalled, installApp } = usePWA()
+  const { t } = useTranslation()
   const [showPrompt, setShowPrompt] = useState(false)
 
   useEffect(() => {
@@ -41,11 +43,10 @@ export function InstallPrompt() {
         </div>
         <div className="ml-4 flex-1">
           <h3 className="text-base font-bold text-blue-900 dark:text-blue-100 mb-2">
-            Installeer QCode als app
+            {t('installPrompt.title', 'Installeer QCode als app')}
           </h3>
           <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
-            Krijg snelle toegang vanaf je startscherm en gebruik de app offline. 
-            Geen app store nodig!
+            {t('installPrompt.description', 'Krijg snelle toegang vanaf je startscherm en gebruik de app offline. Geen app store nodig!')}
           </p>
           <div className="mt-4 flex flex-col sm:flex-row gap-3">
             <button
@@ -53,13 +54,13 @@ export function InstallPrompt() {
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
             >
               <Download size={16} />
-              Installeren
+              {t('installPrompt.installButton', 'Installeren')}
             </button>
             <button
               onClick={handleDismiss}
               className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/30 px-4 py-2 rounded-lg transition-all duration-200"
             >
-              Niet nu
+              {t('installPrompt.dismissButton', 'Niet nu')}
             </button>
           </div>
         </div>

@@ -208,5 +208,11 @@
     "Wonen & Tuin": "Home & Garden",
     "Speelgoed": "Toys",
     "Anders": "Other"
+  },
+  "installPrompt": {
+    "title": "Install QCode as an app",
+    "description": "Get quick access from your home screen and use the app offline. No app store needed!",
+    "installButton": "Install",
+    "dismissButton": "Not now"
   }
 }
