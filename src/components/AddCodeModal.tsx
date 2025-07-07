@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import type { DiscountCodeFormData } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
 import { useTranslation } from 'react-i18next'
+import QRScan from './QRScan'
 
 interface AddCodeModalProps {
   isOpen: boolean
@@ -22,6 +23,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
   })
 
   const [errors, setErrors] = useState<Partial<DiscountCodeFormData>>({})
+  const [showQRScanner, setShowQRScanner] = useState(false)
 
   const validateForm = () => {
     const newErrors: Partial<DiscountCodeFormData> = {}
@@ -82,10 +84,22 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
     }
   }
 
+  // Voeg deze functie toe om QR-scan resultaat te verwerken
+  const handleQRScan = (value: string) => {
+    setFormData(prev => ({ ...prev, code: value }))
+    setShowQRScanner(false)
+  }
+
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      {showQRScanner && (
+        <QRScan
+          onScan={handleQRScan}
+          onClose={() => setShowQRScanner(false)}
+        />
+      )}
       <div className="rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)] border">
         <div className="flex items-center justify-between p-6 border-b border-[var(--card-border)]">
           <h2 className="text-xl font-semibold text-[var(--text-primary)] dark:text-[var(--text-primary)]">
@@ -105,16 +119,29 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
             <label htmlFor="code" className="block text-sm font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
               {t('addCode.codeLabel')}
             </label>
-            <input
-              type="text"
-              id="code"
-              value={formData.code}
-              onChange={(e) => handleChange('code', e.target.value)}
-              placeholder={t('addCode.codePlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.code ? 'border-red-500' : ''
-              }`}
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                id="code"
+                value={formData.code}
+                onChange={(e) => handleChange('code', e.target.value)}
+                placeholder={t('addCode.codePlaceholder')}
+                className={`w-full px-3 py-2 border rounded-lg bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+                  errors.code ? 'border-red-500' : ''
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowQRScanner(true)}
+                className="px-3 py-2 bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] text-white rounded-lg flex items-center"
+                title="Scan QR code"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25v-1.5A1.5 1.5 0 0 1 5.25 2.25h1.5m10.5 0h1.5a1.5 1.5 0 0 1 1.5 1.5v1.5m0 10.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-1.5m-10.5 0h-1.5a1.5 1.5 0 0 1-1.5-1.5v-1.5" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 12h.008v.008H7.5V12zm3 0h.008v.008H10.5V12zm3 0h.008v.008H13.5V12zm3 0h.008v.008H16.5V12z" />
+                </svg>
+              </button>
+            </div>
             {errors.code && (
               <p className="text-red-500 text-sm mt-1">{errors.code}</p>
             )}

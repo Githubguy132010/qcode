@@ -199,8 +199,8 @@ The app can be installed on:
 ## 🎯 Future Features
 
 - [x] Cloud synchronization between devices
-- [ ] QR code scanning for automatic code input
-- [ ] Barcode support
+- [X] QR code scanning for automatic code input
+- [X] Barcode support
 - [ ] Shared codes between users
 - [ ] Store integrations for automatic codes
 - [ ] Push notifications for deals

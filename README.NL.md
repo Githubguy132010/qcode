@@ -199,8 +199,8 @@ De app kan geïnstalleerd worden op:
 ## 🎯 Toekomstige Features
 
 - [x] Cloud synchronisatie tussen apparaten
-- [ ] QR code scanning voor automatische code input
-- [ ] Barcode ondersteuning
+- [X] QR code scanning voor automatische code input
+- [X] Barcode ondersteuning
 - [ ] Gedeelde codes tussen gebruikers
 - [ ] Winkel integraties voor automatische codes
 - [ ] Push notificaties voor deals
