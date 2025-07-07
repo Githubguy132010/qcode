@@ -22,7 +22,7 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
               <Ticket className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">{t('common.appName')}</h1>
+              <h1 className="text-xl font-bold theme-text-primary">{t('common.appName')}</h1>
               <p className="text-sm theme-text-secondary font-medium">{t('common.tagline')}</p>
             </div>
           </div>
