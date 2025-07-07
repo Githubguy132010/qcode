@@ -10,86 +10,41 @@ interface SyncStatusIndicatorProps {
 export function SyncStatusIndicator({ onClick }: SyncStatusIndicatorProps) {
   const { syncStatus, syncSettings } = useCloudSync()
 
-  const getStatusInfo = () => {
-    if (syncStatus.isSyncing) {
-      return {
-        icon: <RefreshCw className="w-4 h-4 animate-spin" />,
-        text: 'Syncing...',
-        className: 'text-blue-500 hover:text-blue-600'
-      }
-    }
+  // Determine status color for the dot
+  let statusColor = 'bg-gray-400'
+  if (syncStatus.isSyncing) statusColor = 'bg-blue-500'
+  else if (!syncStatus.isOnline) statusColor = 'bg-gray-400'
+  else if (syncStatus.error) statusColor = 'bg-red-500'
+  else if (syncStatus.conflictCount > 0) statusColor = 'bg-amber-500'
+  else if (syncStatus.lastSync) statusColor = 'bg-green-500'
 
-    if (!syncStatus.isOnline) {
-      return {
-        icon: <CloudOff className="w-4 h-4" />,
-        text: 'Offline',
-        className: 'text-gray-400 hover:text-gray-500'
-      }
-    }
-
-    if (syncStatus.error) {
-      return {
-        icon: <AlertTriangle className="w-4 h-4" />,
-        text: 'Sync error',
-        className: 'text-red-500 hover:text-red-600'
-      }
-    }
-
-    if (syncStatus.conflictCount > 0) {
-      return {
-        icon: <AlertTriangle className="w-4 h-4" />,
-        text: `${syncStatus.conflictCount} conflicts`,
-        className: 'text-amber-500 hover:text-amber-600'
-      }
-    }
-
-    if (syncStatus.lastSync) {
-      const timeDiff = Date.now() - syncStatus.lastSync.getTime()
-      const minutes = Math.floor(timeDiff / (1000 * 60))
-      
-      let timeText = 'Just synced'
-      if (minutes < 1) {
-        timeText = 'Just synced'
-      } else if (minutes < 60) {
-        timeText = `${minutes}m ago`
-      } else {
-        const hours = Math.floor(minutes / 60)
-        timeText = `${hours}h ago`
-      }
-
-      return {
-        icon: <CheckCircle className="w-4 h-4" />,
-        text: timeText,
-        className: 'text-green-500 hover:text-green-600'
-      }
-    }
-
-    if (!syncSettings.autoSync) {
-      return {
-        icon: <Cloud className="w-4 h-4" />,
-        text: 'Auto-sync off',
-        className: 'text-gray-500 hover:text-gray-600'
-      }
-    }
-
-    return {
-      icon: <Cloud className="w-4 h-4" />,
-      text: 'Not synced',
-      className: 'text-gray-500 hover:text-gray-600'
-    }
+  // Determine status text
+  let statusText = 'Not synced'
+  if (syncStatus.isSyncing) statusText = 'Syncing...'
+  else if (!syncStatus.isOnline) statusText = 'Offline'
+  else if (syncStatus.error) statusText = 'Sync error'
+  else if (syncStatus.conflictCount > 0) statusText = `${syncStatus.conflictCount} conflicts`
+  else if (syncStatus.lastSync) {
+    const timeDiff = Date.now() - syncStatus.lastSync.getTime()
+    const minutes = Math.floor(timeDiff / (1000 * 60))
+    if (minutes < 1) statusText = 'Just synced'
+    else if (minutes < 60) statusText = `${minutes}m ago`
+    else statusText = `${Math.floor(minutes / 60)}h ago`
+  } else if (!syncSettings.autoSync) {
+    statusText = 'Auto-sync off'
   }
-
-  const statusInfo = getStatusInfo()
 
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${statusInfo.className} hover:bg-gray-100 dark:hover:bg-gray-700`}
+      className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-2"
+      aria-label="Cloud Sync Status"
       title="Cloud Sync Settings"
     >
-      {statusInfo.icon}
+      <span className={`w-2 h-2 rounded-full ${statusColor} mr-1`} />
+      <Cloud className="w-5 h-5" />
       <span className="text-sm font-medium hidden sm:inline">
-        {statusInfo.text}
+        {statusText}
       </span>
     </button>
   )
