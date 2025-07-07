@@ -5,18 +5,12 @@ import { useTranslation } from 'react-i18next'
 
 interface NotificationBannerProps {
   expiringSoon: DiscountCode[]
+  onClose: () => void
 }
 
-export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
+export function NotificationBanner({ expiringSoon, onClose }: NotificationBannerProps) {
   const { t } = useTranslation()
-  const [isVisible, setIsVisible] = useState(false)
   const [dismissedCodes, setDismissedCodes] = useState<Set<string>>(new Set())
-
-  useEffect(() => {
-    // Show notification if there are codes expiring soon that haven't been dismissed
-    const newCodes = expiringSoon.filter(code => !dismissedCodes.has(code.id))
-    setIsVisible(newCodes.length > 0)
-  }, [expiringSoon, dismissedCodes])
 
   const visibleCodes = expiringSoon.filter(code => !dismissedCodes.has(code.id))
 
@@ -25,22 +19,34 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
     const newDismissed = new Set(dismissedCodes)
     visibleCodes.forEach(code => newDismissed.add(code.id))
     setDismissedCodes(newDismissed)
-    setIsVisible(false)
+    onClose()
   }
 
   const handleDismissCode = (codeId: string) => {
     const newDismissed = new Set(dismissedCodes)
     newDismissed.add(codeId)
     setDismissedCodes(newDismissed)
-    
-    // Hide banner if no more codes to show
-    if (newDismissed.size >= expiringSoon.length) {
-      setIsVisible(false)
-    }
   }
 
-  if (!isVisible || visibleCodes.length === 0) {
-    return null
+  // Show a message if there are no notifications
+  if (visibleCodes.length === 0) {
+    return (
+      <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <AlertTriangle className="h-5 w-5 text-orange-500" />
+          <span className="theme-text-secondary text-sm font-medium">
+            {t('notifications.none', 'No notifications')}
+          </span>
+        </div>
+        <button
+          onClick={onClose}
+          className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-orange-200 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 hover:bg-orange-300 dark:hover:bg-orange-900/50 transition-all duration-200"
+        >
+          <span className="sr-only">{t('common.close')}</span>
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    )
   }
 
   return (

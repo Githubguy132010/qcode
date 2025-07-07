@@ -79,7 +79,7 @@ export default function HomePage() {
 
         {/* Notification Banner */}
         {showNotificationBanner && (
-          <NotificationBanner expiringSoon={expiringSoon} />
+          <NotificationBanner expiringSoon={expiringSoon} onClose={() => setShowNotificationBanner(false)} />
         )}
 
         {/* Statistics Overview */}
