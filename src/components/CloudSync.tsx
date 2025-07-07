@@ -16,11 +16,45 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
   const [showProviderSetup, setShowProviderSetup] = useState(false)
   const [githubToken, setGithubToken] = useState('')
   const [isTokenVisible, setIsTokenVisible] = useState(false)
+  const [importing, setImporting] = useState(false)
 
   if (!isOpen) return null
 
   const handleManualSync = async () => {
     await onManualSync()
+  }
+
+  // New: Import from File for FileSystemProvider
+  const handleImportFromFile = async () => {
+    setImporting(true)
+    try {
+      if (window.showOpenFilePicker) {
+        const [fileHandle] = await window.showOpenFilePicker({
+          types: [{
+            description: 'QCode Sync Files',
+            accept: { 'application/json': ['.json'] }
+          }]
+        })
+        const file = await fileHandle.getFile()
+        const content = await file.text()
+        const data = JSON.parse(content)
+        // Validate and update codes
+        if (data && Array.isArray(data.codes)) {
+          localStorage.setItem('qcode-discount-codes', JSON.stringify(data.codes))
+          window.location.reload()
+        } else {
+          alert('Invalid file format.')
+        }
+      } else {
+        alert('File System Access API not supported in this browser.')
+      }
+    } catch (e) {
+      if ((e as Error).name !== 'AbortError') {
+        alert('Failed to import file: ' + (e as Error).message)
+      }
+    } finally {
+      setImporting(false)
+    }
   }
 
   const handleAddGithubProvider = () => {
@@ -162,6 +196,17 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
               <RefreshCw className={`w-4 h-4 ${cloudSync.syncStatus.isSyncing ? 'animate-spin' : ''}`} />
               {cloudSync.syncStatus.isSyncing ? 'Syncing...' : 'Sync Now'}
             </button>
+            {/* New: Import from File button for FileSystemProvider */}
+            {cloudSync.providers.some(p => p.id === 'file-system') && (
+              <button
+                onClick={handleImportFromFile}
+                disabled={importing}
+                className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 mt-2"
+              >
+                <Smartphone className="w-4 h-4" />
+                {importing ? 'Importing...' : 'Import from File'}
+              </button>
+            )}
           </div>
 
           {/* Auto Sync Settings */}
