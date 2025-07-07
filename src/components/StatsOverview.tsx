@@ -26,17 +26,25 @@ export function StatsOverview({ stats, expiringSoon, filters, onFiltersChange, o
 
   // Focus ring for accessibility
   useEffect(() => {
-    if (fabRef.current) {
-      fabRef.current.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          fabRef.current?.classList.add('ring-4', 'ring-blue-400')
-        }
-      })
-      fabRef.current.addEventListener('blur', () => {
-        fabRef.current?.classList.remove('ring-4', 'ring-blue-400')
-      })
-    }
-  }, [])
+    if (!fabRef.current) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        fabRef.current?.classList.add('ring-4', 'ring-blue-400');
+      }
+    };
+    const handleBlur = () => {
+      fabRef.current?.classList.remove('ring-4', 'ring-blue-400');
+    };
+
+    fabRef.current.addEventListener('keydown', handleKeyDown);
+    fabRef.current.addEventListener('blur', handleBlur);
+
+    return () => {
+      fabRef.current?.removeEventListener('keydown', handleKeyDown);
+      fabRef.current?.removeEventListener('blur', handleBlur);
+    };
+  }, []);
   
   const statItems = [
     { 
