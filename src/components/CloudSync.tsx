@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Cloud, CloudOff, RefreshCw, AlertTriangle, CheckCircle, X, Github, HardDrive, Smartphone } from 'lucide-react'
 import { useCloudSync } from '@/hooks/useCloudSync'
 import { ConflictResolution } from '@/types/cloud-sync'
+import { useToast } from './ToastProvider'
+import { importCodes } from '@/utils/storage'
 
 interface CloudSyncProps {
   onManualSync: () => Promise<boolean>
@@ -17,6 +19,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
   const [githubToken, setGithubToken] = useState('')
   const [isTokenVisible, setIsTokenVisible] = useState(false)
   const [importing, setImporting] = useState(false)
+  const { showToast } = useToast()
 
   if (!isOpen) return null
 
@@ -37,20 +40,19 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
         })
         const file = await fileHandle.getFile()
         const content = await file.text()
-        const data = JSON.parse(content)
-        // Validate and update codes
-        if (data && Array.isArray(data.codes)) {
-          localStorage.setItem('qcode-discount-codes', JSON.stringify(data.codes))
+        try {
+          const importedCodes = importCodes(content)
+          localStorage.setItem('qcode-discount-codes', JSON.stringify(importedCodes))
           window.location.reload()
-        } else {
-          alert('Invalid file format.')
+        } catch (error) {
+          showToast({ type: 'error', message: 'Invalid file format: ' + (error as Error).message })
         }
       } else {
-        alert('File System Access API not supported in this browser.')
+        showToast({ type: 'error', message: 'File System Access API not supported in this browser.' })
       }
     } catch (e) {
       if ((e as Error).name !== 'AbortError') {
-        alert('Failed to import file: ' + (e as Error).message)
+        showToast({ type: 'error', message: 'Failed to import file: ' + (e as Error).message })
       }
     } finally {
       setImporting(false)

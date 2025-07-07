@@ -114,5 +114,5 @@ export const generateDemoData = (): DiscountCode[] => {
 export const loadDemoData = () => {
   const demoData = generateDemoData()
   localStorage.setItem('qcode-discount-codes', JSON.stringify(demoData))
-  window.location.reload()
+  return demoData
 }

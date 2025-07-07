@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
 import { HtmlLanguageAttribute } from "@/components/HtmlLanguageAttribute";
+import { ToastProvider } from "@/components/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,9 @@ export default function RootLayout({
       >
         <I18nProvider>
           <HtmlLanguageAttribute>
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
           </HtmlLanguageAttribute>
         </I18nProvider>
       </body>

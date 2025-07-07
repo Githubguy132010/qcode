@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
@@ -17,30 +17,26 @@ export function usePWA() {
   const [isOnline, setIsOnline] = useState(true)
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
 
+  const handleBeforeInstallPrompt = useCallback((e: Event) => {
+    e.preventDefault()
+    setDeferredPrompt(e as BeforeInstallPromptEvent)
+    setIsInstallable(true)
+  }, [])
+
+  const handleOnline = useCallback(() => setIsOnline(true), [])
+  const handleOffline = useCallback(() => setIsOnline(false), [])
+  const handleAppInstalled = useCallback(() => {
+    setIsInstalled(true)
+    setIsInstallable(false)
+    setDeferredPrompt(null)
+  }, [])
+
   useEffect(() => {
     // Check if app is already installed
     setIsInstalled(window.matchMedia('(display-mode: standalone)').matches)
 
     // Check online status
     setIsOnline(navigator.onLine)
-
-    // Listen for beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault()
-      setDeferredPrompt(e as BeforeInstallPromptEvent)
-      setIsInstallable(true)
-    }
-
-    // Listen for online/offline events
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    // Listen for app installed event
-    const handleAppInstalled = () => {
-      setIsInstalled(true)
-      setIsInstallable(false)
-      setDeferredPrompt(null)
-    }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     window.addEventListener('online', handleOnline)
@@ -53,7 +49,7 @@ export function usePWA() {
       window.removeEventListener('offline', handleOffline)
       window.removeEventListener('appinstalled', handleAppInstalled)
     }
-  }, [])
+  }, [handleBeforeInstallPrompt, handleOnline, handleOffline, handleAppInstalled])
 
   const installApp = async () => {
     if (!deferredPrompt) return false

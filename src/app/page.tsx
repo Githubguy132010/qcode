@@ -30,6 +30,7 @@ export default function HomePage() {
     getStats,
     getExpiringSoon,
     manualSync,
+    saveCodes,
   } = useDiscountCodes()
 
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
@@ -131,6 +132,7 @@ export default function HomePage() {
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
+        onCodesUpdate={saveCodes}
       />
 
       {/* Cloud Sync Modal */}

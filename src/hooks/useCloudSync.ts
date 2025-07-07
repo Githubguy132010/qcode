@@ -75,18 +75,18 @@ export function useCloudSync() {
   }, [])
 
   // Monitor online status
+  const handleOnline = useCallback(() => {
+    setSyncStatus(prev => ({ ...prev, isOnline: true }))
+    addSyncEvent({ type: 'sync_start', message: 'Back online' })
+  }, [addSyncEvent])
+
+  const handleOffline = useCallback(() => {
+    setSyncStatus(prev => ({ ...prev, isOnline: false }))
+    addSyncEvent({ type: 'offline', message: 'Gone offline' })
+  }, [addSyncEvent])
+
   useEffect(() => {
     if (typeof window === 'undefined') return
-
-    const handleOnline = () => {
-      setSyncStatus(prev => ({ ...prev, isOnline: true }))
-      addSyncEvent({ type: 'sync_start', message: 'Back online' })
-    }
-
-    const handleOffline = () => {
-      setSyncStatus(prev => ({ ...prev, isOnline: false }))
-      addSyncEvent({ type: 'offline', message: 'Gone offline' })
-    }
 
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
@@ -95,7 +95,7 @@ export function useCloudSync() {
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
     }
-  }, [addSyncEvent])
+  }, [handleOnline, handleOffline])
 
   // Get enabled providers
   const getEnabledProviders = useCallback(() => {

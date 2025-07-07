@@ -250,5 +250,6 @@ export function useDiscountCodes() {
     getStats,
     manualSync,
     cloudSync,
+    saveCodes,
   }
 }

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { DiscountCode } from '@/types/discount-code'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { SearchAndFilter } from './SearchAndFilter'
 import { Plus } from 'lucide-react'
 
@@ -25,14 +25,14 @@ export function StatsOverview({ stats, expiringSoon, filters, onFiltersChange, o
   const fabRef = useRef<HTMLButtonElement>(null)
 
   // Define event listeners outside useEffect to avoid re-creation on every render
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       fabRef.current?.classList.add('ring-4', 'ring-blue-400');
     }
-  };
-  const handleBlur = () => {
+  }, [])
+  const handleBlur = useCallback(() => {
     fabRef.current?.classList.remove('ring-4', 'ring-blue-400');
-  };
+  }, [])
 
   // Focus ring for accessibility
   useEffect(() => {
@@ -47,7 +47,7 @@ export function StatsOverview({ stats, expiringSoon, filters, onFiltersChange, o
         node.removeEventListener('blur', handleBlur);
       }
     };
-  }, []);
+  }, [handleKeyDown, handleBlur]);
   
   const statItems = [
     { 
