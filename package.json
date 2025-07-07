@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@types/uuid": "^10.0.0",
+    "@zxing/browser": "^0.1.5",
     "date-fns": "^4.1.0",
     "i18next": "^25.3.1",
     "i18next-browser-languagedetector": "^8.2.0",
