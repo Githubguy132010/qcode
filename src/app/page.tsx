@@ -78,18 +78,17 @@ export default function HomePage() {
 
         {/* Notification Banner */}
 
-        {/* Statistics Overview */}
-        <StatsOverview stats={stats} expiringSoon={expiringSoon} />
-
-        {/* Search and Filter */}
-        <div className="mb-8">
-          <SearchAndFilter
-            filters={searchFilters}
-            onFiltersChange={setSearchFilters}
-          />
-        </div>
+        {/* Statistics Overview + Search and Filter */}
+        <StatsOverview 
+          stats={stats} 
+          expiringSoon={expiringSoon} 
+          filters={searchFilters}
+          onFiltersChange={setSearchFilters}
+          onAddCode={() => setIsAddModalOpen(true)}
+        />
 
         {/* Add Button */}
+        {/* REMOVE THIS BLOCK:
         <div className="mb-8">
           <button
             onClick={() => setIsAddModalOpen(true)}
@@ -99,6 +98,7 @@ export default function HomePage() {
             <span className="text-lg">{t('homePage.addNewCode')}</span>
           </button>
         </div>
+        */}
 
         {/* Codes List */}
         {filteredCodes.length === 0 ? (

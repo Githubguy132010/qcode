@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import type { DiscountCode } from '@/types/discount-code'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { SearchAndFilter } from './SearchAndFilter'
+import { Plus } from 'lucide-react'
 
 interface StatsOverviewProps {
   stats: {
@@ -12,11 +14,29 @@ interface StatsOverviewProps {
     totalUsages: number
     expiringSoon: number
   },
-  expiringSoon: DiscountCode[]
+  expiringSoon: DiscountCode[],
+  filters: import('@/types/discount-code').SearchFilters,
+  onFiltersChange: (filters: import('@/types/discount-code').SearchFilters) => void,
+  onAddCode: () => void
 }
 
-export function StatsOverview({ stats, expiringSoon }: StatsOverviewProps) {
+export function StatsOverview({ stats, expiringSoon, filters, onFiltersChange, onAddCode }: StatsOverviewProps) {
   const { t } = useTranslation()
+  const fabRef = useRef<HTMLButtonElement>(null)
+
+  // Focus ring for accessibility
+  useEffect(() => {
+    if (fabRef.current) {
+      fabRef.current.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          fabRef.current?.classList.add('ring-4', 'ring-blue-400')
+        }
+      })
+      fabRef.current.addEventListener('blur', () => {
+        fabRef.current?.classList.remove('ring-4', 'ring-blue-400')
+      })
+    }
+  }, [])
   
   const statItems = [
     { 
@@ -101,6 +121,43 @@ export function StatsOverview({ stats, expiringSoon }: StatsOverviewProps) {
           {t('codeCard.timesUsed', { count: stats.totalUsages })}
         </span>
       </div>
+      <div className="mt-4 flex flex-col gap-4">
+        {/* Add Discount Code Button (desktop only) */}
+        <button
+          onClick={onAddCode}
+          className="hidden sm:flex w-full items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group focus:outline-none focus:ring-4 focus:ring-blue-400"
+          aria-label={t('homePage.addNewCode')}
+        >
+          <Plus size={22} className="group-hover:rotate-90 transition-transform duration-200" />
+          <span className="text-base">{t('homePage.addNewCode')}</span>
+        </button>
+        {/* Search and Filter at the bottom of the overview */}
+        <SearchAndFilter
+          filters={filters}
+          onFiltersChange={onFiltersChange}
+        />
+      </div>
+      {/* Floating Action Button for mobile */}
+      <button
+        ref={fabRef}
+        onClick={onAddCode}
+        className="sm:hidden fixed z-50 bottom-6 right-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-xl p-4 flex items-center justify-center transition-all duration-200 animate-fab-pulse focus:outline-none focus:ring-4 focus:ring-blue-400"
+        aria-label={t('homePage.addNewCode')}
+        style={{ boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)' }}
+      >
+        <Plus size={28} className="transition-transform duration-200" />
+      </button>
     </div>
   )
 }
+
+<style jsx global>{`
+@keyframes fab-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+.animate-fab-pulse {
+  animation: fab-pulse 2s infinite;
+}
+`}</style>

@@ -28,29 +28,29 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
   }
 
   return (
-    <div className="rounded-xl shadow-lg border p-6 space-y-6 transition-all duration-300 bg-white dark:bg-[var(--card-bg)] dark:border-[var(--card-border)]">
-      <h3 className="text-lg font-semibold mb-4 text-[var(--text-primary)] dark:text-[var(--text-primary)]">{t('filters.title', 'Search & Filter')}</h3>
+    <div className="sticky top-4 z-30 bg-[var(--filter-bg)]/80 dark:bg-[var(--filter-bg)]/80 backdrop-blur-md rounded-2xl px-4 py-3 mb-2 flex flex-col gap-3 shadow-none border-none">
       {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+      <div className="relative flex items-center">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
         <input
           type="text"
           placeholder={t('filters.searchPlaceholder')}
           value={filters.searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all duration-200 font-medium bg-[var(--input-bg)] dark:bg-[var(--input-bg)] border border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)]"
+          className="w-full pl-12 pr-4 py-3 rounded-full focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all duration-200 font-medium bg-white/80 dark:bg-[var(--input-bg)] border border-[var(--input-border)] dark:border-[var(--input-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] shadow-sm"
         />
       </div>
-
       {/* Filters Row */}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide">
         {/* Category Filter */}
-        <div className="flex items-center gap-3 bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] rounded-lg px-4 py-2">
-          <Filter size={16} className="text-gray-500 dark:text-gray-400" />
+        <div className="flex items-center gap-2 bg-transparent border-none px-0 py-0">
+          <button className="p-2 rounded-full bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)]" tabIndex={-1} disabled>
+            <Filter size={18} className="text-gray-500 dark:text-gray-400" />
+          </button>
           <select
             value={filters.category}
             onChange={(e) => handleCategoryChange(e.target.value)}
-            className="border-0 bg-transparent text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="bg-transparent text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer px-2 py-1 rounded-lg"
           >
             <option value="all">{t('filters.category.all')}</option>
             {DISCOUNT_CATEGORIES.map((category) => (
@@ -60,14 +60,15 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
             ))}
           </select>
         </div>
-
         {/* Sort */}
-        <div className="flex items-center gap-3 bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] rounded-lg px-4 py-2">
-          <SortAsc size={16} className="text-gray-500 dark:text-gray-400" />
+        <div className="flex items-center gap-2 bg-transparent border-none px-0 py-0">
+          <button className="p-2 rounded-full bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)]" tabIndex={-1} disabled>
+            <SortAsc size={18} className="text-gray-500 dark:text-gray-400" />
+          </button>
           <select
             value={filters.sortBy}
             onChange={(e) => handleSortChange(e.target.value as SearchFilters['sortBy'])}
-            className="border-0 bg-transparent text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="bg-transparent text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer px-2 py-1 rounded-lg"
           >
             <option value="dateAdded">{t('filters.sortBy.dateAdded')}</option>
             <option value="expiryDate">{t('filters.sortBy.expiryDate')}</option>
@@ -76,13 +77,12 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
             <option value="timesUsed">{t('filters.sortBy.timesUsed')}</option>
           </select>
         </div>
-
         {/* Status Filter */}
-        <div className="flex items-center gap-3 bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] rounded-lg px-4 py-2">
+        <div className="flex items-center gap-2 bg-transparent border-none px-0 py-0">
           <select
             value={filters.filterBy}
             onChange={(e) => handleFilterChange(e.target.value as SearchFilters['filterBy'])}
-            className="border-0 bg-transparent text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="bg-[var(--filter-bg)] dark:bg-[var(--filter-bg)] border border-[var(--filter-border)] dark:border-[var(--filter-border)] text-[var(--text-primary)] dark:text-[var(--text-primary)] text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer px-3 py-2 rounded-full"
           >
             <option value="all">{t('filters.filterBy.all')}</option>
             <option value="active">{t('filters.filterBy.active')}</option>
