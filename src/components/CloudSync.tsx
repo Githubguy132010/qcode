@@ -6,12 +6,13 @@ import { useCloudSync } from '@/hooks/useCloudSync'
 import { ConflictResolution } from '@/types/cloud-sync'
 import { useToast } from './ToastProvider'
 import { importCodes } from '@/utils/storage'
+import { DiscountCode } from '@/types/discount-code'
 
 interface CloudSyncProps {
   onManualSync: () => Promise<boolean>
   isOpen: boolean
   onClose: () => void
-  onCodesUpdate: (codes: any[]) => void // Added callback for updating codes
+  onCodesUpdate: (codes: DiscountCode[]) => void // Use DiscountCode[] instead of any[]
 }
 
 export function CloudSync({ onManualSync, isOpen, onClose, onCodesUpdate }: CloudSyncProps) {
