@@ -5,16 +5,20 @@ import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { useToast } from './ToastProvider'
+import type { DiscountCode } from '@/types/discount-code'
 
 interface SettingsModalProps {
   isOpen: boolean
   onClose: () => void
+  onCodesUpdate: (codes: DiscountCode[]) => void
 }
 
-export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
+export function SettingsModal({ isOpen, onClose, onCodesUpdate }: SettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
   const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language'>('about')
+  const { showToast } = useToast()
 
   const handleExport = () => {
     const exportData = exportCodes(codes)
@@ -41,9 +45,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         
         // Save imported codes
         localStorage.setItem('qcode-discount-codes', JSON.stringify(importedCodes))
-        window.location.reload()
+        onCodesUpdate(importedCodes)
       } catch (error) {
-        alert(t('errors.importFailed', 'Error importing: ') + (error as Error).message)
+        showToast({ type: 'error', message: t('errors.importFailed', 'Error importing: ') + (error as Error).message })
       }
     }
     reader.readAsText(file)
@@ -52,7 +56,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const handleClearAll = () => {
     if (confirm(t('confirmDialog.deleteAllCodes'))) {
       localStorage.removeItem('qcode-discount-codes')
-      window.location.reload()
+      onCodesUpdate([])
     }
   }
 
@@ -242,8 +246,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </p>
                   <button
                     onClick={() => {
-                      loadDemoData()
-                      window.location.reload()
+                      const demoData = loadDemoData()
+                      onCodesUpdate(demoData)
                     }}
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                   >
