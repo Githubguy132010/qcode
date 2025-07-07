@@ -11,9 +11,10 @@ interface CloudSyncProps {
   onManualSync: () => Promise<boolean>
   isOpen: boolean
   onClose: () => void
+  onCodesUpdate: (codes: any[]) => void // Added callback for updating codes
 }
 
-export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
+export function CloudSync({ onManualSync, isOpen, onClose, onCodesUpdate }: CloudSyncProps) {
   const cloudSync = useCloudSync()
   const [showProviderSetup, setShowProviderSetup] = useState(false)
   const [githubToken, setGithubToken] = useState('')
@@ -43,7 +44,7 @@ export function CloudSync({ onManualSync, isOpen, onClose }: CloudSyncProps) {
         try {
           const importedCodes = importCodes(content)
           localStorage.setItem('qcode-discount-codes', JSON.stringify(importedCodes))
-          window.location.reload()
+          onCodesUpdate(importedCodes) // Use callback instead of reload
         } catch (error) {
           showToast({ type: 'error', message: 'Invalid file format: ' + (error as Error).message })
         }

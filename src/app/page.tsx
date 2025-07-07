@@ -140,6 +140,7 @@ export default function HomePage() {
         isOpen={isCloudSyncOpen}
         onClose={() => setIsCloudSyncOpen(false)}
         onManualSync={manualSync}
+        onCodesUpdate={saveCodes}
       />
     </div>
   )
