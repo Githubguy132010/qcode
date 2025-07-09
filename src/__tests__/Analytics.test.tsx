@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { Analytics } from '../components/Analytics'
-import { useTranslation } from 'react-i18next'
+import type { DiscountCode } from '../types/discount-code'
 
 // Mock react-i18next
 jest.mock('react-i18next', () => ({
@@ -45,13 +45,13 @@ jest.mock('date-fns/locale', () => ({
 // Mock date-fns format function
 jest.mock('date-fns', () => ({
   ...jest.requireActual('date-fns'),
-  format: jest.fn((date, formatStr) => 'Jan'),
+  format: jest.fn(() => 'Jan'),
   subDays: jest.fn((date, days) => new Date(date.getTime() - days * 24 * 60 * 60 * 1000)),
   startOfDay: jest.fn((date) => new Date(date.getFullYear(), date.getMonth(), date.getDate())),
   differenceInDays: jest.fn((date1, date2) => Math.floor((date1.getTime() - date2.getTime()) / (1000 * 60 * 60 * 24)))
 }))
 
-const mockCodes = [
+const mockCodes: DiscountCode[] = [
   {
     id: '1',
     code: 'TEST10',
@@ -80,8 +80,8 @@ const mockCodes = [
   }
 ]
 
-const mockIsExpired = (code: any) => {
-  return code.expiryDate && new Date() > code.expiryDate
+const mockIsExpired = (code: DiscountCode) => {
+  return code.expiryDate ? new Date() > code.expiryDate : false
 }
 
 describe('Analytics Component', () => {

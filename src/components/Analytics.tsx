@@ -1,17 +1,15 @@
 import { useMemo } from 'react'
-import { format, subDays, startOfDay, differenceInDays, parseISO } from 'date-fns'
+import { format, subDays, startOfDay, differenceInDays } from 'date-fns'
 import { nl, enUS } from 'date-fns/locale'
 import { 
   BarChart3, 
   TrendingUp, 
   Target, 
-  Calendar, 
   Store, 
   Tag, 
   PieChart,
   Activity,
   Clock,
-  Percent,
   Euro,
   ShoppingBag
 } from 'lucide-react'
@@ -21,11 +19,6 @@ import type { DiscountCode } from '@/types/discount-code'
 interface AnalyticsProps {
   codes: DiscountCode[]
   isExpired: (code: DiscountCode) => boolean
-}
-
-interface UsageData {
-  date: string
-  count: number
 }
 
 interface CategoryStats {
@@ -40,6 +33,13 @@ interface MonthlyTrend {
   month: string
   codesAdded: number
   codesUsed: number
+}
+
+interface StoreStats {
+  store: string
+  totalCodes: number
+  totalUsage: number
+  activeCodes: number
 }
 
 export function Analytics({ codes, isExpired }: AnalyticsProps) {
@@ -105,7 +105,7 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
         
         return map
       }, new Map<string, CategoryStats>())
-    ).map(([_, stats]) => stats).sort((a, b) => b.totalUsage - a.totalUsage)
+    ).map(([, stats]) => stats).sort((a, b) => b.totalUsage - a.totalUsage)
 
     // Monthly trends (last 6 months)
     const monthlyTrends: MonthlyTrend[] = []
@@ -126,7 +126,7 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
     }
 
     // Store performance
-    const storeStats = Array.from(
+    const storeStats: StoreStats[] = Array.from(
       codes.reduce((map, code) => {
         if (!map.has(code.store)) {
           map.set(code.store, {
@@ -143,8 +143,8 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
         if (!isExpired(code) && !code.isArchived) stats.activeCodes++
         
         return map
-      }, new Map<string, any>())
-    ).map(([_, stats]) => stats).sort((a, b) => b.totalUsage - a.totalUsage).slice(0, 5)
+      }, new Map<string, StoreStats>())
+    ).map(([, stats]) => stats).sort((a, b) => b.totalUsage - a.totalUsage).slice(0, 5)
 
     // Expiry analysis
     const expiringSoon = codes.filter(code => {
@@ -184,7 +184,7 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
     title: string
     value: string | number
     subtitle?: string
-    icon: any
+    icon: React.ComponentType<{ className?: string }>
     colorClass?: string
     trend?: { value: number; isPositive?: boolean }
   }) => (
