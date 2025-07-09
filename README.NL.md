@@ -13,6 +13,7 @@ Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingsco
 - **Vervaldatum tracking** - Krijg waarschuwingen voor bijna verlopende codes
 - **Favorieten** - Markeer belangrijke codes als favoriet
 - **Gebruik tracking** - Houd bij hoe vaak je codes gebruikt
+- **Analytics Dashboard** - Gedetailleerde inzichten in je besparingen en gebruikspatronen
 - **Cloud synchronisatie** - Sync tussen al je apparaten via GitHub Gist of lokale bestanden
 
 ### 📱 Progressive Web App

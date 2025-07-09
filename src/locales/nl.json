@@ -15,7 +15,8 @@
     "darkMode": "Schakel naar donker thema",
     "lightMode": "Schakel naar licht thema",
     "notifications": "Notificaties",
-    "settings": "Instellingen"
+    "settings": "Instellingen",
+    "analytics": "Analytics"
   },
   "homePage": {
     "welcome": "Welkom bij QCode!",
@@ -114,7 +115,8 @@
     "expiredCodes": "Verlopen",
     "favoriteCodes": "Favorieten",
     "expiringSoon": "Binnenkort verlopen",
-    "archivedCodes": "Gearchiveerde codes"
+    "archivedCodes": "Gearchiveerde codes",
+    "viewAnalytics": "Bekijk Analytics"
   },
   "settings": {
     "title": "Instellingen",
@@ -208,5 +210,35 @@
     "Wonen & Tuin": "Wonen & Tuin",
     "Speelgoed": "Speelgoed",
     "Anders": "Anders"
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Inzichten in je kortingscode gebruik",
+    "totalCodes": "Totaal Codes",
+    "allTimeTotal": "Totaal alle tijd",
+    "totalUsage": "Totaal Gebruik",
+    "timesUsed": "Keer gebruikt",
+    "averageUsage": "Gem. Gebruik",
+    "perCode": "Gebruik per code",
+    "estimatedSavings": "Gesch. Besparingen",
+    "totalSaved": "Totaal bespaard",
+    "usageBreakdown": "Gebruik Verdeling",
+    "usedCodes": "Gebruikte Codes",
+    "heavilyUsed": "Vaak Gebruikt (3+)",
+    "neverUsed": "Nooit Gebruikt",
+    "expiringSoon": "Binnenkort Verlopen",
+    "recentActivity": "Recente Activiteit",
+    "addedLast7Days": "Toegevoegd Laatste 7 Dagen",
+    "addedLast30Days": "Toegevoegd Laatste 30 Dagen",
+    "activeCodes": "Actieve Codes",
+    "expiredCodes": "Verlopen Codes",
+    "categoryPerformance": "Categorie Prestaties",
+    "topStores": "Top Presterende Winkels",
+    "recommendations": "Aanbevelingen",
+    "recommendation": {
+      "neverUsed": "Je hebt {{count}} ongebruikte codes. Overweeg ze te gebruiken voordat ze verlopen!",
+      "expiringSoon": "{{count}} codes verlopen binnenkort. Gebruik ze nu!",
+      "heavilyUsed": "Goed gedaan! Je hebt {{count}} codes vaak gebruikt."
+    }
   }
 }

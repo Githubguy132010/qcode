@@ -1,3 +1,4 @@
+import { BarChart3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 interface StatsOverviewProps {
@@ -10,9 +11,10 @@ interface StatsOverviewProps {
     totalUsages: number
     expiringSoon: number
   }
+  onAnalyticsClick?: () => void
 }
 
-export function StatsOverview({ stats }: StatsOverviewProps) {
+export function StatsOverview({ stats, onAnalyticsClick }: StatsOverviewProps) {
   const { t } = useTranslation()
   
   const statItems = [
@@ -44,10 +46,21 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
 
   return (
     <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 card-hover">
-      <h2 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
-        <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-        {t('stats.title', 'Overview')}
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold theme-text-primary flex items-center gap-2">
+          <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+          {t('stats.title', 'Overview')}
+        </h2>
+        {onAnalyticsClick && (
+          <button
+            onClick={onAnalyticsClick}
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all duration-200"
+          >
+            <BarChart3 size={16} />
+            {t('stats.viewAnalytics', 'View Analytics')}
+          </button>
+        )}
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {statItems.map((item) => (
           <div key={item.label} className="text-center group">

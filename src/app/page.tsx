@@ -12,6 +12,7 @@ import { EmptyState } from '@/components/EmptyState'
 import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
+import { AnalyticsModal } from '@/components/AnalyticsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
 import { useTranslation } from 'react-i18next'
@@ -43,6 +44,7 @@ export default function HomePage() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
@@ -70,6 +72,7 @@ export default function HomePage() {
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
         onSyncClick={() => setIsCloudSyncOpen(true)}
+        onAnalyticsClick={() => setIsAnalyticsModalOpen(true)}
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -82,7 +85,10 @@ export default function HomePage() {
         )}
 
         {/* Statistics Overview */}
-        <StatsOverview stats={stats} />
+        <StatsOverview 
+          stats={stats} 
+          onAnalyticsClick={() => setIsAnalyticsModalOpen(true)}
+        />
 
         {/* Search and Filter */}
         <div className="mb-8">
@@ -137,6 +143,14 @@ export default function HomePage() {
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
+      />
+
+      {/* Analytics Modal */}
+      <AnalyticsModal
+        isOpen={isAnalyticsModalOpen}
+        onClose={() => setIsAnalyticsModalOpen(false)}
+        codes={codes}
+        isExpired={isExpired}
       />
 
       {/* Cloud Sync Modal */}

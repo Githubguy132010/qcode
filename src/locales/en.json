@@ -15,7 +15,8 @@
     "darkMode": "Switch to dark theme",
     "lightMode": "Switch to light theme",
     "notifications": "Notifications",
-    "settings": "Settings"
+    "settings": "Settings",
+    "analytics": "Analytics"
   },
   "homePage": {
     "welcome": "Welcome to QCode!",
@@ -114,7 +115,8 @@
     "expiredCodes": "Expired",
     "favoriteCodes": "Favorites",
     "expiringSoon": "Expiring soon",
-    "archivedCodes": "Archived codes"
+    "archivedCodes": "Archived codes",
+    "viewAnalytics": "View Analytics"
   },
   "settings": {
     "title": "Settings",
@@ -208,5 +210,35 @@
     "Wonen & Tuin": "Home & Garden",
     "Speelgoed": "Toys",
     "Anders": "Other"
+  },
+  "analytics": {
+    "title": "Analytics Dashboard",
+    "subtitle": "Insights into your discount code usage",
+    "totalCodes": "Total Codes",
+    "allTimeTotal": "All time total",
+    "totalUsage": "Total Usage",
+    "timesUsed": "Times used",
+    "averageUsage": "Avg Usage",
+    "perCode": "Uses per code",
+    "estimatedSavings": "Est. Savings",
+    "totalSaved": "Total saved",
+    "usageBreakdown": "Usage Breakdown",
+    "usedCodes": "Used Codes",
+    "heavilyUsed": "Heavily Used (3+)",
+    "neverUsed": "Never Used",
+    "expiringSoon": "Expiring Soon",
+    "recentActivity": "Recent Activity",
+    "addedLast7Days": "Added Last 7 Days",
+    "addedLast30Days": "Added Last 30 Days",
+    "activeCodes": "Active Codes",
+    "expiredCodes": "Expired Codes",
+    "categoryPerformance": "Category Performance",
+    "topStores": "Top Performing Stores",
+    "recommendations": "Recommendations",
+    "recommendation": {
+      "neverUsed": "You have {{count}} unused codes. Consider using them before they expire!",
+      "expiringSoon": "{{count}} codes are expiring soon. Use them now!",
+      "heavilyUsed": "Great job! You've used {{count}} codes frequently."
+    }
   }
 }
