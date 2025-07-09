@@ -1,4 +1,4 @@
-import { Ticket, Bell, Settings, Moon, Sun } from 'lucide-react'
+import { Ticket, Bell, Settings, Moon, Sun, BarChart3 } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { SyncStatusIndicator } from './SyncStatusIndicator'
 import { useTranslation } from 'react-i18next'
@@ -7,9 +7,10 @@ interface HeaderProps {
   onNotificationClick: () => void
   onSettingsClick: () => void
   onSyncClick: () => void
+  onAnalyticsClick: () => void
 }
 
-export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: HeaderProps) {
+export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onAnalyticsClick }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
 
@@ -28,6 +29,13 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
           </div>
           <div className="flex items-center gap-2">
             <SyncStatusIndicator onClick={onSyncClick} />
+            <button 
+              onClick={onAnalyticsClick}
+              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+              aria-label={t('header.analytics', 'Analytics')}
+            >
+              <BarChart3 size={20} />
+            </button>
             <button 
               onClick={toggleDarkMode}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"

@@ -13,6 +13,7 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 - **Expiry Date Tracking** - Get alerts for soon-to-expire codes
 - **Favorites** - Mark important codes as favorites
 - **Usage Tracking** - Track how often you use your codes
+- **Analytics Dashboard** - Detailed insights into your savings and usage patterns
 - **Cloud Synchronization** - Sync across all your devices via GitHub Gist or local files
 
 ### 📱 Progressive Web App
@@ -205,7 +206,7 @@ The app can be installed on:
 - [ ] Store integrations for automatic codes
 - [ ] Push notifications for deals
 - [x] Export/import functionality
-- [ ] Analytics dashboard
+- [x] Analytics dashboard
 - [ ] Theme customization
 - [x] Multi-language support
 - [ ] End-to-end encryption for sensitive codes
