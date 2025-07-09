@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { format, subDays, startOfDay, differenceInDays } from 'date-fns'
+import { format, subDays, startOfDay, differenceInDays, addDays } from 'date-fns'
 import { nl, enUS } from 'date-fns/locale'
 import { 
   BarChart3, 
@@ -76,13 +76,21 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
       const discountText = code.discount.toLowerCase()
       if (discountText.includes('€')) {
         const amount = parseFloat(discountText.replace(/[^0-9.]/g, ''))
-        return total + (amount * code.timesUsed)
+        return total + (isNaN(amount) ? 0 : amount * code.timesUsed)
       } else if (discountText.includes('%')) {
-        // Estimate €15 average per percentage point
+        // More conservative estimate: €10 average purchase * percentage
         const percentage = parseFloat(discountText.replace(/[^0-9.]/g, ''))
-        return total + (percentage * 1.5 * code.timesUsed)
+        if (isNaN(percentage)) return total
+        // Cap percentage-based savings at reasonable amounts
+        const estimatedSavingPerUse = Math.min((percentage / 100) * 25, 15) // Max €15 per use
+        return total + (estimatedSavingPerUse * code.timesUsed)
+      } else if (discountText.includes('$')) {
+        // Convert USD to EUR (approximate rate: 1 USD ≈ 0.92 EUR)
+        const amount = parseFloat(discountText.replace(/[^0-9.]/g, ''))
+        return total + (isNaN(amount) ? 0 : amount * 0.92 * code.timesUsed)
       }
-      return total + (10 * code.timesUsed) // Default €10 per use
+      // Conservative default for unknown formats - much lower than €10
+      return total + (2.5 * code.timesUsed) // Default €2.50 per use - conservative estimate
     }, 0)
 
     // Category breakdown
@@ -112,10 +120,10 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
     for (let i = 5; i >= 0; i--) {
       const date = subDays(now, i * 30)
       const monthStart = startOfDay(date)
-      const monthEnd = subDays(monthStart, -30)
+      const monthEnd = addDays(monthStart, 30)
       
       const codesAdded = codes.filter(code => 
-        code.dateAdded >= monthStart && code.dateAdded < monthEnd
+        code.dateAdded >= monthStart && code.dateAdded <= monthEnd
       ).length
       
       monthlyTrends.push({
@@ -253,7 +261,7 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
         <StatCard
           title={t('analytics.estimatedSavings', 'Est. Savings')}
           value={`€${analytics.estimatedSavings.toFixed(0)}`}
-          subtitle={t('analytics.totalSaved', 'Total saved')}
+          subtitle={t('analytics.totalSaved', 'Total saved (estimate)')}
           icon={Euro}
           colorClass="from-emerald-500 to-emerald-600"
         />
@@ -400,6 +408,14 @@ export function Analytics({ codes, isExpired }: AnalyticsProps) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Savings Disclaimer */}
+      <div className="theme-card rounded-xl border p-4 bg-gray-50/50 dark:bg-gray-800/30">
+        <p className="text-xs theme-text-muted leading-relaxed">
+          <strong>{t('analytics.disclaimer.title', 'Savings Estimation:')}</strong> {' '}
+          {t('analytics.disclaimer.text', 'Savings calculations are estimates based on discount amounts and usage. Fixed amounts (€5, $10) are calculated directly, percentage discounts assume average purchase values, and unknown formats use conservative estimates. Actual savings may vary based on purchase amounts and store policies.')}
+        </p>
       </div>
     </div>
   )

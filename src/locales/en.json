@@ -221,7 +221,7 @@
     "averageUsage": "Avg Usage",
     "perCode": "Uses per code",
     "estimatedSavings": "Est. Savings",
-    "totalSaved": "Total saved",
+    "totalSaved": "Total saved (estimate)",
     "usageBreakdown": "Usage Breakdown",
     "usedCodes": "Used Codes",
     "heavilyUsed": "Heavily Used (3+)",
@@ -239,6 +239,10 @@
       "neverUsed": "You have {{count}} unused codes. Consider using them before they expire!",
       "expiringSoon": "{{count}} codes are expiring soon. Use them now!",
       "heavilyUsed": "Great job! You've used {{count}} codes frequently."
+    },
+    "disclaimer": {
+      "title": "Savings Estimation:",
+      "text": "Savings calculations are estimates based on discount amounts and usage. Fixed amounts (€5, $10) are calculated directly, percentage discounts assume average purchase values, and unknown formats use conservative estimates. Actual savings may vary based on purchase amounts and store policies."
     }
   }
 }

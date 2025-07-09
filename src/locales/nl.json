@@ -221,7 +221,7 @@
     "averageUsage": "Gem. Gebruik",
     "perCode": "Gebruik per code",
     "estimatedSavings": "Gesch. Besparingen",
-    "totalSaved": "Totaal bespaard",
+    "totalSaved": "Totaal bespaard (schatting)",
     "usageBreakdown": "Gebruik Verdeling",
     "usedCodes": "Gebruikte Codes",
     "heavilyUsed": "Vaak Gebruikt (3+)",
@@ -239,6 +239,10 @@
       "neverUsed": "Je hebt {{count}} ongebruikte codes. Overweeg ze te gebruiken voordat ze verlopen!",
       "expiringSoon": "{{count}} codes verlopen binnenkort. Gebruik ze nu!",
       "heavilyUsed": "Goed gedaan! Je hebt {{count}} codes vaak gebruikt."
+    },
+    "disclaimer": {
+      "title": "Besparingen Schatting:",
+      "text": "Besparingen berekeningen zijn schattingen gebaseerd op kortingsbedragen en gebruik. Vaste bedragen (€5, $10) worden direct berekend, percentage kortingen gaan uit van gemiddelde aankoopwaarden, en onbekende formaten gebruiken conservatieve schattingen. Werkelijke besparingen kunnen variëren op basis van aankoopbedragen en winkelbeleid."
     }
   }
 }
