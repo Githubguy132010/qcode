@@ -4,6 +4,7 @@ import { SyncStatusIndicator } from './SyncStatusIndicator'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 interface HeaderProps {
   onNotificationClick: () => void
@@ -15,6 +16,13 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
   const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
+  const [showAdvancedDashboard, setShowAdvancedDashboard] = useState(false)
+
+  useEffect(() => {
+    // Check if advanced dashboard should be shown
+    const shouldShow = localStorage.getItem('qcode-show-advanced-dashboard') === 'true'
+    setShowAdvancedDashboard(shouldShow)
+  }, [])
 
   return (
     <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
@@ -44,17 +52,19 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
                 <Home size={16} />
                 {t('navigation.home', 'Home')}
               </Link>
-              <Link
-                href="/analytics"
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  pathname === '/analytics'
-                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                    : 'theme-text-secondary hover:theme-text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-              >
-                <BarChart3 size={16} />
-                {t('navigation.analytics', 'Analytics')}
-              </Link>
+              {showAdvancedDashboard && (
+                <Link
+                  href="/analytics"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    pathname === '/analytics'
+                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                      : 'theme-text-secondary hover:theme-text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
+                >
+                  <BarChart3 size={16} />
+                  {t('navigation.analytics', 'Analytics')}
+                </Link>
+              )}
             </nav>
           </div>
           
@@ -72,17 +82,19 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
               >
                 <Home size={20} />
               </Link>
-              <Link
-                href="/analytics"
-                className={`p-2.5 rounded-lg transition-all duration-200 ${
-                  pathname === '/analytics'
-                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-                aria-label={t('navigation.analytics', 'Analytics')}
-              >
-                <BarChart3 size={20} />
-              </Link>
+              {showAdvancedDashboard && (
+                <Link
+                  href="/analytics"
+                  className={`p-2.5 rounded-lg transition-all duration-200 ${
+                    pathname === '/analytics'
+                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                      : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
+                  aria-label={t('navigation.analytics', 'Analytics')}
+                >
+                  <BarChart3 size={20} />
+                </Link>
+              )}
             </div>
             
             <SyncStatusIndicator onClick={onSyncClick} />

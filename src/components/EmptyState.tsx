@@ -1,5 +1,4 @@
-import { Plus, ShoppingBag, Sparkles } from 'lucide-react'
-import { loadDemoData } from '@/utils/demo-data'
+import { Plus, ShoppingBag } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 interface EmptyStateProps {
@@ -29,13 +28,6 @@ export function EmptyState({ hasAnyCodes, onAddCode }: EmptyStateProps) {
           >
             <Plus size={20} />
             {t('homePage.noCodes.addButton')}
-          </button>
-          <button
-            onClick={loadDemoData}
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-          >
-            <Sparkles size={20} />
-            {t('settings.import.demoButton')}
           </button>
         </div>
       </div>

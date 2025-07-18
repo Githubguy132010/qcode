@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Download, Upload, Trash2, Info, Heart, Shield } from 'lucide-react'
+import { X, Download, Upload, Trash2, Info, Heart, Shield, Settings, BarChart3, Database, Code } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
@@ -14,7 +14,7 @@ interface SettingsModalProps {
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
-  const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language'>('about')
+  const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language' | 'developer'>('about')
 
   const handleExport = () => {
     const exportData = exportCodes(codes)
@@ -54,6 +54,15 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       localStorage.removeItem('qcode-discount-codes')
       window.location.reload()
     }
+  }
+
+  const toggleAdvancedDashboardAccess = () => {
+    const currentSetting = localStorage.getItem('qcode-show-advanced-dashboard') === 'true'
+    localStorage.setItem('qcode-show-advanced-dashboard', (!currentSetting).toString())
+  }
+
+  const isAdvancedDashboardEnabled = () => {
+    return localStorage.getItem('qcode-show-advanced-dashboard') === 'true'
   }
 
   if (!isOpen) return null
@@ -113,6 +122,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               }`}
             >
               {t('settings.tabs.import')}
+            </button>
+            <button
+              onClick={() => setActiveTab('developer')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 whitespace-nowrap ${
+                activeTab === 'developer'
+                  ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
+                  : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
+              Developer
             </button>
           </nav>
         </div>
@@ -233,24 +252,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
-                  <h4 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
-                    {t('settings.import.demoTitle')}
-                  </h4>
-                  <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
-                    {t('settings.import.demoSubtitle')}
-                  </p>
-                  <button
-                    onClick={() => {
-                      loadDemoData()
-                      window.location.reload()
-                    }}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                  >
-                    {t('settings.import.demoButton')}
-                  </button>
-                </div>
-
                 <div className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 border border-red-300 dark:border-red-600 rounded-lg p-4 shadow-sm">
                   <h4 className="font-semibold text-slate-900 dark:text-red-100 mb-2">{t('settings.import.dangerTitle')}</h4>
                   <p className="text-sm text-slate-800 dark:text-red-200 mb-3">
@@ -263,6 +264,79 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <Trash2 size={16} />
                     {t('settings.import.clearButton')}
                   </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'developer' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium theme-text-primary mb-2 flex items-center gap-2">
+                  <Code size={18} />
+                  Developer Options
+                </h3>
+                <p className="text-sm theme-text-secondary mb-4">
+                  Advanced features and tools for developers and power users.
+                </p>
+              </div>
+
+              {/* Advanced Dashboard Access */}
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 border border-blue-300 dark:border-blue-600 rounded-lg p-4 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-slate-900 dark:text-blue-100 mb-1 flex items-center gap-2">
+                      <BarChart3 size={16} />
+                      Advanced Analytics Dashboard
+                    </h4>
+                    <p className="text-sm text-slate-800 dark:text-blue-200">
+                      Show analytics dashboard link in main navigation for quick access.
+                    </p>
+                  </div>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={isAdvancedDashboardEnabled()}
+                      onChange={toggleAdvancedDashboardAccess}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <span className="ml-2 text-sm font-medium text-slate-900 dark:text-blue-100">Enable</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Demo Data Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
+                <h4 className="font-semibold text-slate-900 dark:text-purple-100 mb-2 flex items-center gap-2">
+                  <Database size={16} />
+                  {t('settings.import.demoTitle')}
+                </h4>
+                <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
+                  {t('settings.import.demoSubtitle')}
+                </p>
+                <button
+                  onClick={() => {
+                    loadDemoData()
+                    window.location.reload()
+                  }}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  <Database size={16} />
+                  {t('settings.import.demoButton')}
+                </button>
+              </div>
+
+              {/* Developer Info */}
+              <div className="theme-filter rounded-lg p-4">
+                <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
+                  <Settings size={16} />
+                  Developer Information
+                </h4>
+                <div className="text-sm theme-text-secondary space-y-1">
+                  <p>• These options are intended for developers and advanced users</p>
+                  <p>• Changes take effect immediately and are stored locally</p>
+                  <p>• Analytics dashboard provides detailed insights into code usage patterns</p>
+                  <p>• Demo data helps test features with sample discount codes</p>
                 </div>
               </div>
             </div>

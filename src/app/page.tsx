@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, createRef } from 'react'
+import { useState, useRef, createRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
@@ -14,7 +14,9 @@ import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
+import { ChangelogPopup } from '@/components/ChangelogPopup'
 import { useTranslation } from 'react-i18next'
+import { checkForNewChanges } from '@/utils/github-integration'
 import type { SearchFilters } from '@/types/discount-code'
 
 export default function HomePage() {
@@ -45,9 +47,29 @@ export default function HomePage() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
+  const [isChangelogPopupOpen, setIsChangelogPopupOpen] = useState(false)
 
   // Create refs for each discount code for scrolling
   const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
+
+  // Check for changelog updates on component mount
+  useEffect(() => {
+    const checkForUpdates = async () => {
+      try {
+        const changelogData = await checkForNewChanges()
+        if (changelogData.hasNewChanges) {
+          setIsChangelogPopupOpen(true)
+        }
+      } catch (error) {
+        console.error('Error checking for updates:', error)
+      }
+    }
+
+    // Only check for updates if not loading
+    if (!isLoading) {
+      checkForUpdates()
+    }
+  }, [isLoading])
 
   // Function to get or create a ref for a code
   const getCodeRef = (codeId: string) => {
@@ -74,6 +96,10 @@ export default function HomePage() {
         }
       }, 2000)
     }
+  }
+
+  const handleViewAdvancedDashboard = () => {
+    window.location.href = '/analytics'
   }
 
   const filteredCodes = filterCodes(searchFilters)
@@ -178,6 +204,13 @@ export default function HomePage() {
         isOpen={isCloudSyncOpen}
         onClose={() => setIsCloudSyncOpen(false)}
         onManualSync={manualSync}
+      />
+
+      {/* Changelog Popup */}
+      <ChangelogPopup
+        isOpen={isChangelogPopupOpen}
+        onClose={() => setIsChangelogPopupOpen(false)}
+        onViewAdvanced={handleViewAdvancedDashboard}
       />
     </div>
   )
