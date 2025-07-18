@@ -4,7 +4,7 @@ import { SyncStatusIndicator } from './SyncStatusIndicator'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { hasNewChangelog } from '@/utils/changelog'
+import { hasNewChangelog, isDeveloperModeEnabled } from '@/utils/changelog'
 import { useEffect, useState } from 'react'
 
 interface HeaderProps {
@@ -19,10 +19,13 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onCh
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
   const [showNewBadge, setShowNewBadge] = useState(false)
+  const [isDeveloperMode, setIsDeveloperMode] = useState(false)
 
   useEffect(() => {
     // Check if there are new changelog entries
     setShowNewBadge(hasNewChangelog())
+    // Check developer mode
+    setIsDeveloperMode(isDeveloperModeEnabled())
   }, [])
 
   return (
@@ -103,19 +106,21 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onCh
             >
               {isLoaded && (isDark ? <Sun size={20} /> : <Moon size={20} />)}
             </button>
-            <button 
-              onClick={() => {
-                setShowNewBadge(false)
-                onChangelogClick()
-              }}
-              className="relative p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-              aria-label={t('header.changelog')}
-            >
-              <GitCommit size={20} />
-              {showNewBadge && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full border-2 border-white dark:border-gray-900"></span>
-              )}
-            </button>
+            {isDeveloperMode && (
+              <button 
+                onClick={() => {
+                  setShowNewBadge(false)
+                  onChangelogClick()
+                }}
+                className="relative p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                aria-label={t('header.changelog')}
+              >
+                <GitCommit size={20} />
+                {showNewBadge && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full border-2 border-white dark:border-gray-900"></span>
+                )}
+              </button>
+            )}
             <button 
               onClick={onNotificationClick}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"

@@ -111,8 +111,8 @@ function getCurrentVersion(): string {
  */
 export async function fetchChangelogData(): Promise<ChangelogData> {
   const [commits, prs] = await Promise.all([
-    fetchRecentCommits(20),
-    fetchRecentPullRequests(10)
+    fetchRecentCommits(50), // Increased to get more data for differentiation
+    fetchRecentPullRequests(20)
   ])
 
   const commitEntries = commitsToChangelogEntries(commits)
@@ -121,7 +121,6 @@ export async function fetchChangelogData(): Promise<ChangelogData> {
   // Combine and sort by date (newest first)
   const allEntries = [...commitEntries, ...prEntries]
     .sort((a, b) => b.date.getTime() - a.date.getTime())
-    .slice(0, 15) // Keep only the 15 most recent
 
   return {
     version: getCurrentVersion(),
@@ -198,13 +197,128 @@ export function setLastSeenVersion(version: string): void {
  */
 export function hasNewChangelog(): boolean {
   const cached = getCachedChangelogData()
+  if (!cached || cached.entries.length === 0) return false
+
   const lastSeen = getLastSeenVersion()
-  
-  if (!cached || !lastSeen) return false
-  
-  // Check if there are entries newer than the last seen version timestamp
+  if (!lastSeen) return true
+
+  // Check if there are entries newer than last seen date
   const lastSeenDate = new Date(lastSeen)
   return cached.entries.some(entry => entry.date > lastSeenDate)
+}
+
+/**
+ * Get recent changelog entries (last 7 days or last 5 entries, whichever is more)
+ */
+export function getRecentEntries(data: ChangelogData): ChangelogEntry[] {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  
+  // Get entries from last 7 days
+  const recentEntries = data.entries.filter(entry => entry.date > sevenDaysAgo)
+  
+  // If less than 5 entries in last 7 days, get the 5 most recent
+  if (recentEntries.length < 5) {
+    return data.entries.slice(0, 5)
+  }
+  
+  return recentEntries
+}
+
+/**
+ * Generate AI-friendly summary of changelog entries
+ */
+export function generateAISummary(entries: ChangelogEntry[]): string {
+  if (entries.length === 0) {
+    return "No recent updates available."
+  }
+
+  // Group entries by type
+  const features = entries.filter(e => 
+    e.type === 'pr' || 
+    e.title.toLowerCase().includes('feature') || 
+    e.title.toLowerCase().includes('add') ||
+    e.title.toLowerCase().includes('implement')
+  )
+  
+  const fixes = entries.filter(e => 
+    e.title.toLowerCase().includes('fix') || 
+    e.title.toLowerCase().includes('bug') ||
+    e.title.toLowerCase().includes('resolve')
+  )
+  
+  const improvements = entries.filter(e => 
+    e.title.toLowerCase().includes('improve') || 
+    e.title.toLowerCase().includes('enhance') ||
+    e.title.toLowerCase().includes('update') ||
+    e.title.toLowerCase().includes('refactor')
+  )
+
+  let summary = `🎉 Here's what's new in QCode!\n\n`
+
+  if (features.length > 0) {
+    summary += `✨ **New Features:**\n`
+    features.slice(0, 3).forEach(feature => {
+      const cleanTitle = feature.title
+        .replace(/^(feat|feature|add|implement):/i, '')
+        .replace(/\([^)]*\)/g, '')
+        .trim()
+      summary += `• ${cleanTitle}\n`
+    })
+    summary += '\n'
+  }
+
+  if (fixes.length > 0) {
+    summary += `🔧 **Bug Fixes:**\n`
+    fixes.slice(0, 3).forEach(fix => {
+      const cleanTitle = fix.title
+        .replace(/^(fix|bug|resolve):/i, '')
+        .replace(/\([^)]*\)/g, '')
+        .trim()
+      summary += `• ${cleanTitle}\n`
+    })
+    summary += '\n'
+  }
+
+  if (improvements.length > 0) {
+    summary += `📈 **Improvements:**\n`
+    improvements.slice(0, 2).forEach(improvement => {
+      const cleanTitle = improvement.title
+        .replace(/^(improve|enhance|update|refactor):/i, '')
+        .replace(/\([^)]*\)/g, '')
+        .trim()
+      summary += `• ${cleanTitle}\n`
+    })
+    summary += '\n'
+  }
+
+  if (features.length === 0 && fixes.length === 0 && improvements.length === 0) {
+    summary += `📝 **Recent Updates:**\n`
+    entries.slice(0, 3).forEach(entry => {
+      const cleanTitle = entry.title.replace(/\([^)]*\)/g, '').trim()
+      summary += `• ${cleanTitle}\n`
+    })
+    summary += '\n'
+  }
+
+  summary += `We're constantly working to make your discount code management experience better. Thank you for using QCode! 💙`
+
+  return summary
+}
+
+/**
+ * Check if user has developer options enabled
+ */
+export function isDeveloperModeEnabled(): boolean {
+  if (typeof window === 'undefined') return false
+  return localStorage.getItem('qcode-developer-mode') === 'true'
+}
+
+/**
+ * Enable or disable developer mode
+ */
+export function setDeveloperMode(enabled: boolean): void {
+  if (typeof window === 'undefined') return
+  localStorage.setItem('qcode-developer-mode', enabled.toString())
 }
 
 /**

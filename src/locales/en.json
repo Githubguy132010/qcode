@@ -127,7 +127,8 @@
       "about": "About QCode",
       "export": "Export",
       "import": "Import",
-      "language": "Language"
+      "language": "Language",
+      "developer": "Developer"
     },
     "about": {
       "version": "Version 1.0.0",
@@ -169,6 +170,22 @@
       "auto": "Automatic (based on browser)",
       "dutch": "Dutch",
       "english": "English"
+    },
+    "developer": {
+      "title": "Developer Options",
+      "subtitle": "Advanced settings for developers and power users",
+      "mode": "Developer Mode",
+      "modeDescription": "Enable advanced features and technical details",
+      "changelog": "Advanced Changelog",
+      "changelogDescription": "Access to detailed technical changelog with commits and PR details",
+      "changelogEnabled": "Advanced changelog access is enabled",
+      "changelogDisabled": "Advanced changelog access is disabled",
+      "demoTitle": "Sample Data",
+      "demoSubtitle": "Load sample discount codes for testing and demonstration purposes",
+      "demoButton": "Load Sample Data",
+      "loadDemoConfirm": "This will add sample discount codes to your collection. Continue?",
+      "warningTitle": "Developer Warning",
+      "warningText": "These settings are intended for developers and advanced users. Some features may affect app behavior or performance."
     }
   },
   "cloudSync": {
@@ -385,6 +402,11 @@
     "retryButton": "Retry",
     "emptyTitle": "No recent updates",
     "emptyDescription": "Check back later for new features and improvements!",
+    "aiSummary": "AI Summary",
+    "aiSummaryTitle": "What's New in QCode",
+    "technicalDetails": "Technical Details",
+    "viewTechnicalDetails": "View Technical Details",
+    "backToSummary": "Back to Summary",
     "types": {
       "commit": "Commit",
       "pr": "Pull Request",

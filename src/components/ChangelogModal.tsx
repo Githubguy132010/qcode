@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, ExternalLink, GitCommit, GitPullRequest, Tag, AlertCircle, RefreshCw } from 'lucide-react'
+import { X, ExternalLink, GitCommit, GitPullRequest, Tag, AlertCircle, RefreshCw, Sparkles, Settings } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { ChangelogModalProps, ChangelogData, ChangelogEntry } from '@/types/changelog'
 import { 
@@ -8,7 +8,9 @@ import {
   cacheChangelogData, 
   shouldRefreshChangelog,
   getFallbackChangelogData,
-  setLastSeenVersion
+  setLastSeenVersion,
+  getRecentEntries,
+  generateAISummary
 } from '@/utils/changelog'
 
 export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: ChangelogModalProps) {
@@ -18,6 +20,7 @@ export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: Change
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'recent' | 'all'>('recent')
   const [filter, setFilter] = useState<'all' | 'commits' | 'prs' | 'releases'>('all')
+  const [showDeveloperView, setShowDeveloperView] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -105,6 +108,11 @@ export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: Change
   const filterEntries = (entries: ChangelogEntry[]): ChangelogEntry[] => {
     let filtered = entries
 
+    // Apply tab filter first
+    if (activeTab === 'recent' && data) {
+      filtered = getRecentEntries(data)
+    }
+
     // Apply type filter
     if (filter !== 'all') {
       filtered = filtered.filter(entry => {
@@ -119,13 +127,6 @@ export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: Change
             return true
         }
       })
-    }
-
-    // Apply tab filter
-    if (activeTab === 'recent') {
-      const oneWeekAgo = new Date()
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
-      filtered = filtered.filter(entry => entry.date > oneWeekAgo)
     }
 
     return filtered
@@ -156,44 +157,72 @@ export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: Change
           </button>
         </div>
 
-        {/* Tabs and Filters */}
+        {/* Tabs and Controls */}
         <div className="border-b border-gray-200 dark:border-[var(--card-border)]">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 pb-4">
-            {/* Tabs */}
-            <nav className="flex space-x-8 mb-4 sm:mb-0">
-              <button
-                onClick={() => setActiveTab('recent')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
-                  activeTab === 'recent'
-                    ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
-                    : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                }`}
-              >
-                {t('changelog.tabs.recent')}
-              </button>
-              <button
-                onClick={() => setActiveTab('all')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
-                  activeTab === 'all'
-                    ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
-                    : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                }`}
-              >
-                {t('changelog.tabs.all')}
-              </button>
-            </nav>
+            {/* AI Summary vs Technical View Toggle */}
+            {!showDeveloperView ? (
+              <div className="flex items-center gap-4 mb-4 sm:mb-0">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <span className="text-sm font-medium theme-text-primary">{t('changelog.aiSummary')}</span>
+                </div>
+                <button
+                  onClick={() => setShowDeveloperView(true)}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg transition-all duration-200"
+                >
+                  <Settings size={16} />
+                  {t('changelog.technicalDetails')}
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Tabs */}
+                <nav className="flex space-x-8 mb-4 sm:mb-0">
+                  <button
+                    onClick={() => setActiveTab('recent')}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
+                      activeTab === 'recent'
+                        ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
+                        : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
+                  >
+                    {t('changelog.tabs.recent')}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('all')}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
+                      activeTab === 'all'
+                        ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
+                        : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
+                  >
+                    {t('changelog.tabs.all')}
+                  </button>
+                </nav>
 
-            {/* Filter */}
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as typeof filter)}
-              className="theme-filter text-sm border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">{t('changelog.filters.all')}</option>
-              <option value="commits">{t('changelog.filters.commits')}</option>
-              <option value="prs">{t('changelog.filters.prs')}</option>
-              <option value="releases">{t('changelog.filters.releases')}</option>
-            </select>
+                {/* Filter and Back Button */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowDeveloperView(false)}
+                    className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 px-3 py-1.5 rounded-lg transition-all duration-200"
+                  >
+                    <Sparkles size={16} />
+                    {t('changelog.backToSummary')}
+                  </button>
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value as typeof filter)}
+                    className="theme-filter text-sm border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="all">{t('changelog.filters.all')}</option>
+                    <option value="commits">{t('changelog.filters.commits')}</option>
+                    <option value="prs">{t('changelog.filters.prs')}</option>
+                    <option value="releases">{t('changelog.filters.releases')}</option>
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -224,74 +253,112 @@ export function ChangelogModal({ isOpen, onClose, showNewBadge = false }: Change
             </div>
           )}
 
-          {/* Empty State */}
-          {data && filteredEntries.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-12">
-              <GitCommit className="w-8 h-8 text-gray-400 dark:text-gray-500 mb-4" />
-              <h3 className="text-lg font-medium theme-text-primary mb-2">{t('changelog.emptyTitle')}</h3>
-              <p className="theme-text-secondary">{t('changelog.emptyDescription')}</p>
+          {/* AI Summary View */}
+          {!showDeveloperView && data && (
+            <div className="max-w-none">
+              <div className="theme-filter rounded-xl p-6 border border-gray-200 dark:border-[var(--card-border)]">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900 dark:to-purple-800 p-2 rounded-lg">
+                    <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold theme-text-primary">{t('changelog.aiSummaryTitle')}</h3>
+                </div>
+                
+                <div className="prose prose-gray dark:prose-invert max-w-none">
+                  <div className="whitespace-pre-line theme-text-secondary leading-relaxed">
+                    {data ? generateAISummary(getRecentEntries(data)) : ''}
+                  </div>
+                </div>
+                
+                {data && getRecentEntries(data).length > 0 && (
+                  <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-sm theme-text-secondary mb-3">{t('changelog.lastUpdated')}: {data.lastFetched.toLocaleDateString()}</p>
+                    <button
+                      onClick={() => setShowDeveloperView(true)}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      <Settings size={16} />
+                      {t('changelog.viewTechnicalDetails')}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Changelog Entries */}
-          {data && filteredEntries.length > 0 && (
-            <div className="space-y-4">
-              {filteredEntries.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="theme-filter rounded-lg p-4 border border-gray-200 dark:border-[var(--card-border)] hover:shadow-md transition-shadow duration-200"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 mt-0.5">
-                      {getTypeIcon(entry.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <h4 className="font-medium theme-text-primary text-sm leading-tight">
-                          {entry.title}
-                        </h4>
-                        {entry.url && (
-                          <a
-                            href={entry.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-shrink-0 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                            title={t('changelog.viewOnGitHub')}
-                          >
-                            <ExternalLink size={14} />
-                          </a>
-                        )}
-                      </div>
-                      
-                      {entry.description && (
-                        <p className="text-sm theme-text-secondary mt-1 line-clamp-2">
-                          {entry.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center gap-4 mt-2 text-xs theme-text-muted">
-                        <span className="inline-flex items-center gap-1">
-                          {t('changelog.types.' + entry.type)} {t('changelog.byAuthor')} {entry.author}
-                        </span>
-                        <span>{formatTimeAgo(entry.date)}</span>
-                        {entry.labels && entry.labels.length > 0 && (
-                          <div className="flex gap-1">
-                            {entry.labels.slice(0, 2).map((label) => (
-                              <span
-                                key={label}
-                                className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs"
-                              >
-                                {label}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+          {/* Technical Developer View */}
+          {showDeveloperView && (
+            <>
+              {/* Empty State */}
+              {data && filteredEntries.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <GitCommit className="w-8 h-8 text-gray-400 dark:text-gray-500 mb-4" />
+                  <h3 className="text-lg font-medium theme-text-primary mb-2">{t('changelog.emptyTitle')}</h3>
+                  <p className="theme-text-secondary">{t('changelog.emptyDescription')}</p>
                 </div>
-              ))}
-            </div>
+              )}
+
+              {/* Changelog Entries */}
+              {data && filteredEntries.length > 0 && (
+                <div className="space-y-4">
+                  {filteredEntries.map((entry) => (
+                    <div
+                      key={entry.id}
+                      className="theme-filter rounded-lg p-4 border border-gray-200 dark:border-[var(--card-border)] hover:shadow-md transition-shadow duration-200"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-0.5">
+                          {getTypeIcon(entry.type)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <h4 className="font-medium theme-text-primary text-sm leading-tight">
+                              {entry.title}
+                            </h4>
+                            {entry.url && (
+                              <a
+                                href={entry.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-shrink-0 p-1 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                title={t('changelog.viewOnGitHub')}
+                              >
+                                <ExternalLink size={14} />
+                              </a>
+                            )}
+                          </div>
+                          
+                          {entry.description && (
+                            <p className="text-sm theme-text-secondary mt-1 line-clamp-2">
+                              {entry.description}
+                            </p>
+                          )}
+                          
+                          <div className="flex items-center gap-4 mt-2 text-xs theme-text-muted">
+                            <span className="inline-flex items-center gap-1">
+                              {t('changelog.types.' + entry.type)} {t('changelog.byAuthor')} {entry.author}
+                            </span>
+                            <span>{formatTimeAgo(entry.date)}</span>
+                            {entry.labels && entry.labels.length > 0 && (
+                              <div className="flex gap-1">
+                                {entry.labels.slice(0, 2).map((label) => (
+                                  <span
+                                    key={label}
+                                    className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs"
+                                  >
+                                    {label}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* Footer */}

@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { X, Download, Upload, Trash2, Info, Heart, Shield } from 'lucide-react'
+import { X, Download, Upload, Trash2, Info, Heart, Shield, Code, Sparkles, Database } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
+import { isDeveloperModeEnabled, setDeveloperMode } from '@/utils/changelog'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
 
@@ -14,7 +15,8 @@ interface SettingsModalProps {
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
-  const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language'>('about')
+  const [activeTab, setActiveTab] = useState<'about' | 'language' | 'export' | 'import' | 'developer'>('about')
+  const [developerMode, setDeveloperModeState] = useState(isDeveloperModeEnabled())
 
   const handleExport = () => {
     const exportData = exportCodes(codes)
@@ -54,6 +56,19 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       localStorage.removeItem('qcode-discount-codes')
       window.location.reload()
     }
+  }
+
+  const handleLoadDemoData = () => {
+    if (confirm(t('settings.developer.loadDemoConfirm'))) {
+      loadDemoData()
+      window.location.reload()
+    }
+  }
+
+  const toggleDeveloperMode = () => {
+    const newMode = !developerMode
+    setDeveloperMode(newMode)
+    setDeveloperModeState(newMode)
   }
 
   if (!isOpen) return null
@@ -113,6 +128,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               }`}
             >
               {t('settings.tabs.import')}
+            </button>
+            <button
+              onClick={() => setActiveTab('developer')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 whitespace-nowrap ${
+                activeTab === 'developer'
+                  ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
+                  : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
+              {t('settings.tabs.developer')}
             </button>
           </nav>
         </div>
@@ -233,24 +258,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
-                  <h4 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
-                    {t('settings.import.demoTitle')}
-                  </h4>
-                  <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
-                    {t('settings.import.demoSubtitle')}
-                  </p>
-                  <button
-                    onClick={() => {
-                      loadDemoData()
-                      window.location.reload()
-                    }}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                  >
-                    {t('settings.import.demoButton')}
-                  </button>
-                </div>
-
                 <div className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 border border-red-300 dark:border-red-600 rounded-lg p-4 shadow-sm">
                   <h4 className="font-semibold text-slate-900 dark:text-red-100 mb-2">{t('settings.import.dangerTitle')}</h4>
                   <p className="text-sm text-slate-800 dark:text-red-200 mb-3">
@@ -264,6 +271,89 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     {t('settings.import.clearButton')}
                   </button>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'developer' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium theme-text-primary mb-2 flex items-center gap-2">
+                  <Code className="w-5 h-5" />
+                  {t('settings.developer.title')}
+                </h3>
+                <p className="text-sm theme-text-secondary mb-4">
+                  {t('settings.developer.subtitle')}
+                </p>
+              </div>
+
+              {/* Developer Mode Toggle */}
+              <div className="theme-filter rounded-lg p-4 border border-gray-200 dark:border-[var(--card-border)]">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium theme-text-primary mb-1 flex items-center gap-2">
+                      <Shield className="w-4 h-4" />
+                      {t('settings.developer.mode')}
+                    </h4>
+                    <p className="text-sm theme-text-secondary">
+                      {t('settings.developer.modeDescription')}
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={developerMode}
+                      onChange={toggleDeveloperMode}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Advanced Changelog Access */}
+              <div className="theme-filter rounded-lg p-4 border border-gray-200 dark:border-[var(--card-border)]">
+                <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  {t('settings.developer.changelog')}
+                </h4>
+                <p className="text-sm theme-text-secondary mb-3">
+                  {t('settings.developer.changelogDescription')}
+                </p>
+                <div className="text-xs theme-text-muted">
+                  {developerMode 
+                    ? t('settings.developer.changelogEnabled')
+                    : t('settings.developer.changelogDisabled')
+                  }
+                </div>
+              </div>
+
+              {/* Sample Data Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
+                <h4 className="font-semibold text-slate-900 dark:text-purple-100 mb-2 flex items-center gap-2">
+                  <Database className="w-4 h-4" />
+                  {t('settings.developer.demoTitle')}
+                </h4>
+                <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
+                  {t('settings.developer.demoSubtitle')}
+                </p>
+                <button
+                  onClick={handleLoadDemoData}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  <Sparkles size={16} />
+                  {t('settings.developer.demoButton')}
+                </button>
+              </div>
+
+              {/* Warning */}
+              <div className="bg-gradient-to-r from-amber-50 to-amber-100 dark:from-amber-900/30 dark:to-amber-800/30 border border-amber-300 dark:border-amber-600 rounded-lg p-4 shadow-sm">
+                <h4 className="font-semibold text-slate-900 dark:text-amber-100 mb-2">
+                  {t('settings.developer.warningTitle')}
+                </h4>
+                <p className="text-sm text-slate-800 dark:text-amber-200">
+                  {t('settings.developer.warningText')}
+                </p>
               </div>
             </div>
           )}

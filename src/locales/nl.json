@@ -127,7 +127,8 @@
       "about": "Over QCode",
       "export": "Exporteren",
       "import": "Importeren",
-      "language": "Taal"
+      "language": "Taal",
+      "developer": "Ontwikkelaar"
     },
     "about": {
       "version": "Versie 1.0.0",
@@ -169,6 +170,22 @@
       "auto": "Automatisch (op basis van browser)",
       "dutch": "Nederlands",
       "english": "Engels"
+    },
+    "developer": {
+      "title": "Ontwikkelaarsopties",
+      "subtitle": "Geavanceerde instellingen voor ontwikkelaars en ervaren gebruikers",
+      "mode": "Ontwikkelaarsmodus",
+      "modeDescription": "Geavanceerde functies en technische details inschakelen",
+      "changelog": "Geavanceerde Changelog",
+      "changelogDescription": "Toegang tot gedetailleerde technische changelog met commits en PR details",
+      "changelogEnabled": "Geavanceerde changelog toegang is ingeschakeld",
+      "changelogDisabled": "Geavanceerde changelog toegang is uitgeschakeld",
+      "demoTitle": "Voorbeeldgegevens",
+      "demoSubtitle": "Laad voorbeeld kortingscodes voor testen en demonstratie doeleinden",
+      "demoButton": "Voorbeeldgegevens Laden",
+      "loadDemoConfirm": "Dit voegt voorbeeld kortingscodes toe aan je collectie. Doorgaan?",
+      "warningTitle": "Ontwikkelaarswaarschuwing",
+      "warningText": "Deze instellingen zijn bedoeld voor ontwikkelaars en ervaren gebruikers. Sommige functies kunnen het app-gedrag of de prestaties beïnvloeden."
     }
   },
   "cloudSync": {
@@ -385,6 +402,11 @@
     "retryButton": "Opnieuw proberen",
     "emptyTitle": "Geen recente updates",
     "emptyDescription": "Kijk later terug voor nieuwe functies en verbeteringen!",
+    "aiSummary": "AI Samenvatting",
+    "aiSummaryTitle": "Wat is er nieuw in QCode",
+    "technicalDetails": "Technische Details",
+    "viewTechnicalDetails": "Bekijk Technische Details",
+    "backToSummary": "Terug naar Samenvatting",
     "types": {
       "commit": "Commit",
       "pr": "Pull Request",

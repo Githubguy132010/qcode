@@ -15,6 +15,7 @@ import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
 import { ChangelogModal } from '@/components/ChangelogModal'
+import { ChangelogPopup } from '@/components/ChangelogPopup'
 import { useTranslation } from 'react-i18next'
 import type { SearchFilters } from '@/types/discount-code'
 import { hasNewChangelog } from '@/utils/changelog'
@@ -182,6 +183,11 @@ export default function HomePage() {
         isOpen={isCloudSyncOpen}
         onClose={() => setIsCloudSyncOpen(false)}
         onManualSync={manualSync}
+      />
+
+      {/* Auto Changelog Popup */}
+      <ChangelogPopup
+        onShowTechnicalDetails={() => setIsChangelogOpen(true)}
       />
 
       {/* Changelog Modal */}
