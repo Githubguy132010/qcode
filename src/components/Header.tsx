@@ -25,7 +25,8 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onCh
     // Check if there are new changelog entries
     setShowNewBadge(hasNewChangelog())
     // Check developer mode
-    setIsDeveloperMode(isDeveloperModeEnabled())
+    const initialDeveloperMode = isDeveloperModeEnabled()
+    setIsDeveloperMode(initialDeveloperMode)
 
     // Listen for developer mode changes
     const handleDeveloperModeChange = (event: CustomEvent) => {
@@ -39,6 +40,13 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onCh
       window.removeEventListener('developerModeChanged', handleDeveloperModeChange as EventListener)
     }
   }, [])
+
+  // Additional effect to handle client-side hydration
+  useEffect(() => {
+    // Re-check developer mode after hydration
+    const currentDeveloperMode = isDeveloperModeEnabled()
+    setIsDeveloperMode(currentDeveloperMode)
+  }, [isLoaded])
 
   return (
     <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
