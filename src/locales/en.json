@@ -15,7 +15,8 @@
     "darkMode": "Switch to dark theme",
     "lightMode": "Switch to light theme",
     "notifications": "Notifications",
-    "settings": "Settings"
+    "settings": "Settings",
+    "changelog": "What's New"
   },
   "homePage": {
     "welcome": "Welcome to QCode!",
@@ -373,5 +374,48 @@
     "Wonen & Tuin": "Home & Garden",
     "Speelgoed": "Toys",
     "Anders": "Other"
+  },
+  "changelog": {
+    "title": "What's New",
+    "subtitle": "Recent updates and improvements to QCode",
+    "newBadge": "New",
+    "loadingTitle": "Loading changelog...",
+    "errorTitle": "Failed to load changelog",
+    "errorDescription": "Could not fetch the latest updates. Please try again later.",
+    "retryButton": "Retry",
+    "emptyTitle": "No recent updates",
+    "emptyDescription": "Check back later for new features and improvements!",
+    "types": {
+      "commit": "Commit",
+      "pr": "Pull Request",
+      "release": "Release"
+    },
+    "lastUpdated": "Last updated",
+    "viewOnGitHub": "View on GitHub",
+    "moreDetails": "More details",
+    "byAuthor": "by",
+    "tabs": {
+      "recent": "Recent",
+      "all": "All Updates"
+    },
+    "filters": {
+      "all": "All types",
+      "commits": "Commits only",
+      "prs": "Pull requests only",
+      "releases": "Releases only"
+    },
+    "timeAgo": {
+      "now": "just now",
+      "minute": "1 minute ago",
+      "minutes": "{{count}} minutes ago",
+      "hour": "1 hour ago",
+      "hours": "{{count}} hours ago",
+      "day": "1 day ago",
+      "days": "{{count}} days ago",
+      "week": "1 week ago",
+      "weeks": "{{count}} weeks ago",
+      "month": "1 month ago",
+      "months": "{{count}} months ago"
+    }
   }
 }

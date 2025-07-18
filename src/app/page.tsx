@@ -14,8 +14,10 @@ import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
+import { ChangelogModal } from '@/components/ChangelogModal'
 import { useTranslation } from 'react-i18next'
 import type { SearchFilters } from '@/types/discount-code'
+import { hasNewChangelog } from '@/utils/changelog'
 
 export default function HomePage() {
   const { t } = useTranslation()
@@ -44,6 +46,7 @@ export default function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
+  const [isChangelogOpen, setIsChangelogOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
   // Create refs for each discount code for scrolling
@@ -100,6 +103,7 @@ export default function HomePage() {
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
         onSyncClick={() => setIsCloudSyncOpen(true)}
+        onChangelogClick={() => setIsChangelogOpen(true)}
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -178,6 +182,13 @@ export default function HomePage() {
         isOpen={isCloudSyncOpen}
         onClose={() => setIsCloudSyncOpen(false)}
         onManualSync={manualSync}
+      />
+
+      {/* Changelog Modal */}
+      <ChangelogModal
+        isOpen={isChangelogOpen}
+        onClose={() => setIsChangelogOpen(false)}
+        showNewBadge={hasNewChangelog()}
       />
     </div>
   )

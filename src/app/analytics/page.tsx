@@ -30,6 +30,10 @@ export default function AnalyticsPage() {
     // Analytics page doesn't need sync functionality currently
   }
 
+  const handleChangelogClick = () => {
+    // Analytics page doesn't need changelog functionality currently
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center transition-colors">
@@ -57,6 +61,7 @@ export default function AnalyticsPage() {
         onNotificationClick={handleNotificationClick}
         onSettingsClick={handleSettingsClick}
         onSyncClick={handleSyncClick}
+        onChangelogClick={handleChangelogClick}
       />
       
       <main className="max-w-6xl mx-auto px-4 py-8">

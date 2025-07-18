@@ -15,7 +15,8 @@
     "darkMode": "Schakel naar donker thema",
     "lightMode": "Schakel naar licht thema",
     "notifications": "Notificaties",
-    "settings": "Instellingen"
+    "settings": "Instellingen",
+    "changelog": "Wat is er nieuw"
   },
   "homePage": {
     "welcome": "Welkom bij QCode!",
@@ -373,5 +374,48 @@
     "Wonen & Tuin": "Wonen & Tuin",
     "Speelgoed": "Speelgoed",
     "Anders": "Anders"
+  },
+  "changelog": {
+    "title": "Wat is er nieuw",
+    "subtitle": "Recente updates en verbeteringen aan QCode",
+    "newBadge": "Nieuw",
+    "loadingTitle": "Changelog laden...",
+    "errorTitle": "Kan changelog niet laden",
+    "errorDescription": "Kan de laatste updates niet ophalen. Probeer het later opnieuw.",
+    "retryButton": "Opnieuw proberen",
+    "emptyTitle": "Geen recente updates",
+    "emptyDescription": "Kijk later terug voor nieuwe functies en verbeteringen!",
+    "types": {
+      "commit": "Commit",
+      "pr": "Pull Request",
+      "release": "Release"
+    },
+    "lastUpdated": "Laatst bijgewerkt",
+    "viewOnGitHub": "Bekijk op GitHub",
+    "moreDetails": "Meer details",
+    "byAuthor": "door",
+    "tabs": {
+      "recent": "Recent",
+      "all": "Alle Updates"
+    },
+    "filters": {
+      "all": "Alle types",
+      "commits": "Alleen commits",
+      "prs": "Alleen pull requests",
+      "releases": "Alleen releases"
+    },
+    "timeAgo": {
+      "now": "zojuist",
+      "minute": "1 minuut geleden",
+      "minutes": "{{count}} minuten geleden",
+      "hour": "1 uur geleden",
+      "hours": "{{count}} uur geleden",
+      "day": "1 dag geleden",
+      "days": "{{count}} dagen geleden",
+      "week": "1 week geleden",
+      "weeks": "{{count}} weken geleden",
+      "month": "1 maand geleden",
+      "months": "{{count}} maanden geleden"
+    }
   }
 }
