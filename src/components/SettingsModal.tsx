@@ -69,6 +69,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const newMode = !developerMode
     setDeveloperMode(newMode)
     setDeveloperModeState(newMode)
+    
+    // Dispatch custom event to notify other components about the change
+    window.dispatchEvent(new CustomEvent('developerModeChanged', { detail: { enabled: newMode } }))
   }
 
   if (!isOpen) return null

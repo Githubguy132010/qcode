@@ -26,6 +26,18 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, onCh
     setShowNewBadge(hasNewChangelog())
     // Check developer mode
     setIsDeveloperMode(isDeveloperModeEnabled())
+
+    // Listen for developer mode changes
+    const handleDeveloperModeChange = (event: CustomEvent) => {
+      setIsDeveloperMode(event.detail.enabled)
+    }
+
+    window.addEventListener('developerModeChanged', handleDeveloperModeChange as EventListener)
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('developerModeChanged', handleDeveloperModeChange as EventListener)
+    }
   }, [])
 
   return (
