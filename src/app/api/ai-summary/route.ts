@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       const date = new Date(entry.date).toLocaleDateString()
       return `${type} by ${entry.author} on ${date}:
 Title: ${entry.title}
-Description: ${entry.description.substring(0, 200)}${entry.description.length > 200 ? '...' : ''}
+Description: ${entry.description.substring(0, DESCRIPTION_TRUNCATION_LIMIT)}${entry.description.length > DESCRIPTION_TRUNCATION_LIMIT ? '...' : ''}
 ---`
     }).join('\n\n')
 
