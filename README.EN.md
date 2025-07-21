@@ -14,6 +14,7 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 - **Favorites** - Mark important codes as favorites
 - **Usage Tracking** - Track how often you use your codes
 - **Cloud Synchronization** - Sync across all your devices via GitHub Gist or local files
+- **AI Release Notes** - Intelligent summaries of app updates using Gemini AI
 
 ### 📱 Progressive Web App
 - **Offline Functionality** - Works without internet connection
@@ -55,6 +56,28 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 3. Add the token in Cloud Sync settings
 4. Automatic sync will be enabled
 
+## 🤖 AI-Powered Features
+
+### AI Release Notes
+QCode uses Google's Gemini 2.0 Flash Lite to generate intelligent, user-friendly summaries of app updates:
+
+- **Smart Summaries** - AI analyzes commits and pull requests to create engaging release notes
+- **User-Focused** - Converts technical changes into user benefits
+- **Automatic Generation** - No manual effort required for release note creation
+- **Fallback Support** - Works without AI when needed
+
+### Features
+- **Intelligent Analysis** - Understands the context of code changes
+- **User Benefits** - Focuses on how changes affect the user experience
+- **Emoji Enhancement** - Uses emojis to make updates more engaging
+- **Rate Limited** - Respects API limits with intelligent fallbacks
+
+### Setup AI Features
+1. Get a free API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Add `GEMINI_API_KEY=your_key_here` to your `.env.local` file
+3. AI-powered release notes will be automatically generated
+4. If no API key is provided, fallback summaries are used
+
 ## 🛠️ Technical Stack
 
 - **Framework**: Next.js 15 with App Router
@@ -65,6 +88,7 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 - **PWA**: Service Worker for offline functionality
 - **Build**: Turbopack for fast development
 - **Cloud Sync**: GitHub Gist API, File System Access API
+- **AI**: Google Gemini 2.0 Flash Lite for intelligent release notes
 
 ## 🚀 Quick Start
 

@@ -27,4 +27,6 @@ export interface ChangelogData {
 export interface DeveloperSettings {
   showAdvancedReleaseNotes: boolean
   enableChangelogPopup: boolean
+  enableAIReleaseNotes: boolean
+  aiProvider: 'gemini' | 'fallback'
 }

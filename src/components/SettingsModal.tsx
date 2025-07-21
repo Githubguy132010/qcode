@@ -21,17 +21,27 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes, onResta
 
   // Developer settings
   const [developerSettings, setDeveloperSettings] = useState<DeveloperSettings>(() => {
+    const defaultSettings: DeveloperSettings = {
+      showAdvancedReleaseNotes: false,
+      enableChangelogPopup: true,
+      enableAIReleaseNotes: true,
+      aiProvider: 'gemini'
+    }
+    
     try {
       const saved = localStorage.getItem('qcode-developer-settings')
-      return saved ? JSON.parse(saved) : {
-        showAdvancedReleaseNotes: false,
-        enableChangelogPopup: true
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        // Ensure aiProvider has a valid value
+        return {
+          ...defaultSettings,
+          ...parsed,
+          aiProvider: parsed.aiProvider === 'fallback' ? 'fallback' : 'gemini'
+        }
       }
+      return defaultSettings
     } catch {
-      return {
-        showAdvancedReleaseNotes: false,
-        enableChangelogPopup: true
-      }
+      return defaultSettings
     }
   })
 
@@ -371,6 +381,98 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes, onResta
                       {t('settings.developer.releaseNotes.openReleaseNotes')}
                     </button>
                   )}
+                </div>
+              </div>
+
+              {/* AI Settings */}
+              <div className="theme-filter rounded-lg p-4">
+                <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
+                  <Sparkles size={16} />
+                  AI Release Notes
+                </h4>
+                
+                <div className="space-y-4">
+                  <label className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={developerSettings.enableAIReleaseNotes}
+                      onChange={(e) => updateDeveloperSettings({ enableAIReleaseNotes: e.target.checked })}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <div>
+                      <span className="text-sm font-medium theme-text-primary">
+                        Enable AI-Generated Release Notes
+                      </span>
+                      <p className="text-xs theme-text-muted">
+                        Use Gemini AI to generate intelligent summaries of app updates
+                      </p>
+                    </div>
+                  </label>
+
+                  <div className="pl-6">
+                    <label className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="aiProvider"
+                        value="gemini"
+                        checked={developerSettings.aiProvider === 'gemini'}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            updateDeveloperSettings({ aiProvider: 'gemini' })
+                          }
+                        }}
+                        disabled={!developerSettings.enableAIReleaseNotes}
+                        className="text-blue-600 focus:ring-blue-500"
+                      />
+                      <div>
+                        <span className="text-sm font-medium theme-text-primary">
+                          Gemini AI (Recommended)
+                        </span>
+                        <p className="text-xs theme-text-muted">
+                          Smart, context-aware summaries using Google's Gemini 2.0 Flash Lite
+                        </p>
+                      </div>
+                    </label>
+
+                    <label className="flex items-center gap-3 mt-3">
+                      <input
+                        type="radio"
+                        name="aiProvider"
+                        value="fallback"
+                        checked={developerSettings.aiProvider === 'fallback'}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            updateDeveloperSettings({ aiProvider: 'fallback' })
+                          }
+                        }}
+                        disabled={!developerSettings.enableAIReleaseNotes}
+                        className="text-blue-600 focus:ring-blue-500"
+                      />
+                      <div>
+                        <span className="text-sm font-medium theme-text-primary">
+                          Simple Analysis
+                        </span>
+                        <p className="text-xs theme-text-muted">
+                          Basic keyword-based summaries (no API key required)
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                    <p className="text-xs text-blue-800 dark:text-blue-300">
+                      <strong>Setup:</strong> To use Gemini AI, add your free API key from{' '}
+                      <a 
+                        href="https://makersuite.google.com/app/apikey" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="underline hover:no-underline"
+                      >
+                        Google AI Studio
+                      </a>{' '}
+                      to your environment variables as <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">GEMINI_API_KEY</code>
+                    </p>
+                  </div>
                 </div>
               </div>
 

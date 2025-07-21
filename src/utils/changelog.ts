@@ -1,4 +1,5 @@
 import type { ChangelogEntry, AIGeneratedSummary, ChangelogData } from '@/types/changelog'
+import { generateAIReleaseSummaryWithRateLimit } from '@/utils/ai-release-notes'
 
 // Storage keys
 const LAST_VISIT_KEY = 'qcode-last-visit'
@@ -13,7 +14,12 @@ export const updateLastVisitDate = (): void => {
   localStorage.setItem(LAST_VISIT_KEY, new Date().toISOString())
 }
 
-export const generateAISummary = (entries: ChangelogEntry[]): AIGeneratedSummary => {
+export const generateAISummary = async (entries: ChangelogEntry[]): Promise<AIGeneratedSummary> => {
+  return generateAIReleaseSummaryWithRateLimit(entries)
+}
+
+// Legacy fallback function (kept for compatibility, but not used)
+export const generateAISummaryFallback = (entries: ChangelogEntry[]): AIGeneratedSummary => {
   // Simulate AI-generated summary based on entries
   const hasNewFeatures = entries.some(entry => 
     entry.title.toLowerCase().includes('add') || 
@@ -203,7 +209,7 @@ export const checkForUpdates = async (): Promise<ChangelogData> => {
 
     let aiSummary: AIGeneratedSummary | undefined
     if (hasNewUpdates) {
-      aiSummary = generateAISummary(allEntries)
+      aiSummary = await generateAISummary(allEntries)
     }
 
     const changelogData: ChangelogData = {
