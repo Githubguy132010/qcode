@@ -160,7 +160,9 @@ export function generateFallbackSummary(entries: ChangelogEntry[]): AIGeneratedS
  */
 class RateLimiter {
   private static lastCall = 0
-  private static readonly MIN_INTERVAL = 5000 // 5 seconds between calls
+  private static get MIN_INTERVAL(): number {
+    return Number(process.env.RATE_LIMIT_INTERVAL) || 5000; // Default to 5 seconds
+  }
 
   static async waitIfNeeded(): Promise<void> {
     const now = Date.now()
