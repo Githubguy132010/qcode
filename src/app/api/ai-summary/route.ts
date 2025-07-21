@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Limit the number of entries to prevent excessive token usage
-    const limitedEntries = entries.slice(0, 20) // Max 20 entries
+    const limitedEntries = entries.slice(0, MAX_ENTRIES) // Max 20 entries
 
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey)
