@@ -429,7 +429,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes, onResta
                           Gemini AI (Recommended)
                         </span>
                         <p className="text-xs theme-text-muted">
-                          Smart, context-aware summaries using Google's Gemini 2.0 Flash Lite
+                          Smart, context-aware summaries using Google&apos;s Gemini 2.0 Flash Lite
                         </p>
                       </div>
                     </label>
