@@ -7,6 +7,10 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
 const RATE_LIMIT_MAX = 10 // Max 10 requests per hour per IP
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour in milliseconds
 
+// AI processing limits
+const MAX_ENTRIES = 20 // Maximum number of changelog entries to process
+const DESCRIPTION_TRUNCATION_LIMIT = 500 // Maximum characters for entry descriptions
+
 function getRateLimitKey(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
   const realIP = request.headers.get('x-real-ip')
