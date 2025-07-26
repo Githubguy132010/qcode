@@ -1,4 +1,4 @@
-import { Search, Filter, SortAsc } from 'lucide-react'
+import { Search, Filter, SortAsc, RotateCcw } from 'lucide-react'
 import type { SearchFilters } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
 import { useTranslation } from 'react-i18next'
@@ -6,9 +6,10 @@ import { useTranslation } from 'react-i18next'
 interface SearchAndFilterProps {
   filters: SearchFilters
   onFiltersChange: (filters: SearchFilters) => void
+  onReset?: () => void
 }
 
-export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterProps) {
+export function SearchAndFilter({ filters, onFiltersChange, onReset }: SearchAndFilterProps) {
   const { t } = useTranslation()
   
   const handleSearchChange = (searchTerm: string) => {
@@ -29,7 +30,19 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
 
   return (
     <div className="theme-card rounded-xl shadow-lg border p-6 space-y-6 transition-all duration-300 card-hover">
-      <h3 className="text-lg font-semibold theme-text-primary mb-4">{t('filters.title', 'Search & Filter')}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold theme-text-primary">{t('filters.title', 'Search & Filter')}</h3>
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 px-3 py-1.5 text-sm theme-text-secondary hover:theme-text-primary theme-filter hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+            title={t('filters.reset', 'Reset filters')}
+          >
+            <RotateCcw size={14} />
+            <span>{t('filters.reset', 'Reset')}</span>
+          </button>
+        )}
+      </div>
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />

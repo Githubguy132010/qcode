@@ -67,6 +67,12 @@ export default function HomePage() {
     filterBy: 'all',
   })
 
+  // State to track when user specifically clicked on "expiring soon" stat card
+  const [showOnlyExpiringSoon, setShowOnlyExpiringSoon] = useState(false)
+
+  // State to trigger scrolling to codes list after filter changes
+  const [shouldScrollToList, setShouldScrollToList] = useState(false)
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
@@ -88,8 +94,8 @@ export default function HomePage() {
   const scrollToCode = (codeId: string) => {
     const ref = codeRefs.current[codeId]
     if (ref?.current) {
-      ref.current.scrollIntoView({ 
-        behavior: 'smooth', 
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
         block: 'center',
         inline: 'nearest'
       })
@@ -103,9 +109,104 @@ export default function HomePage() {
     }
   }
 
-  const filteredCodes = filterCodes(searchFilters)
+  // Function to scroll to the codes list
+  const scrollToCodesList = () => {
+    const codesList = document.querySelector('[data-codes-list]')
+    if (codesList) {
+      codesList.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      })
+    }
+  }
+
+  /**
+   * Handles click events from StatsOverview component
+   * Applies appropriate filters based on the clicked stat card
+   * @param filterType - The type of filter to apply based on which stat card was clicked
+   */
+  const handleStatClick = (filterType: 'expired' | 'favorites' | 'expiringSoon') => {
+    let newFilters: SearchFilters
+    
+    switch (filterType) {
+      case 'expired':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'expiryDate',
+          filterBy: 'expired',
+        }
+        setShowOnlyExpiringSoon(false)
+        break
+      case 'favorites':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'dateAdded',
+          filterBy: 'favorites',
+        }
+        setShowOnlyExpiringSoon(false)
+        break
+      case 'expiringSoon':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'expiryDate',
+          filterBy: 'active',
+        }
+        setShowOnlyExpiringSoon(true)
+        break
+    }
+    
+    setSearchFilters(newFilters)
+    
+    // Trigger scrolling to codes list through useEffect
+    setShouldScrollToList(true)
+  }
+
+  /**
+   * Reset function to clear all search filters back to default values
+   * Also resets the "expiring soon" filter state
+   */
+  const resetFilters = () => {
+    setSearchFilters({
+      searchTerm: '',
+      category: 'all',
+      sortBy: 'dateAdded',
+      filterBy: 'all',
+    })
+    setShowOnlyExpiringSoon(false)
+  }
+
+  /**
+   * Custom filter function that handles special cases for stat card filtering
+   * Specifically handles the "expiring soon" case which requires additional filtering
+   * beyond the standard filterCodes function
+   * @returns Filtered array of discount codes based on current filters
+   */
+  const getFilteredCodes = () => {
+    // Check if we should show only expiring soon codes
+    if (showOnlyExpiringSoon) {
+      const expiringSoonCodes = getExpiringSoon()
+      return expiringSoonCodes
+    }
+    
+    // Otherwise, use normal filtering
+    return filterCodes(searchFilters)
+  }
+
+  const filteredCodes = getFilteredCodes()
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
+
+  // useEffect to handle scrolling to codes list after state changes
+  useEffect(() => {
+    if (shouldScrollToList) {
+      scrollToCodesList()
+      setShouldScrollToList(false)
+    }
+  }, [shouldScrollToList])
 
   // Show tutorial for new users (after loading is complete and onboarding hook is initialized)
   useEffect(() => {
@@ -155,13 +256,17 @@ export default function HomePage() {
         )}
 
         {/* Statistics Overview */}
-        <StatsOverview stats={stats} />
+        <StatsOverview stats={stats} onStatClick={handleStatClick} />
 
         {/* Search and Filter */}
         <div className="mb-8" data-tutorial="search-filter">
           <SearchAndFilter
             filters={searchFilters}
-            onFiltersChange={setSearchFilters}
+            onFiltersChange={(newFilters) => {
+              setSearchFilters(newFilters)
+              setShowOnlyExpiringSoon(false)
+            }}
+            onReset={resetFilters}
           />
         </div>
 
@@ -179,12 +284,13 @@ export default function HomePage() {
 
         {/* Codes List */}
         {filteredCodes.length === 0 ? (
-          <EmptyState 
+          <EmptyState
             hasAnyCodes={codes.length > 0}
             onAddCode={() => setIsAddModalOpen(true)}
+            onResetFilters={resetFilters}
           />
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-6" data-codes-list>
             {filteredCodes.map((code) => (
               <DiscountCodeCard
                 key={code.id}

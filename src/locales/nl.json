@@ -35,6 +35,7 @@
   "filters": {
     "title": "Zoeken & Filteren",
     "searchPlaceholder": "Zoek op code of winkel...",
+    "reset": "Filters resetten",
     "category": {
       "label": "Categorie",
       "all": "Alle categorieën",
@@ -118,7 +119,11 @@
     "expiredCodes": "Verlopen",
     "favoriteCodes": "Favorieten",
     "expiringSoon": "Binnenkort verlopen",
-    "archivedCodes": "Gearchiveerde codes"
+    "archivedCodes": "Gearchiveerde codes",
+    "clickToView": "Klik om {{type}} codes te bekijken",
+    "viewExpired": "verlopen",
+    "viewFavorites": "favoriete",
+    "viewExpiringSoon": "binnenkort verlopen"
   },
   "settings": {
     "title": "Instellingen",

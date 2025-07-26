@@ -35,6 +35,7 @@
   "filters": {
     "title": "Search & Filter",
     "searchPlaceholder": "Search by code or store...",
+    "reset": "Reset filters",
     "category": {
       "label": "Category",
       "all": "All categories",
@@ -118,7 +119,11 @@
     "expiredCodes": "Expired",
     "favoriteCodes": "Favorites",
     "expiringSoon": "Expiring soon",
-    "archivedCodes": "Archived codes"
+    "archivedCodes": "Archived codes",
+    "clickToView": "Click to view {{type}} codes",
+    "viewExpired": "expired",
+    "viewFavorites": "favorite",
+    "viewExpiringSoon": "expiring soon"
   },
   "settings": {
     "title": "Settings",
