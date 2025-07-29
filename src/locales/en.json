@@ -32,6 +32,13 @@
       "resetButton": "Reset filters"
     }
   },
+  "dashboard": {
+    "tabs": {
+      "overview": "Overview",
+      "search": "Search",
+      "notifications": "Notifications"
+    }
+  },
   "filters": {
     "title": "Search & Filter",
     "searchPlaceholder": "Search by code or store...",
@@ -108,9 +115,12 @@
     "expiryTomorrow": " expires tomorrow",
     "expiryDays": " expires in {{days}} days",
     "andMore": "And {{count}} more...",
-    "noExpiring": "No discount codes expiring soon",
+    "noExpiring": "All caught up!",
+    "noExpiringDescription": "No discount codes are expiring soon.",
     "daysLeft": "{{count}} days left",
-    "clickToJump": "Click to jump to this code"
+    "clickToJump": "Click to jump to this code",
+    "dismiss": "Dismiss",
+    "dismissAll": "Dismiss all"
   },
   "stats": {
     "title": "Overview",
@@ -454,21 +464,41 @@
       "title": "Welcome to QCode!",
       "description": "Let's take a quick tour of the app's main features. This tutorial will help you get the most out of managing your discount codes."
     },
+    "dashboard": {
+      "title": "Your Dashboard",
+      "description": "This is your main dashboard with three tabs: Overview shows your statistics, Search helps you find codes, and Notifications alerts you about expiring codes."
+    },
+    "dashboardTabs": {
+      "title": "Dashboard Tabs",
+      "description": "These tabs organize your dashboard into three sections: Overview for statistics, Search for filters, and Notifications for expiring codes. Click each tab to explore the content."
+    },
+    "overviewStats": {
+      "title": "Statistics Overview",
+      "description": "Here you can see an overview of all your discount codes: active codes, expired codes, favorites, and more. Click on some statistics to directly filter by that category."
+    },
     "addCode": {
       "title": "Adding Discount Codes",
       "description": "Start by clicking this button to add your first discount code. You can store the code, store name, discount amount, expiry date, and more."
     },
+    "searchTab": {
+      "title": "Search & Filter Tab",
+      "description": "Click the Search tab to access powerful search and filtering tools. This is where you'll find all the features to organize and find your discount codes."
+    },
     "searchFilter": {
-      "title": "Search & Filter",
-      "description": "Use the search bar and filters to quickly find specific codes. You can search by store name, filter by category, or sort by different criteria."
+      "title": "Search Your Codes",
+      "description": "This search bar lets you quickly find specific discount codes by typing a store name or part of the code. Try typing to see it in action!"
     },
     "categories": {
-      "title": "Categories & Favorites",
-      "description": "Organize your codes by categories and mark important ones as favorites for quick access. You can also archive codes you no longer need."
+      "title": "Category Filter",
+      "description": "This dropdown lets you filter your codes by category like 'Food & Drinks', 'Fashion', etc. Click it to see all available categories and organize your codes."
+    },
+    "notificationsTab": {
+      "title": "Notifications Tab",
+      "description": "Click the Notifications tab to see alerts about discount codes that are expiring soon. This helps you stay on top of your savings!"
     },
     "notifications": {
-      "title": "Notifications & Management",
-      "description": "Click the bell icon in the header to view notifications about expiring codes. Use the gear icon to access settings, export/import, and other options."
+      "title": "Expiring Code Notifications",
+      "description": "This area shows you discount codes that are about to expire soon. Keep an eye on these notifications so you don't miss using your discounts!"
     },
     "completion": {
       "title": "You're All Set!",

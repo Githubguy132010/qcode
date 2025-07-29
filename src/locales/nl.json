@@ -32,6 +32,13 @@
       "resetButton": "Filters resetten"
     }
   },
+  "dashboard": {
+    "tabs": {
+      "overview": "Overzicht",
+      "search": "Zoeken",
+      "notifications": "Notificaties"
+    }
+  },
   "filters": {
     "title": "Zoeken & Filteren",
     "searchPlaceholder": "Zoek op code of winkel...",
@@ -108,9 +115,12 @@
     "expiryTomorrow": " verloopt morgen",
     "expiryDays": " verloopt over {{days}} dagen",
     "andMore": "En {{count}} meer...",
-    "noExpiring": "Geen kortingscodes die binnenkort verlopen",
+    "noExpiring": "Alles bijgewerkt!",
+    "noExpiringDescription": "Geen kortingscodes die binnenkort verlopen.",
     "daysLeft": "{{count}} dagen resterend",
-    "clickToJump": "Klik om naar deze code te springen"
+    "clickToJump": "Klik om naar deze code te springen",
+    "dismiss": "Verwijderen",
+    "dismissAll": "Alles verwijderen"
   },
   "stats": {
     "title": "Overzicht",
@@ -454,21 +464,41 @@
       "title": "Welkom bij QCode!",
       "description": "Laten we een korte rondleiding door de hoofdfuncties van de app maken. Deze tutorial helpt je om het meeste uit het beheren van je kortingscodes te halen."
     },
+    "dashboard": {
+      "title": "Je Dashboard",
+      "description": "Dit is je hoofddashboard met drie tabbladen: Overzicht toont je statistieken, Zoeken helpt je codes te vinden, en Notificaties waarschuwt je voor bijna verlopende codes."
+    },
+    "dashboardTabs": {
+      "title": "Dashboard Tabbladen",
+      "description": "Deze tabbladen organiseren je dashboard in drie secties: Overzicht voor statistieken, Zoeken voor filters, en Notificaties voor verlopende codes. Klik op elk tabblad om de inhoud te verkennen."
+    },
+    "overviewStats": {
+      "title": "Statistieken Overzicht",
+      "description": "Hier zie je een overzicht van al je kortingscodes: actieve codes, verlopen codes, favorieten en meer. Klik op sommige statistieken om direct te filteren op die categorie."
+    },
     "addCode": {
       "title": "Kortingscodes toevoegen",
       "description": "Begin door op deze knop te klikken om je eerste kortingscode toe te voegen. Je kunt de code, winkelnaam, kortingspercentage, vervaldatum en meer opslaan."
     },
+    "searchTab": {
+      "title": "Zoeken & Filteren Tabblad",
+      "description": "Klik op het Zoeken-tabblad om toegang te krijgen tot krachtige zoek- en filtertools. Hier vind je alle functies om je kortingscodes te organiseren en te vinden."
+    },
     "searchFilter": {
-      "title": "Zoeken & Filteren",
-      "description": "Gebruik de zoekbalk en filters om snel specifieke codes te vinden. Je kunt zoeken op winkelnaam, filteren op categorie of sorteren op verschillende criteria."
+      "title": "Zoek Je Codes",
+      "description": "Deze zoekbalk laat je snel specifieke kortingscodes vinden door een winkelnaam of deel van de code te typen. Probeer te typen om het in actie te zien!"
     },
     "categories": {
-      "title": "Categorieën & Favorieten",
-      "description": "Organiseer je codes per categorie en markeer belangrijke codes als favoriet voor snelle toegang. Je kunt ook codes archiveren die je niet meer nodig hebt."
+      "title": "Categorie Filter",
+      "description": "Dit dropdown-menu laat je je codes filteren op categorie zoals 'Eten & Drinken', 'Mode', etc. Klik erop om alle beschikbare categorieën te zien en je codes te organiseren."
+    },
+    "notificationsTab": {
+      "title": "Notificaties Tabblad",
+      "description": "Klik op het Notificaties-tabblad om waarschuwingen te zien over kortingscodes die binnenkort verlopen. Dit helpt je om bovenop je besparingen te blijven!"
     },
     "notifications": {
-      "title": "Notificaties & Beheer",
-      "description": "Klik op het belletje in de header om notificaties te bekijken over bijna verlopende codes. Via de tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
+      "title": "Bijna Verlopende Code Notificaties",
+      "description": "Dit gebied toont je kortingscodes die binnenkort verlopen. Houd deze notificaties in de gaten zodat je geen kortingen mist!"
     },
     "completion": {
       "title": "Je bent er klaar voor!",

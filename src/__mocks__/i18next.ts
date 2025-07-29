@@ -15,6 +15,15 @@ const mockTranslations = {
   'stats.viewExpiringSoon': 'expiring soon',
   'codeCard.timesUsed': 'Used {{count}} times',
   'codeCard.timesUsed_other': 'Used {{count}} times',
+  'dashboard.tabs.overview': 'Overview',
+  'dashboard.tabs.search': 'Search',
+  'dashboard.tabs.notifications': 'Notifications',
+  'filters.title': 'Search & Filter',
+  'filters.searchPlaceholder': 'Search by code or store...',
+  'notifications.singleExpiring': 'Discount code expiring soon',
+  'notifications.multipleExpiring': '{{count}} discount codes expiring soon',
+  'notifications.noExpiring': 'All caught up!',
+  'notifications.noExpiringDescription': 'No discount codes are expiring soon.',
 };
 
 // Interface for translation options

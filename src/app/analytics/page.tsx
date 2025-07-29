@@ -18,10 +18,6 @@ export default function AnalyticsPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'usage' | 'savings' | 'lifecycle' | 'performance'>('overview')
   
   // Handler functions for Header component
-  const handleNotificationClick = () => {
-    // Analytics page doesn't need notification functionality currently
-  }
-  
   const handleSettingsClick = () => {
     // Analytics page doesn't need settings functionality currently
   }
@@ -55,8 +51,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen transition-colors">
-      <Header 
-        onNotificationClick={handleNotificationClick}
+      <Header
         onSettingsClick={handleSettingsClick}
         onSyncClick={handleSyncClick}
       />

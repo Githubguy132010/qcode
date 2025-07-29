@@ -31,7 +31,7 @@ describe('Header', () => {
   it('renders the app title', () => {
     render(
       <I18nextProvider i18n={i18next}>
-        <Header onNotificationClick={() => {}} onSettingsClick={() => {}} onSyncClick={() => {}} />
+        <Header onSettingsClick={() => {}} onSyncClick={() => {}} />
       </I18nextProvider>
     );
     expect(screen.getByText('common.appName')).toBeInTheDocument();

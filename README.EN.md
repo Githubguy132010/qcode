@@ -98,12 +98,12 @@ src/
 │   └── globals.css        # Global styles
 ├── components/            # React components
 │   ├── Header.tsx         # App header with navigation
-│   ├── StatsOverview.tsx  # Statistics overview
-│   ├── SearchAndFilter.tsx # Search and filter interface
+│   ├── UnifiedDashboardCard.tsx # Unified dashboard with tabs
 │   ├── DiscountCodeCard.tsx # Individual code card
 │   ├── AddCodeModal.tsx   # Modal for new codes
 │   ├── CloudSync.tsx      # Cloud sync interface
 │   ├── SyncStatusIndicator.tsx # Sync status display
+│   ├── OnboardingTutorial.tsx # Interactive tutorial
 │   └── EmptyState.tsx     # Empty state display
 ├── hooks/                 # Custom React hooks
 │   ├── useDiscountCodes.ts # State management for codes

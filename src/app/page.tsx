@@ -4,12 +4,10 @@ import { useState, useRef, createRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
-import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { DiscountCodeCard } from '@/components/DiscountCodeCard'
 import { AddCodeModal } from '@/components/AddCodeModal'
-import { StatsOverview } from '@/components/StatsOverview'
 import { EmptyState } from '@/components/EmptyState'
-import { NotificationBanner } from '@/components/NotificationBanner'
+import { UnifiedDashboardCard } from '@/components/UnifiedDashboardCard'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { UnifiedSettingsModal } from '@/components/UnifiedSettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
@@ -75,7 +73,7 @@ export default function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
-  const [showNotificationBanner, setShowNotificationBanner] = useState(true)
+  const [showNotificationBanner] = useState(true)
   const [initialTab, setInitialTab] = useState<'general' | 'data' | 'cloud' | 'appearance' | 'advanced'>('general')
 
   // Create refs for each discount code for scrolling
@@ -237,7 +235,6 @@ export default function HomePage() {
       <OnlineStatusBanner />
       
       <Header
-        onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => {
           setInitialTab('general')
           setIsUnifiedModalOpen(true)
@@ -252,26 +249,20 @@ export default function HomePage() {
         {/* Install Prompt */}
         <InstallPrompt />
 
-        {/* Notification Banner */}
-        {showNotificationBanner && (
-          <NotificationBanner 
-            expiringSoon={expiringSoon} 
-            onCodeClick={scrollToCode}
-          />
-        )}
-
-        {/* Statistics Overview */}
-        <StatsOverview stats={stats} onStatClick={handleStatClick} />
-
-        {/* Search and Filter */}
-        <div className="mb-8" data-tutorial="search-filter">
-          <SearchAndFilter
+        {/* Unified Dashboard Card */}
+        <div className="mb-8" data-tutorial="dashboard">
+          <UnifiedDashboardCard
+            stats={stats}
+            onStatClick={handleStatClick}
             filters={searchFilters}
             onFiltersChange={(newFilters) => {
               setSearchFilters(newFilters)
               setShowOnlyExpiringSoon(false)
             }}
             onReset={resetFilters}
+            expiringSoon={expiringSoon}
+            onCodeClick={scrollToCode}
+            showNotificationBanner={showNotificationBanner}
           />
         </div>
 

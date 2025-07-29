@@ -17,6 +17,14 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
   const isLastStep = currentStep === ONBOARDING_STEPS.length - 1
   const totalSteps = ONBOARDING_STEPS.length
 
+  // Function to switch tabs when required
+  const switchTabIfNeeded = (tabId: string) => {
+    const tabButton = document.querySelector(`[data-tutorial="dashboard-tab-${tabId}"]`) as HTMLButtonElement
+    if (tabButton) {
+      tabButton.click()
+    }
+  }
+
   // Handle element highlighting and positioning
   useEffect(() => {
     if (!isOpen || !currentStepData.targetElement) {
@@ -24,26 +32,58 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       return
     }
 
-    const element = document.querySelector(currentStepData.targetElement) as HTMLElement
-    if (element) {
-      setHighlightedElement(element)
-      
-      // Scroll element into view
-      element.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
-      })
+    // Function to find and highlight element
+    const findAndHighlightElement = () => {
+      if (!currentStepData.targetElement) return null
 
-      // Add highlight class
-      element.classList.add('onboarding-highlight')
+      const element = document.querySelector(currentStepData.targetElement) as HTMLElement
+      if (element) {
+        setHighlightedElement(element)
+
+        // Scroll element into view
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        })
+
+        // Add highlight class
+        element.classList.add('onboarding-highlight')
+        return element
+      }
+      return null
+    }
+
+    // Handle tab switching if required
+    if (currentStepData.requiresTabSwitch) {
+      switchTabIfNeeded(currentStepData.requiresTabSwitch)
+    }
+
+    // Steps that need extra time for tab content to become visible
+    const stepsNeedingDelay = ['overview-stats', 'search-filter', 'categories-favorites', 'notifications']
+    const needsDelay = stepsNeedingDelay.includes(currentStepData.id) || currentStepData.requiresTabSwitch
+
+    let element: HTMLElement | null = null
+    let timeoutId: NodeJS.Timeout
+
+    if (needsDelay) {
+      // For steps targeting content inside tabs, wait for animation to complete
+      timeoutId = setTimeout(() => {
+        element = findAndHighlightElement()
+      }, 450) // Slightly longer wait for tab switching animation
+    } else {
+      // For other steps, find element immediately
+      element = findAndHighlightElement()
     }
 
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
       if (element) {
         element.classList.remove('onboarding-highlight')
       }
     }
-  }, [currentStep, isOpen, currentStepData.targetElement])
+  }, [currentStep, isOpen, currentStepData.targetElement, currentStepData.id, currentStepData.requiresTabSwitch])
 
   // Position tooltip relative to highlighted element or center it
   useEffect(() => {
@@ -185,9 +225,13 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       tooltipRef.current.style.zIndex = '10000'
     }
 
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(updatePosition, 10)
-    
+    // Delay to ensure DOM is ready and animations complete
+    const stepsNeedingDelay = ['overview-stats', 'search-filter', 'categories-favorites', 'notifications']
+    const needsDelay = stepsNeedingDelay.includes(currentStepData.id) || currentStepData.requiresTabSwitch
+    const delay = needsDelay ? 500 : 10 // Extra delay for tab content steps and tab switching
+
+    const timeoutId = setTimeout(updatePosition, delay)
+
     const handleResize = () => updatePosition()
     const handleScroll = () => updatePosition()
 
@@ -199,7 +243,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll, true)
     }
-  }, [highlightedElement, currentStepData.position, isOpen])
+  }, [highlightedElement, currentStepData.position, currentStepData.id, currentStepData.requiresTabSwitch, isOpen])
 
   const handleNext = () => {
     if (isLastStep) {

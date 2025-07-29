@@ -34,7 +34,6 @@ export function HeaderWrapper() {
   return (
     <>
       <Header
-        onNotificationClick={() => console.log('Notification clicked')}
         onSettingsClick={handleSettingsClick}
         onSyncClick={handleSyncClick}
       />
