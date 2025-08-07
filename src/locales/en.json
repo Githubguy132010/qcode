@@ -97,7 +97,9 @@
     "saveButton": "Save",
     "editButton": "Save changes",
     "cancelButton": "Cancel",
-    "required": "* Required field"
+    "required": "* Required field",
+    "prefilledFromClipboard": "Prefilled from clipboard",
+    "prefilledFromClipboardHelp": "These values were detected from your clipboard. Please review before saving."
   },
   "notifications": {
     "title": "Notifications",

@@ -18,7 +18,7 @@ import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
 import { OnboardingTutorial } from '@/components/OnboardingTutorial'
 import { useOnboarding } from '@/hooks/useOnboarding'
 import { useTranslation } from 'react-i18next'
-import type { SearchFilters } from '@/types/discount-code'
+import type { SearchFilters, DiscountCodeFormData } from '@/types/discount-code'
 
 export default function HomePage() {
   const { t } = useTranslation()
@@ -76,6 +76,7 @@ export default function HomePage() {
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
   const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
+  const [quickAddInitialData, setQuickAddInitialData] = useState<Partial<DiscountCodeFormData> | undefined>(undefined)
 
   // Create refs for each discount code for scrolling
   const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
@@ -116,6 +117,88 @@ export default function HomePage() {
         block: 'start',
         inline: 'nearest'
       })
+    }
+  }
+
+  // Parse clipboard text for likely discount code data
+  const parseClipboardText = (text: string): Partial<DiscountCodeFormData> => {
+    const result: Partial<DiscountCodeFormData> = {}
+
+    // Try to derive store from URL if present
+    const urlMatch = text.match(/https?:\/\/[^\s)]+/i)
+    if (urlMatch) {
+      try {
+        const u = new URL(urlMatch[0])
+        const host = u.hostname.replace(/^www\./, '')
+        // Use domain (without TLD) as store hint, e.g., nike.com -> nike
+        result.store = host.split('.')[0]
+      } catch {}
+    }
+
+    // Discount: percentage or currency
+    const percentMatch = text.match(/(\d{1,3})\s?%/)
+    if (percentMatch) {
+      result.discount = `${percentMatch[1]}%`
+    } else {
+      const euroMatch = text.match(/(?:€|eur|euro)\s?(\d+(?:[.,]\d{1,2})?)/i)
+      if (euroMatch) {
+        const amount = euroMatch[1].replace(',', '.')
+        result.discount = `€${amount}`
+      }
+    }
+
+    // Code: look for explicit labels first
+    const labeled = text.match(/\b(?:code|coupon|promo|voucher)\s*:?\s*([A-Z0-9-]{4,20})\b/i)
+    if (labeled) {
+      result.code = labeled[1].toUpperCase()
+    } else {
+      // Fallback: find the first strong token that looks like a code
+      const tokens = text.toUpperCase().match(/\b[A-Z0-9][A-Z0-9-]{3,19}\b/g) || []
+      const token = tokens.find(tok => {
+        // Avoid picking dates or pure numbers
+        const hasLetter = /[A-Z]/.test(tok)
+        const notDate = !/\d{2,4}-\d{1,2}-\d{1,2}/.test(tok)
+        const notPrice = !/(?:EUR|€)\d/.test(tok)
+        return hasLetter && notDate && notPrice
+      })
+      if (token) result.code = token
+    }
+
+    // Heuristic: if the code contains a number and no discount was found yet,
+    // interpret that number as a percentage (e.g., WELCOME25 -> 25%).
+    if (result.code && !result.discount) {
+      const nums = result.code.match(/\d{1,3}/g)
+      if (nums && nums.length > 0) {
+        const last = parseInt(nums[nums.length - 1]!, 10)
+        // Only use sensible percentages to avoid false positives
+        if (!Number.isNaN(last) && last >= 1 && last <= 95) {
+          result.discount = `${last}%`
+        }
+      }
+    }
+
+    return result
+  }
+
+  // Open Add modal; try to prefill from clipboard if possible
+  const handleOpenAdd = async () => {
+    try {
+      if ('clipboard' in navigator && 'readText' in navigator.clipboard) {
+        const text = await navigator.clipboard.readText()
+        const parsed = parseClipboardText(text)
+        if (parsed.code) {
+          setQuickAddInitialData(parsed)
+        } else {
+          setQuickAddInitialData(undefined)
+        }
+      } else {
+        setQuickAddInitialData(undefined)
+      }
+    } catch (err) {
+      console.warn('Clipboard read skipped/failed:', err)
+      setQuickAddInitialData(undefined)
+    } finally {
+      setIsAddModalOpen(true)
     }
   }
 
@@ -273,7 +356,7 @@ export default function HomePage() {
         {/* Add Button */}
         <div className="mb-8">
           <button
-            onClick={() => setIsAddModalOpen(true)}
+            onClick={handleOpenAdd}
             data-tutorial="add-button"
             className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
           >
@@ -286,7 +369,7 @@ export default function HomePage() {
         {filteredCodes.length === 0 ? (
           <EmptyState
             hasAnyCodes={codes.length > 0}
-            onAddCode={() => setIsAddModalOpen(true)}
+            onAddCode={handleOpenAdd}
             onResetFilters={resetFilters}
           />
         ) : (
@@ -310,8 +393,10 @@ export default function HomePage() {
       {/* Add Code Modal */}
       <AddCodeModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => { setIsAddModalOpen(false); setQuickAddInitialData(undefined) }}
         onAdd={addCode}
+        initialData={quickAddInitialData}
+        prefillSource={quickAddInitialData ? 'clipboard' : undefined}
       />
 
       {/* Unified Settings Modal */}

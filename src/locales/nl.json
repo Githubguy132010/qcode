@@ -97,7 +97,9 @@
     "saveButton": "Opslaan",
     "editButton": "Wijzigingen opslaan",
     "cancelButton": "Annuleren",
-    "required": "* Verplicht veld"
+    "required": "* Verplicht veld",
+    "prefilledFromClipboard": "Vooraf ingevuld vanaf klembord",
+    "prefilledFromClipboardHelp": "Deze waarden zijn gedetecteerd vanaf je klembord. Controleer ze voordat je opslaat."
   },
   "notifications": {
     "title": "Notificaties",

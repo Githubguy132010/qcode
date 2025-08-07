@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { X, Info } from 'lucide-react'
+import * as Tooltip from '@radix-ui/react-tooltip'
 import type { DiscountCodeFormData } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
 import { useTranslation } from 'react-i18next'
@@ -8,9 +9,11 @@ interface AddCodeModalProps {
   isOpen: boolean
   onClose: () => void
   onAdd: (formData: DiscountCodeFormData) => void
+  initialData?: Partial<DiscountCodeFormData>
+  prefillSource?: 'clipboard' | undefined
 }
 
-export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
+export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSource }: AddCodeModalProps) {
   const { t } = useTranslation()
   const [formData, setFormData] = useState<DiscountCodeFormData>({
     code: '',
@@ -23,6 +26,22 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
   })
 
   const [errors, setErrors] = useState<Partial<DiscountCodeFormData>>({})
+
+  // Initialize or reinitialize form when modal opens with optional initial data
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        code: initialData?.code ?? '',
+        store: initialData?.store ?? '',
+        discount: initialData?.discount ?? '',
+        originalPrice: initialData?.originalPrice ?? '',
+        expiryDate: initialData?.expiryDate ?? '',
+        category: initialData?.category ?? DISCOUNT_CATEGORIES[0],
+        description: initialData?.description ?? '',
+      })
+      setErrors({})
+    }
+  }, [isOpen, initialData])
 
   const validateForm = () => {
     const newErrors: Partial<DiscountCodeFormData> = {}
@@ -102,6 +121,43 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {prefillSource === 'clipboard' && (
+            <div className="-mt-2 mb-2">
+              <span className="inline-flex items-center gap-1.5 text-xs rounded-full px-2 py-1 border border-[var(--card-border)] bg-[var(--filter-bg)] theme-text-secondary">
+                <Tooltip.Provider delayDuration={150}>
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      <button
+                        type="button"
+                        aria-label={t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
+                        className="inline-flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg,#fff)]"
+                      >
+                        <Info size={14} className="theme-text-muted" aria-hidden="true" />
+                      </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Portal>
+                      <Tooltip.Content
+                        side="top"
+                        sideOffset={6}
+                        className="z-50 rounded-md bg-gray-900 px-2 py-1 text-xs text-white shadow-lg
+                          opacity-0 scale-95 transition-all duration-150 will-change-transform
+                          data-[state=delayed-open]:opacity-100 data-[state=delayed-open]:scale-100
+                          data-[state=closed]:opacity-0 data-[state=closed]:scale-95
+                          data-[side=top]:translate-y-[-4px] data-[state=delayed-open]:data-[side=top]:translate-y-0
+                          data-[side=bottom]:translate-y-[4px] data-[state=delayed-open]:data-[side=bottom]:translate-y-0
+                          data-[side=left]:translate-x-[-4px] data-[state=delayed-open]:data-[side=left]:translate-x-0
+                          data-[side=right]:translate-x-[4px] data-[state=delayed-open]:data-[side=right]:translate-x-0"
+                      >
+                        {t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
+                        <Tooltip.Arrow className="fill-gray-900" />
+                      </Tooltip.Content>
+                    </Tooltip.Portal>
+                  </Tooltip.Root>
+                </Tooltip.Provider>
+                {t('addCode.prefilledFromClipboard', 'Prefilled from clipboard')}
+              </span>
+            </div>
+          )}
           {/* Code */}
           <div>
             <label htmlFor="code" className="block text-sm font-medium theme-text-secondary mb-1">
