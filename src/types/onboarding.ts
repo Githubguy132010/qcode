@@ -47,8 +47,15 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     id: 'categories-favorites',
     title: 'onboarding.categories.title',
     description: 'onboarding.categories.description',
-    targetElement: '[data-tutorial="categories"]', 
+    targetElement: '[data-tutorial="categories"]',
     position: 'right'
+  },
+  {
+    id: 'view-toggle',
+    title: 'onboarding.viewToggle.title',
+    description: 'onboarding.viewToggle.description',
+    targetElement: '[data-tutorial="view-toggle"]',
+    position: 'bottom'
   },
   {
     id: 'notifications-archiving',

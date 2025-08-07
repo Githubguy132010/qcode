@@ -22,7 +22,7 @@ interface DiscountCodeCardProps {
   onToggleArchived: () => void
   onIncrementUsage: () => void
   onDelete: () => void
-  
+  viewMode?: 'list' | 'grid'
 }
 
 export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps>(function DiscountCodeCard({
@@ -32,6 +32,7 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
   onToggleArchived,
   onIncrementUsage,
   onDelete,
+  viewMode = 'list',
 }, ref) {
   const { t, i18n } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
@@ -83,19 +84,25 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
   }
 
   return (
-    <div ref={ref} className={`theme-card rounded-xl shadow-lg border p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
+    <div ref={ref} className={`theme-card rounded-xl shadow-lg border transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''} ${
+      viewMode === 'grid'
+        ? 'p-4 flex flex-col h-full'
+        : 'p-6'
+    }`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-bold theme-text-primary text-lg">{code.store}</h3>
-            <span className="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-700">
-              {t(`categories.${code.category}`, code.category)}
-            </span>
-            {code.isFavorite && (
-              <Heart className="w-5 h-5 text-red-500 fill-current drop-shadow-sm" />
-            )}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+            <h3 className={`font-bold theme-text-primary ${viewMode === 'grid' ? 'text-base' : 'text-lg'}`}>{code.store}</h3>
+            <div className="flex items-center gap-2">
+              <span className="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-700">
+                {t(`categories.${code.category}`, code.category)}
+              </span>
+              {code.isFavorite && (
+                <Heart className="w-5 h-5 text-red-500 fill-current drop-shadow-sm" />
+              )}
+            </div>
           </div>
-          <div className="flex items-center gap-3 text-sm theme-text-secondary">
+          <div className="flex flex-wrap items-center gap-3 text-sm theme-text-secondary">
             <div className="flex items-center gap-1.5">
               <Store size={14} className="text-gray-400" />
               <span className="font-medium">{code.discount}</span>
@@ -166,10 +173,10 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
 
       {/* Code Display */}
       <div className="theme-code-display border-2 border-dashed rounded-xl p-4 mb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <p className="text-xs theme-text-muted mb-1 font-semibold uppercase tracking-wide">{t('codeCard.discountCodeLabel', 'DISCOUNT CODE')}</p>
-            <p className="font-mono text-xl font-bold theme-text-primary tracking-wider">{code.code}</p>
+            <p className={`font-mono font-bold theme-text-primary tracking-wider ${viewMode === 'grid' ? 'text-lg' : 'text-xl'}`}>{code.code}</p>
           </div>
           <button
             onClick={handleCopyCode}
@@ -192,12 +199,12 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
 
       {/* Description */}
       {code.description && (
-        <p className="text-sm theme-text-secondary mb-4 leading-relaxed">{code.description}</p>
+        <p className={`text-sm theme-text-secondary mb-4 leading-relaxed ${viewMode === 'grid' ? 'line-clamp-2' : ''}`}>{code.description}</p>
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 text-xs theme-text-muted">
+      <div className={`flex items-center ${viewMode === 'grid' ? 'flex-col gap-3 mt-auto' : 'justify-between'}`}>
+        <div className={`flex ${viewMode === 'grid' ? 'justify-between w-full' : 'items-center gap-4'} text-xs theme-text-muted`}>
           <span className="font-medium">{t('codeCard.used', 'Used')}: {code.timesUsed}x</span>
           <span className="font-medium">{t('codeCard.added', 'Added')}: {format(code.dateAdded, 'd MMM yyyy', { locale: dateLocale })}</span>
         </div>
@@ -208,7 +215,7 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
             isExpired
               ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
-          }`}
+          } ${viewMode === 'grid' ? 'w-full' : ''}`}
         >
           {isExpired ? t('codeCard.expired', 'Expired') : t('codeCard.use', 'Use')}
         </button>

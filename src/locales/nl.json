@@ -55,6 +55,11 @@
       "active": "Actieve codes",
       "expired": "Verlopen codes",
       "archived": "Gearchiveerd"
+    },
+    "view": {
+      "label": "Weergave",
+      "listView": "Lijstweergave",
+      "gridView": "Rasterweergave"
     }
   },
   "codeCard": {
@@ -409,6 +414,10 @@
     "categories": {
       "title": "Categorieën & Favorieten",
       "description": "Organiseer je codes per categorie en markeer belangrijke codes als favoriet voor snelle toegang. Je kunt ook codes archiveren die je niet meer nodig hebt."
+    },
+    "viewToggle": {
+      "title": "Lijst & Rasterweergave",
+      "description": "Wissel tussen lijst- en rasterweergave om je kortingscodes weer te geven. Rasterweergave stelt je in staat om meer codes tegelijk te zien op grotere schermen, terwijl lijstweergave meer details voor elke code biedt."
     },
     "notifications": {
       "title": "Notificaties & Beheer",
