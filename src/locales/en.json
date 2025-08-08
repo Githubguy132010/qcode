@@ -436,5 +436,22 @@
       "close": "Close",
       "stepOf": "Step {{current}} of {{total}}"
     }
+  },
+  "dashboard": {
+    "tabs": {
+      "search": "Search",
+      "stats": "Stats",
+      "notifications": "Notifications"
+    },
+    "notifications": {
+      "title": "Expiring Soon",
+      "dismissAll": "Dismiss all",
+      "allClear": "All clear!",
+      "noExpiring": "No codes are expiring soon."
+    }
+  },
+  "view": {
+    "listView": "List View",
+    "gridView": "Grid View"
   }
 }

@@ -436,5 +436,22 @@
       "close": "Sluiten",
       "stepOf": "Stap {{current}} van {{total}}"
     }
+  },
+  "dashboard": {
+    "tabs": {
+      "search": "Zoeken",
+      "stats": "Statistieken",
+      "notifications": "Notificaties"
+    },
+    "notifications": {
+      "title": "Binnenkort verlopen",
+      "dismissAll": "Alles negeren",
+      "allClear": "Alles in orde!",
+      "noExpiring": "Er verlopen binnenkort geen codes."
+    }
+  },
+  "view": {
+    "listView": "Lijstweergave",
+    "gridView": "Rasterweergave"
   }
 }
