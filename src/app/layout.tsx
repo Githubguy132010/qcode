@@ -25,12 +25,12 @@ export const viewport: Viewport = {
   themeColor: "#3b82f6",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const h = headers();
+  const h = await headers();
   const acceptLanguage = h.get('accept-language') || '';
   const parseDefaultLocale = (accept: string): string => {
     const parts = accept.split(',').map(p => p.split(';')[0].trim()).filter(Boolean);
