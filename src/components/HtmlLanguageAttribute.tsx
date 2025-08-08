@@ -6,11 +6,15 @@ import { useLanguage } from '@/hooks/useLanguage'
 export function HtmlLanguageAttribute({ children }: { children: React.ReactNode }) {
   const { currentLanguage } = useLanguage()
   
+  const resolveDefaultLocale = (lang: string): string => {
+    const base = lang.substring(0, 2)
+    if (base === 'nl') return 'nl-NL'
+    return 'en-US'
+  }
+  
   // Use the Effect hook to update the HTML lang attribute only on the client side
   useEffect(() => {
-    // Get the first 2 chars (e.g., "en" from "en-US")
-    const langCode = currentLanguage.substring(0, 2)
-    document.documentElement.lang = langCode
+    document.documentElement.lang = resolveDefaultLocale(currentLanguage)
   }, [currentLanguage])
 
   // Also set initial language on mount for first-time visitors
@@ -22,7 +26,7 @@ export function HtmlLanguageAttribute({ children }: { children: React.ReactNode 
       if (!savedLanguage) {
         const browserLang = navigator.language.split('-')[0];
         const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
-        document.documentElement.lang = supportedLanguage;
+        document.documentElement.lang = resolveDefaultLocale(supportedLanguage);
       }
     }
   }, [])
