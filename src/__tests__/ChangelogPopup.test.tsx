@@ -63,7 +63,7 @@ describe('ChangelogPopup', () => {
     expect(await screen.findByText('Release v1.0 Highlights')).toBeInTheDocument();
 
     // Click "Got it, thanks!" to close
-    const closeBtn = screen.getByText('Got it, thanks!');
+    const closeBtn = screen.getByText('releaseNotes.buttons.gotIt');
     fireEvent.click(closeBtn);
 
     await waitFor(() => {
@@ -82,7 +82,7 @@ describe('ChangelogPopup', () => {
     // Ensure it shows
     expect(await screen.findByText('Release v1.0 Highlights')).toBeInTheDocument();
 
-    const detailsBtn = screen.getByText('Technical Details');
+    const detailsBtn = screen.getByText('releaseNotes.buttons.technicalDetails');
     fireEvent.click(detailsBtn);
 
     await waitFor(() => {
