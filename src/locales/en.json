@@ -234,6 +234,7 @@
     },
     "summary": {
       "title": "What's New",
+      "userImpactTitle": "How this affects you",
       "recentChanges": "Recent Changes",
       "noChanges": "No new changes to summarize.",
       "andMore": "And {{count}} more... Switch to Commits tab for full details."
@@ -248,7 +249,12 @@
       "message": "Message"
     },
     "buttons": {
-      "close": "Close"
+      "close": "Close",
+      "gotIt": "Got it, thanks!",
+      "technicalDetails": "Technical Details"
+    },
+    "popup": {
+      "updateCount": "{{count}} updates since your last visit"
     }
   },
   "pwa": {

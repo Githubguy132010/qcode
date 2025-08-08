@@ -8,35 +8,48 @@ import nlTranslations from '../locales/nl.json';
  * @param path Current path in the object structure
  * @returns Array of missing keys with their paths
  */
-// Explicitly allow working with translation JSON objects
+ // Explicitly allow working with translation JSON objects
 function findMissingKeys(obj: Record<string, unknown>, referenceObj: Record<string, unknown>, path = ''): string[] {
   const missingKeys: string[] = [];
 
-  // Check all keys in the reference object
-  for (const key in referenceObj) {
+  // Iterate only own enumerable keys to avoid prototype pollution issues
+  const refKeys = Object.keys(referenceObj);
+  for (const key of refKeys) {
     const newPath = path ? `${path}.${key}` : key;
 
-    if (!(key in obj)) {
+    // Check presence using hasOwnProperty for safety
+    const hasKey = Object.prototype.hasOwnProperty.call(obj, key);
+    if (!hasKey) {
       // Key missing completely
       missingKeys.push(newPath);
-    } else if (
-      typeof referenceObj[key] === 'object' && 
-      referenceObj[key] !== null && 
+      continue;
+    }
+
+    // If reference value is an object (but not null/array), recurse
+    if (
+      typeof referenceObj[key] === 'object' &&
+      referenceObj[key] !== null &&
       !Array.isArray(referenceObj[key])
     ) {
-      // Key exists, but we need to check nested objects recursively
-      if (typeof obj[key] !== 'object' || obj[key] === null || Array.isArray(obj[key])) {
-        // Types don't match, consider the entire subtree missing
+      const objVal = (obj as Record<string, unknown>)[key];
+
+      // Types don't match (expected object subtree)
+      if (
+        typeof objVal !== 'object' ||
+        objVal === null ||
+        Array.isArray(objVal)
+      ) {
         missingKeys.push(`${newPath} (type mismatch: expected object)`);
-      } else {
-        // Both are objects, check recursively
-        const nestedMissingKeys = findMissingKeys(
-          obj[key] as Record<string, unknown>,
-          referenceObj[key] as Record<string, unknown>,
-          newPath
-        );
-        missingKeys.push(...nestedMissingKeys);
+        continue;
       }
+
+      // Both are objects, check recursively
+      const nestedMissingKeys = findMissingKeys(
+        objVal as Record<string, unknown>,
+        referenceObj[key] as Record<string, unknown>,
+        newPath
+      );
+      missingKeys.push(...nestedMissingKeys);
     }
   }
 

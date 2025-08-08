@@ -164,7 +164,7 @@
       ],
       "tutorial": "Tutorial",
       "tutorialDescription": "Doorloop de app rondleiding opnieuw om meer te leren over alle functies.",
-      "footer": "Gebouwd met ❤️ using Next.js, TypeScript & Tailwind CSS"
+      "footer": "Gebouwd met ❤️ met behulp van Next.js, TypeScript en Tailwind CSS"
     },
     "export": {
       "title": "Exporteer je kortingscodes",
@@ -183,7 +183,7 @@
       "demoSubtitle": "Laad enkele voorbeelden om de app uit te proberen.",
       "demoButton": "Voorbeelddata laden",
       "dangerTitle": "Gevaarlijke acties",
-      "dangerSubtitle": "Dit verwijdert alle je kortingscodes permanent.",
+      "dangerSubtitle": "Dit verwijdert al je kortingscodes permanent.",
       "clearButton": "Alles verwijderen"
     },
     "language": {
@@ -234,6 +234,7 @@
     },
     "summary": {
       "title": "Wat is er nieuw",
+      "userImpactTitle": "Hoe dit jou beïnvloedt",
       "recentChanges": "Recente wijzigingen",
       "noChanges": "Geen nieuwe wijzigingen om samen te vatten.",
       "andMore": "En {{count}} meer... Ga naar het Commits-tabblad voor alle details."
@@ -248,7 +249,12 @@
       "message": "Bericht"
     },
     "buttons": {
-      "close": "Sluiten"
+      "close": "Sluiten",
+      "gotIt": "Begrepen, bedankt!",
+      "technicalDetails": "Technische details"
+    },
+    "popup": {
+      "updateCount": "{{count}} updates sinds je laatste bezoek"
     }
   },
   "pwa": {
@@ -274,10 +280,10 @@
   },
   "navigation": {
     "home": "Thuis",
-    "analytics": "Analytics"
+    "analytics": "Analyse"
   },
   "analytics": {
-    "title": "Analytics Dashboard",
+    "title": "Analysedashboard",
     "subtitle": "Inzichten in je kortingscode gebruik en besparingen",
     "tabs": {
       "overview": "Overzicht",
@@ -299,9 +305,9 @@
       "avgPerCode": "gem per code",
       "potential": "potentieel",
       "expiredThisMonth": "verlopen deze maand",
-      "topCodes": "Best Presterende Codes",
+      "topCodes": "Top Presterende Codes",
       "categoryDistribution": "Categorie Verdeling",
-      "usageTrend": "Gebruik Trend (Laatste 30 Dagen)",
+      "usageTrend": "Gebruikstrend (Laatste 30 Dagen)",
       "recentActivity": "Recente Activiteit",
       "usages": "gebruik"
     },
@@ -368,7 +374,7 @@
       "activeRatio": "Actieve Codes",
       "favoriteRatio": "Favoriete Codes",
       "archiveRatio": "Gearchiveerde Codes",
-      "topCodes": "Best Presterende Codes",
+      "topCodes": "Top Presterende Codes",
       "categoryDistribution": "Categorie Verdeling",
       "storeDistribution": "Winkel Verdeling",
       "metricsBreakdown": "Prestatiemetrieken Verdeling",

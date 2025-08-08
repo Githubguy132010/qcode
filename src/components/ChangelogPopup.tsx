@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X, Sparkles, FileText } from 'lucide-react'
 import { checkForUpdates, updateLastVisitDate } from '@/utils/changelog'
 import type { ChangelogData } from '@/types/changelog'
@@ -8,6 +9,7 @@ interface ChangelogPopupProps {
 }
 
 export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) {
+  const { t } = useTranslation()
   const [changelogData, setChangelogData] = useState<ChangelogData | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -74,7 +76,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
         <div className="p-6">
           {/* Highlights */}
           <div className="mb-6">
-            <h3 className="font-semibold theme-text-primary mb-3">What&apos;s New:</h3>
+            <h3 className="font-semibold theme-text-primary mb-3">{t('releaseNotes.summary.title')}:</h3>
             <div className="space-y-2">
               {aiSummary!.highlights.map((highlight, index) => (
                 <div key={index} className="flex items-start gap-3 p-3 rounded-lg theme-filter">
@@ -90,7 +92,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           {/* User Impact */}
           <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
             <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
-              How this affects you:
+              {t('releaseNotes.summary.userImpactTitle')}:
             </h4>
             <p className="text-sm text-blue-800 dark:text-blue-300">
               {aiSummary!.userImpact}
@@ -103,7 +105,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
               onClick={handleClose}
               className="flex-1 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
-              Got it, thanks!
+              {t('releaseNotes.buttons.gotIt')}
             </button>
             
             <button
@@ -111,14 +113,14 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
               className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               <FileText size={16} />
-              Technical Details
+              {t('releaseNotes.buttons.technicalDetails')}
             </button>
           </div>
 
           {/* Update count */}
           <div className="mt-4 text-center">
             <p className="text-xs theme-text-muted">
-              {entries.length} update{entries.length > 1 ? 's' : ''} since your last visit
+              {t('releaseNotes.popup.updateCount', { count: entries.length })}
             </p>
           </div>
         </div>
