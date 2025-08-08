@@ -92,10 +92,11 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
             >
               {isLoaded && (isDark ? <Sun size={16} className="sm:w-5 sm:h-5" /> : <Moon size={16} className="sm:w-5 sm:h-5" />)}
             </button>
-            <button 
+            <button
               onClick={onNotificationClick}
               className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={t('header.notifications')}
+              data-tutorial="notifications"
             >
               <Bell size={16} className="sm:w-5 sm:h-5" />
             </button>

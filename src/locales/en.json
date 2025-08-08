@@ -55,6 +55,11 @@
       "active": "Active codes",
       "expired": "Expired codes",
       "archived": "Archived"
+    },
+    "view": {
+      "label": "View",
+      "listView": "List View",
+      "gridView": "Grid View"
     }
   },
   "codeCard": {
@@ -410,6 +415,10 @@
       "title": "Categories & Favorites",
       "description": "Organize your codes by categories and mark important ones as favorites for quick access. You can also archive codes you no longer need."
     },
+    "viewToggle": {
+      "title": "List & Grid View",
+      "description": "Switch between list and grid view to display your discount codes. Grid view allows you to see more codes at once on larger screens, while list view provides more details for each code."
+    },
     "notifications": {
       "title": "Notifications & Management",
       "description": "Click the bell icon in the header to view notifications about expiring codes. Use the gear icon to access settings, export/import, and other options."
@@ -427,5 +436,22 @@
       "close": "Close",
       "stepOf": "Step {{current}} of {{total}}"
     }
+  },
+  "dashboard": {
+    "tabs": {
+      "search": "Search",
+      "stats": "Stats",
+      "notifications": "Notifications"
+    },
+    "notifications": {
+      "title": "Expiring Soon",
+      "dismissAll": "Dismiss all",
+      "allClear": "All clear!",
+      "noExpiring": "No codes are expiring soon."
+    }
+  },
+  "view": {
+    "listView": "List View",
+    "gridView": "Grid View"
   }
 }

@@ -17,6 +17,11 @@ const config: Config = {
         sans: ["Arial", "sans-serif"],
         mono: ["Consolas", "Monaco", "Courier New", "monospace"],
       },
+      lineClamp: {
+        2: '2',
+        3: '3',
+        4: '4',
+      },
     },
   },
   plugins: [],

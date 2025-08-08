@@ -4,13 +4,11 @@ import { useState, useRef, createRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
-import { SearchAndFilter } from '@/components/SearchAndFilter'
 import { DiscountCodeCard } from '@/components/DiscountCodeCard'
 import { AddCodeModal } from '@/components/AddCodeModal'
-import { StatsOverview } from '@/components/StatsOverview'
 import { EmptyState } from '@/components/EmptyState'
-import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
+import { CombinedDashboard } from '@/components/CombinedDashboard'
 import { UnifiedSettingsModal } from '@/components/UnifiedSettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { ChangelogPopup } from '@/components/ChangelogPopup'
@@ -35,6 +33,9 @@ export default function HomePage() {
     getStats,
     getExpiringSoon,
   } = useDiscountCodes()
+  
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
+  const [isClient, setIsClient] = useState(false)
 
   // Onboarding tutorial state
   const {
@@ -74,7 +75,6 @@ export default function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
-  const [showNotificationBanner, setShowNotificationBanner] = useState(true)
   const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
 
   // Create refs for each discount code for scrolling
@@ -198,6 +198,36 @@ export default function HomePage() {
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
 
+  // Set client flag
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Load view mode preference from localStorage
+  useEffect(() => {
+    if (!isClient) return
+    
+    try {
+      const savedViewMode = localStorage.getItem('qcode-view-mode')
+      if (savedViewMode === 'list' || savedViewMode === 'grid') {
+        setViewMode(savedViewMode)
+      }
+    } catch (error) {
+      console.error('Error loading view mode preference:', error)
+    }
+  }, [isClient])
+
+  // Save view mode preference to localStorage
+  useEffect(() => {
+    if (!isClient) return
+    
+    try {
+      localStorage.setItem('qcode-view-mode', viewMode)
+    } catch (error) {
+      console.error('Error saving view mode preference:', error)
+    }
+  }, [viewMode, isClient])
+
   // useEffect to handle scrolling to codes list after state changes
   useEffect(() => {
     if (shouldScrollToList) {
@@ -236,7 +266,10 @@ export default function HomePage() {
       <OnlineStatusBanner />
       
       <Header
-        onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
+        onNotificationClick={() => {
+          // This can be repurposed or removed if no longer needed
+          console.log('Notification icon clicked')
+        }}
         onSettingsClick={() => {
           setInitialTab('general')
           setIsUnifiedModalOpen(true)
@@ -247,28 +280,20 @@ export default function HomePage() {
         {/* Install Prompt */}
         <InstallPrompt />
 
-        {/* Notification Banner */}
-        {showNotificationBanner && (
-          <NotificationBanner 
-            expiringSoon={expiringSoon} 
-            onCodeClick={scrollToCode}
-          />
-        )}
-
-        {/* Statistics Overview */}
-        <StatsOverview stats={stats} onStatClick={handleStatClick} />
-
-        {/* Search and Filter */}
-        <div className="mb-8" data-tutorial="search-filter">
-          <SearchAndFilter
-            filters={searchFilters}
-            onFiltersChange={(newFilters) => {
-              setSearchFilters(newFilters)
-              setShowOnlyExpiringSoon(false)
-            }}
-            onReset={resetFilters}
-          />
-        </div>
+        <CombinedDashboard
+          filters={searchFilters}
+          onFiltersChange={(newFilters) => {
+            setSearchFilters(newFilters);
+            setShowOnlyExpiringSoon(false);
+          }}
+          onReset={resetFilters}
+          stats={stats}
+          onStatClick={handleStatClick}
+          expiringSoon={expiringSoon}
+          onCodeClick={scrollToCode}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+        />
 
         {/* Add Button */}
         <div className="mb-8">
@@ -290,7 +315,7 @@ export default function HomePage() {
             onResetFilters={resetFilters}
           />
         ) : (
-          <div className="space-y-6" data-codes-list>
+          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'space-y-6'}`} data-codes-list>
             {filteredCodes.map((code) => (
               <DiscountCodeCard
                 key={code.id}
@@ -301,6 +326,7 @@ export default function HomePage() {
                 onToggleArchived={() => toggleArchived(code.id)}
                 onIncrementUsage={() => incrementUsage(code.id)}
                 onDelete={() => deleteCode(code.id)}
+                viewMode={viewMode}
               />
             ))}
           </div>

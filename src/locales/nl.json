@@ -55,6 +55,11 @@
       "active": "Actieve codes",
       "expired": "Verlopen codes",
       "archived": "Gearchiveerd"
+    },
+    "view": {
+      "label": "Weergave",
+      "listView": "Lijstweergave",
+      "gridView": "Rasterweergave"
     }
   },
   "codeCard": {
@@ -410,6 +415,10 @@
       "title": "Categorieën & Favorieten",
       "description": "Organiseer je codes per categorie en markeer belangrijke codes als favoriet voor snelle toegang. Je kunt ook codes archiveren die je niet meer nodig hebt."
     },
+    "viewToggle": {
+      "title": "Lijst & Rasterweergave",
+      "description": "Wissel tussen lijst- en rasterweergave om je kortingscodes weer te geven. Rasterweergave stelt je in staat om meer codes tegelijk te zien op grotere schermen, terwijl lijstweergave meer details voor elke code biedt."
+    },
     "notifications": {
       "title": "Notificaties & Beheer",
       "description": "Klik op het belletje in de header om notificaties te bekijken over bijna verlopende codes. Via de tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
@@ -427,5 +436,22 @@
       "close": "Sluiten",
       "stepOf": "Stap {{current}} van {{total}}"
     }
+  },
+  "dashboard": {
+    "tabs": {
+      "search": "Zoeken",
+      "stats": "Statistieken",
+      "notifications": "Notificaties"
+    },
+    "notifications": {
+      "title": "Binnenkort verlopen",
+      "dismissAll": "Alles negeren",
+      "allClear": "Alles in orde!",
+      "noExpiring": "Er verlopen binnenkort geen codes."
+    }
+  },
+  "view": {
+    "listView": "Lijstweergave",
+    "gridView": "Rasterweergave"
   }
 }
