@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 // LanguageDetector is dynamically imported later
-import enTranslation from '@/locales/en.json';
-import nlTranslation from '@/locales/nl.json';
+import enTranslation from '@/locales/en.json' assert { type: 'json' };
+import nlTranslation from '@/locales/nl.json' assert { type: 'json' };
 
 const resources = {
   en: {

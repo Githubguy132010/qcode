@@ -16,6 +16,7 @@
     "test:all": "jest && next lint && next build"
   },
   "dependencies": {
+    "@radix-ui/react-tooltip": "^1.2.7",
     "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",
     "i18next": "^25.3.2",
