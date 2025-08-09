@@ -19,7 +19,7 @@ describe('HtmlLanguageAttribute', () => {
     jest.clearAllMocks();
   });
 
-  it('sets document.documentElement.lang based on currentLanguage (first 2 chars)', async () => {
+  it('sets document.documentElement.lang to default full locale based on currentLanguage', async () => {
     useLanguageMock.mockReturnValue({
       currentLanguage: 'en-US',
     });
@@ -30,9 +30,8 @@ describe('HtmlLanguageAttribute', () => {
       </HtmlLanguageAttribute>
     );
 
-    // Effect runs asynchronously
     await waitFor(() => {
-      expect(document.documentElement.lang).toBe('en');
+      expect(document.documentElement.lang).toBe('en-US');
     });
   });
 
@@ -59,9 +58,9 @@ describe('HtmlLanguageAttribute', () => {
         </HtmlLanguageAttribute>
       );
 
-      // Two effects run: first sets 'en', second (first-time visitor) sets 'nl'
+      // Two effects run: first sets default from currentLanguage, then first-time visitor logic sets 'nl-NL'
       await waitFor(() => {
-        expect(document.documentElement.lang).toBe('nl');
+        expect(document.documentElement.lang).toBe('nl-NL');
       });
     } finally {
       // Restore navigator.language

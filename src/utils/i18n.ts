@@ -29,19 +29,8 @@ if (!i18n.isInitialized) {
       lng: 'en', // Default language for SSR
     });
 
-  // Add language detector only on client side
+  // Client-side: apply saved or detected language without re-initializing i18n
   if (isBrowser) {
-    import('i18next-browser-languagedetector').then((LanguageDetector) => {
-      i18n.use(LanguageDetector.default);
-      i18n.init({
-        detection: {
-          order: ['localStorage', 'navigator'],
-          caches: ['localStorage'],
-        },
-      });
-    });
-
-    // Try to load saved language preference
     const savedLanguage = localStorage.getItem('qcode-language');
     if (savedLanguage === 'auto') {
       const browserLang = navigator.language.split('-')[0];
