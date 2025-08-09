@@ -228,6 +228,23 @@
   "releaseNotes": {
     "title": "Release Notes",
     "subtitle": "Detailed technical information about recent updates",
+    "ai": {
+      "title_one": "1 new update available",
+      "title_other": "{{count}} new updates available",
+      "summaryPrefix": "We've made some exciting improvements to {{appName}}!",
+      "highlights": {
+        "newFeatures": "🎉 New features have been added to improve your experience",
+        "bugFixes": "🐛 Bug fixes for a smoother experience",
+        "uiChanges": "✨ Visual improvements and design updates",
+        "general": "📝 General improvements and maintenance"
+      },
+      "userImpact": {
+        "newFeatures": "You now have access to new tools and functionality.",
+        "bugFixes": "The app should work more reliably.",
+        "uiChanges": "The interface has been refined for better usability.",
+        "general": "Various behind-the-scenes improvements have been made."
+      }
+    },
     "tabs": {
       "summary": "Summary",
       "commits": "Commits"

@@ -1,4 +1,5 @@
 import type { ChangelogEntry, AIGeneratedSummary, ChangelogData } from '@/types/changelog'
+import i18n from '@/utils/i18n'
 
 // Storage keys
 const LAST_VISIT_KEY = 'qcode-last-visit'
@@ -14,57 +15,55 @@ export const updateLastVisitDate = (): void => {
 }
 
 export const generateAISummary = (entries: ChangelogEntry[]): AIGeneratedSummary => {
-  // Simulate AI-generated summary based on entries
-  const hasNewFeatures = entries.some(entry => 
-    entry.title.toLowerCase().includes('add') || 
-    entry.title.toLowerCase().includes('implement') ||
-    entry.title.toLowerCase().includes('feature')
-  )
-  
-  const hasBugFixes = entries.some(entry =>
-    entry.title.toLowerCase().includes('fix') ||
-    entry.title.toLowerCase().includes('bug') ||
-    entry.title.toLowerCase().includes('resolve')
-  )
+  // Heuristic classification based on commit/PR titles
+  const lowerCasedTitles = entries.map(entry => entry.title.toLowerCase());
 
-  const hasUIChanges = entries.some(entry =>
-    entry.title.toLowerCase().includes('ui') ||
-    entry.title.toLowerCase().includes('design') ||
-    entry.title.toLowerCase().includes('style')
-  )
+  const hasNewFeatures = lowerCasedTitles.some(title =>
+    title.includes('add') || title.includes('implement') || title.includes('feature')
+  );
 
-  const highlights: string[] = []
-  let userImpact = ''
+  const hasBugFixes = lowerCasedTitles.some(title =>
+    title.includes('fix') || title.includes('bug') || title.includes('resolve')
+  );
+
+  const hasUIChanges = lowerCasedTitles.some(title =>
+    title.includes('ui') || title.includes('design') || title.includes('style')
+  );
+
+  const highlights: string[] = [];
+  const impactParts: string[] = [];
 
   if (hasNewFeatures) {
-    highlights.push('🎉 New features have been added to improve your experience')
-    userImpact += 'You now have access to new tools and functionality. '
+    highlights.push(i18n.t('releaseNotes.ai.highlights.newFeatures'));
+    impactParts.push(i18n.t('releaseNotes.ai.userImpact.newFeatures'));
   }
 
   if (hasBugFixes) {
-    highlights.push('🐛 Bug fixes for a smoother experience')
-    userImpact += 'The app should work more reliably. '
+    highlights.push(i18n.t('releaseNotes.ai.highlights.bugFixes'));
+    impactParts.push(i18n.t('releaseNotes.ai.userImpact.bugFixes'));
   }
 
   if (hasUIChanges) {
-    highlights.push('✨ Visual improvements and design updates')
-    userImpact += 'The interface has been refined for better usability. '
+    highlights.push(i18n.t('releaseNotes.ai.highlights.uiChanges'));
+    impactParts.push(i18n.t('releaseNotes.ai.userImpact.uiChanges'));
   }
 
   if (highlights.length === 0) {
-    highlights.push('📝 General improvements and maintenance')
-    userImpact = 'Various behind-the-scenes improvements have been made.'
+    highlights.push(i18n.t('releaseNotes.ai.highlights.general'));
+    impactParts.push(i18n.t('releaseNotes.ai.userImpact.general'));
   }
 
-  const title = `${entries.length} new update${entries.length > 1 ? 's' : ''} available`
-  const summary = `We've made some exciting improvements to QCode! ${userImpact.trim()}`
+  const title = i18n.t('releaseNotes.ai.title', { count: entries.length });
+  const summaryPrefix = i18n.t('releaseNotes.ai.summaryPrefix', { appName: i18n.t('common.appName') });
+  const userImpact = impactParts.join(' ').trim();
+  const summary = `${summaryPrefix} ${userImpact}`.trim();
 
   return {
     title,
     summary,
     highlights,
-    userImpact: userImpact.trim()
-  }
+    userImpact,
+  };
 }
 
 // GitHub API types

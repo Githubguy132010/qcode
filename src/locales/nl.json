@@ -228,6 +228,23 @@
   "releaseNotes": {
     "title": "Release Notities",
     "subtitle": "Gedetailleerde technische informatie over recente updates",
+    "ai": {
+      "title_one": "1 nieuwe update beschikbaar",
+      "title_other": "{{count}} nieuwe updates beschikbaar",
+      "summaryPrefix": "We hebben leuke verbeteringen aan {{appName}} doorgevoerd!",
+      "highlights": {
+        "newFeatures": "🎉 Nieuwe functies toegevoegd om je ervaring te verbeteren",
+        "bugFixes": "🐛 Foutoplossingen voor een soepelere ervaring",
+        "uiChanges": "✨ Visuele verbeteringen en design-updates",
+        "general": "📝 Algemene verbeteringen en onderhoud"
+      },
+      "userImpact": {
+        "newFeatures": "Je hebt nu toegang tot nieuwe tools en functionaliteit.",
+        "bugFixes": "De app zou betrouwbaarder moeten werken.",
+        "uiChanges": "De interface is verfijnd voor betere bruikbaarheid.",
+        "general": "Er zijn diverse verbeteringen achter de schermen doorgevoerd."
+      }
+    },
     "tabs": {
       "summary": "Samenvatting",
       "commits": "Commits"
