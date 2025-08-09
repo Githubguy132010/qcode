@@ -1,8 +1,8 @@
-import { Ticket, Bell, Settings, Moon, Sun, BarChart3 } from 'lucide-react'
+import { Ticket, Bell, Settings, Moon, Sun, BarChart3, Home } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 interface HeaderProps {
   onNotificationClick: () => void
@@ -14,6 +14,8 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
   const { t } = useTranslation()
   const { isDark, setThemeMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const isAnalyticsTab = pathname === '/' && searchParams.get('tab') === 'analytics'
 
   return (
     <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
@@ -34,7 +36,18 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
               <Link
                 href="/"
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  pathname === '/'
+                  pathname === '/' && !isAnalyticsTab
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                    : 'theme-text-secondary hover:theme-text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+              >
+                <Home size={16} />
+                {t('navigation.home')}
+              </Link>
+              <Link
+                href="/?tab=analytics"
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isAnalyticsTab
                     ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
                     : 'theme-text-secondary hover:theme-text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
@@ -51,7 +64,18 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
               <Link
                 href="/"
                 className={`p-1.5 sm:p-2.5 rounded-lg transition-all duration-200 ${
-                  pathname === '/'
+                  pathname === '/' && !isAnalyticsTab
+                    ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                    : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+                aria-label={t('navigation.home')}
+              >
+                <Home size={16} className="sm:w-5 sm:h-5" />
+              </Link>
+              <Link
+                href="/?tab=analytics"
+                className={`p-1.5 sm:p-2.5 rounded-lg transition-all duration-200 ${
+                  isAnalyticsTab
                     ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
                     : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
