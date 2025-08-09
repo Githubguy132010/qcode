@@ -38,6 +38,13 @@ const nextConfig = {
         name: 'webpack',
       };
     }
+
+    // Resolve Mini CSS Extract Plugin warning
+    config.plugins.forEach(plugin => {
+      if (plugin.constructor.name === 'MiniCssExtractPlugin') {
+        plugin.options.ignoreOrder = true;
+      }
+    });
     return config;
   }
 }
