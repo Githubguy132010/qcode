@@ -14,6 +14,11 @@ export interface DiscountCode {
   qrCode?: string
   // Usage tracking for better analytics
   usageHistory?: Array<{ date: Date; estimatedSavings?: number }>
+  // Scan-and-Save metadata
+  source?: 'manual' | 'scan' | 'import'
+  barcodeData?: string
+  tags?: string[]
+  usedAt?: Date | null
 }
 
 export interface DiscountCodeFormData {
@@ -24,6 +29,10 @@ export interface DiscountCodeFormData {
   expiryDate?: string
   category: string
   description?: string
+  // Optional fields from scanner/import flows
+  source?: 'manual' | 'scan' | 'import'
+  barcodeData?: string
+  tags?: string[]
 }
 
 export type SortOption = 'dateAdded' | 'expiryDate' | 'store' | 'category' | 'timesUsed'

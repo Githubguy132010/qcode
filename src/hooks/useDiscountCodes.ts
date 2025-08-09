@@ -27,6 +27,7 @@ export function useDiscountCodes() {
           ...code,
           dateAdded: new Date(code.dateAdded as string),
           expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
+          usedAt: code.usedAt ? new Date(code.usedAt as string) : null,
           usageHistory: code.usageHistory ? (code.usageHistory as Array<{ date: string | Date; estimatedSavings?: number }>).map(usage => ({
             ...usage,
             date: new Date(usage.date)
@@ -68,6 +69,10 @@ export function useDiscountCodes() {
       isArchived: false,
       dateAdded: new Date(),
       timesUsed: 0,
+      source: formData.source ?? 'manual',
+      barcodeData: formData.barcodeData,
+      tags: formData.tags ?? [],
+      usedAt: null,
     }
 
     const updatedCodes = [newCode, ...codes]
@@ -125,7 +130,8 @@ export function useDiscountCodes() {
       
       updateCode(id, { 
         timesUsed: code.timesUsed + 1,
-        usageHistory: [...usageHistory, newUsageEntry]
+        usageHistory: [...usageHistory, newUsageEntry],
+        usedAt: now,
       })
     }
   }, [codes, updateCode])
@@ -202,6 +208,53 @@ export function useDiscountCodes() {
       !code.isArchived &&
       code.expiryDate <= sevenDaysFromNow
     )
+  }, [codes, isExpired])
+
+  // Schedule local notifications for upcoming expiries (best-effort)
+  useEffect(() => {
+    // only in browser
+    if (typeof window === 'undefined') return
+    // avoid spamming: throttle to once per day
+    const todayKey = new Date().toISOString().split('T')[0]
+    const lastKey = localStorage.getItem('qcode-last-expiry-notify')
+    if (lastKey === todayKey) return
+
+    try {
+      const soon = codes.filter(c => c.expiryDate && !isExpired(c) && !c.isArchived)
+      const now = new Date()
+      const inThreeDays = new Date(now)
+      inThreeDays.setDate(now.getDate() + 3)
+
+      const due = soon.filter(c => (c.expiryDate as Date) <= inThreeDays)
+
+      if (due.length === 0) return
+
+      if ('Notification' in window) {
+        const permission = Notification.permission
+        if (permission === 'granted') {
+          const title = due.length === 1 
+            ? 'Discount code expiring soon'
+            : `${due.length} discount codes expiring soon`
+          const body = due.slice(0, 3).map(c => `${c.store}: ${c.code}`).join('\n') + (due.length > 3 ? `\n+${due.length - 3} more...` : '')
+          new Notification(title, { body, icon: '/icon-192x192.png', badge: '/icon-192x192.png' })
+          localStorage.setItem('qcode-last-expiry-notify', todayKey)
+        } else if (permission === 'default') {
+          // Ask once; user can decide.
+          Notification.requestPermission().then((perm) => {
+            if (perm === 'granted') {
+              const title = due.length === 1 
+                ? 'Discount code expiring soon'
+                : `${due.length} discount codes expiring soon`
+              const body = due.slice(0, 3).map(c => `${c.store}: ${c.code}`).join('\n') + (due.length > 3 ? `\n+${due.length - 3} more...` : '')
+              new Notification(title, { body, icon: '/icon-192x192.png', badge: '/icon-192x192.png' })
+              localStorage.setItem('qcode-last-expiry-notify', todayKey)
+            }
+          })
+        }
+      }
+    } catch (e) {
+      console.warn('Expiry notification skipped:', e)
+    }
   }, [codes, isExpired])
 
   // Get statistics

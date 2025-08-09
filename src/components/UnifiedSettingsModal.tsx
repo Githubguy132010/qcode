@@ -7,6 +7,7 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
 import { useTranslation } from 'react-i18next'
+import { usePWA } from '@/hooks/usePWA'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeSelector } from './ThemeSelector'
 import type { DeveloperSettings } from '@/types/changelog'
@@ -31,6 +32,7 @@ export function UnifiedSettingsModal({
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
   const { } = useDarkMode()
+  const { requestNotificationPermission } = usePWA()
   
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab)
   
@@ -339,6 +341,21 @@ export function UnifiedSettingsModal({
                     {t('settings.language.title')}
                   </h4>
                   <LanguageSwitcher />
+                </div>
+
+                <div className="theme-filter rounded-lg p-4">
+                  <h4 className="font-medium theme-text-primary mb-3 flex items-center gap-2">
+                    {t('header.notifications')} {/* reuse string */}
+                  </h4>
+                  <p className="text-sm theme-text-secondary mb-3">
+                    {t('notifications.expiringSoon')}
+                  </p>
+                  <button
+                    onClick={() => requestNotificationPermission()}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
+                  >
+                    {t('pwa.installButton', 'Install')}
+                  </button>
                 </div>
               </div>
             )}

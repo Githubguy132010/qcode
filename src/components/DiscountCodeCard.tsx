@@ -97,6 +97,11 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
               <span className="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-700">
                 {t(`categories.${code.category}`, code.category)}
               </span>
+              {code.source === 'scan' && (
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800">
+                  {t('codeCard.scanned', 'Scanned')}
+                </span>
+              )}
               {code.isFavorite && (
                 <Heart className="w-5 h-5 text-red-500 fill-current drop-shadow-sm" />
               )}

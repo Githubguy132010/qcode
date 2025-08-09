@@ -80,13 +80,15 @@
     "details": "Details bekijken",
     "used": "Gebruikt",
     "added": "Toegevoegd",
-    "use": "Gebruiken"
+    "use": "Gebruiken",
+    "scanned": "Gescannd"
   },
   "addCode": {
     "title": "Nieuwe kortingscode",
     "editTitle": "Kortingscode bewerken",
     "codeLabel": "Kortingscode *",
     "codePlaceholder": "Bijv. WELKOM10",
+    "scanButton": "Scannen met camera",
     "storeLabel": "Winkel *",
     "storePlaceholder": "Bijv. Bol.com",
     "discountLabel": "Korting *",
@@ -105,6 +107,15 @@
     "required": "* Verplicht veld",
     "prefilledFromClipboard": "Vooraf ingevuld vanaf klembord",
     "prefilledFromClipboardHelp": "Deze waarden zijn gedetecteerd vanaf je klembord. Controleer ze voordat je opslaat."
+  },
+  "scan": {
+    "title": "Code scannen",
+    "cameraStarting": "Camera starten...",
+    "error": "Camera fout",
+    "help": "Lijn de code uit binnen het kader. QR en barcodes worden ondersteund.",
+    "useOcr": "OCR gebruiken (fallback)",
+    "uploadImage": "Afbeelding uploaden",
+    "ocrNoText": "Geen tekst gedetecteerd. Probeer opnieuw."
   },
   "notifications": {
     "title": "Notificaties",

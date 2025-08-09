@@ -80,13 +80,15 @@
     "details": "View details",
     "used": "Used",
     "added": "Added",
-    "use": "Use"
+    "use": "Use",
+    "scanned": "Scanned"
   },
   "addCode": {
     "title": "New discount code",
     "editTitle": "Edit discount code",
     "codeLabel": "Discount code *",
     "codePlaceholder": "E.g. WELCOME10",
+    "scanButton": "Scan with camera",
     "storeLabel": "Store *",
     "storePlaceholder": "E.g. Amazon",
     "discountLabel": "Discount *",
@@ -105,6 +107,15 @@
     "required": "* Required field",
     "prefilledFromClipboard": "Prefilled from clipboard",
     "prefilledFromClipboardHelp": "These values were detected from your clipboard. Please review before saving."
+  },
+  "scan": {
+    "title": "Scan code",
+    "cameraStarting": "Starting camera...",
+    "error": "Camera error",
+    "help": "Align the code within the frame. QR and barcodes are supported.",
+    "useOcr": "Use OCR (fallback)",
+    "uploadImage": "Upload image",
+    "ocrNoText": "Could not detect text. Try again."
   },
   "notifications": {
     "title": "Notifications",

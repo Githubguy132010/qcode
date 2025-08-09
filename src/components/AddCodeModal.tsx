@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import { X, Info } from 'lucide-react'
+import { X, Info, ScanLine } from 'lucide-react'
 import * as Tooltip from '@radix-ui/react-tooltip'
 import type { DiscountCodeFormData } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
 import { useTranslation } from 'react-i18next'
+import dynamic from 'next/dynamic'
+
+const ScanCodeModal = dynamic(() => import('./ScanCodeModal'), { ssr: false })
 
 interface AddCodeModalProps {
   isOpen: boolean
@@ -26,6 +29,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSourc
   })
 
   const [errors, setErrors] = useState<Partial<DiscountCodeFormData>>({})
+  const [isScanOpen, setIsScanOpen] = useState(false)
 
   // Initialize or reinitialize form when modal opens with optional initial data
   useEffect(() => {
@@ -95,6 +99,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSourc
     onClose()
   }
 
+  const handleDetectFromScan = (partial: Partial<DiscountCodeFormData>) => {
+    setFormData(prev => ({
+      ...prev,
+      ...partial,
+      source: 'scan',
+    }))
+  }
+
   const handleChange = (field: keyof DiscountCodeFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
@@ -121,6 +133,11 @@ export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSourc
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <ScanCodeModal
+            isOpen={isScanOpen}
+            onClose={() => setIsScanOpen(false)}
+            onDetect={handleDetectFromScan}
+          />
           {prefillSource === 'clipboard' && (
             <div className="-mt-2 mb-2">
               <span className="inline-flex items-center gap-1.5 text-xs rounded-full px-2 py-1 border border-[var(--card-border)] bg-[var(--filter-bg)] theme-text-secondary">
@@ -173,6 +190,15 @@ export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSourc
                 errors.code ? 'border-red-500' : ''
               }`}
             />
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setIsScanOpen(true)}
+                className="mt-2 inline-flex items-center gap-2 text-sm px-3 py-1.5 rounded-md bg-[var(--filter-bg)] hover:bg-[var(--input-border)] theme-text-secondary"
+              >
+                <ScanLine size={16} /> {t('addCode.scanButton', 'Scan with camera')}
+              </button>
+            </div>
             {errors.code && (
               <p className="text-red-500 text-sm mt-1">{errors.code}</p>
             )}
