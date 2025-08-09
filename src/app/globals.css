@@ -143,7 +143,6 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -164,6 +163,70 @@ body {
 /* FIXED: Use consistent gradient approach for both themes */
 .dark body {
   background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+}
+
+/* Native select dropdown readability */
+/* Force high-contrast colors for select controls and their dropdown items */
+select,
+select option,
+select optgroup {
+  color: var(--text-primary);
+}
+/* Background for the dropdown list items (where supported) */
+select option {
+  background-color: var(--menu-bg);
+}
+.dark select option {
+  background-color: var(--menu-bg);
+  color: var(--text-primary);
+}
+/* Prevent overly faded appearance on some platforms */
+select:disabled {
+  opacity: 0.6;
+}
+
+/* Styled dropdowns inside filter chips */
+.theme-filter {
+  border: 1px solid var(--filter-border);
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-filter:hover {
+  background-color: var(--menu-hover);
+}
+
+.theme-filter:focus-within {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.12);
+}
+
+/* Enhance the select itself without touching form inputs */
+.theme-filter select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 0;
+  padding-right: 1.75rem; /* space for caret */
+  padding-left: 0.25rem;
+  line-height: 1.5;
+  background-color: transparent;
+  cursor: pointer;
+  min-width: 9rem;
+  white-space: nowrap;
+}
+
+/* Caret using pure CSS so it adapts to theme colors */
+.theme-filter select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
+    linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 9px) 50%,
+    100% 0;
+  background-size: 5px 5px, 5px 5px, 2.5em 2.5em;
+  background-repeat: no-repeat;
 }
 
 /* Custom scrollbar for light mode */
