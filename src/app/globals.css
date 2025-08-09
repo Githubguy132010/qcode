@@ -143,7 +143,6 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -164,6 +163,26 @@ body {
 /* FIXED: Use consistent gradient approach for both themes */
 .dark body {
   background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+}
+
+/* Native select dropdown readability */
+/* Force high-contrast colors for select controls and their dropdown items */
+select,
+select option,
+select optgroup {
+  color: var(--text-primary);
+}
+/* Background for the dropdown list items (where supported) */
+select option {
+  background-color: var(--menu-bg);
+}
+.dark select option {
+  background-color: var(--menu-bg);
+  color: var(--text-primary);
+}
+/* Prevent overly faded appearance on some platforms */
+select:disabled {
+  opacity: 0.6;
 }
 
 /* Custom scrollbar for light mode */
