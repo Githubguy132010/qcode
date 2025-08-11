@@ -18,4 +18,11 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
+  // Performance optimizations
+  maxWorkers: '50%',
+  clearMocks: true,
+  restoreMocks: true,
+  resetMocks: true,
+  // Faster test running
+  testTimeout: 10000,
 };
