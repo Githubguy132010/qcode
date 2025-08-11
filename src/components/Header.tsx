@@ -1,5 +1,4 @@
-import { Ticket, Bell, Settings, Moon, Sun, BarChart3, Home } from 'lucide-react'
-import { useDarkMode } from '../hooks/useDarkMode'
+import { Ticket, Bell, Settings, BarChart3, Home } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -12,7 +11,6 @@ interface HeaderProps {
 
 export function Header({ onNotificationClick, onSettingsClick, ...props }: HeaderProps) {
   const { t } = useTranslation()
-  const { isDark, setThemeMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
 
   return (
@@ -84,14 +82,6 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
               </Link>
             </div>
             
-            <button
-              onClick={() => setThemeMode(isDark ? 'light' : 'dark')}
-              className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-              aria-label={isDark ? t('header.lightMode') : t('header.darkMode')}
-              disabled={!isLoaded}
-            >
-              {isLoaded && (isDark ? <Sun size={16} className="sm:w-5 sm:h-5" /> : <Moon size={16} className="sm:w-5 sm:h-5" />)}
-            </button>
             <button
               onClick={onNotificationClick}
               className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"

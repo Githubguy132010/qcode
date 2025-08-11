@@ -45,7 +45,7 @@ export default async function RootLayout({
   const ssrLang = parseDefaultLocale(acceptLanguage);
 
   return (
-    <html lang={ssrLang}>
+    <html lang={ssrLang} className="dark">
       <body
         className={`font-sans antialiased min-h-screen transition-colors`}
       >

@@ -1,14 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Globe, Database, Sliders } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
-import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import { ThemeSelector } from './ThemeSelector'
 import type { DeveloperSettings } from '@/types/changelog'
 
 interface UnifiedSettingsModalProps {
@@ -19,7 +17,7 @@ interface UnifiedSettingsModalProps {
   initialTab?: SettingsTab
 }
 
-type SettingsTab = 'general' | 'data' | 'appearance' | 'advanced'
+type SettingsTab = 'general' | 'data' | 'languages' | 'advanced'
 
 export function UnifiedSettingsModal({
   isOpen,
@@ -30,8 +28,6 @@ export function UnifiedSettingsModal({
 }: UnifiedSettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
-  const { } = useDarkMode()
-  
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab)
   
   // Reset to initial tab when modal opens
@@ -110,7 +106,7 @@ export function UnifiedSettingsModal({
   const tabs = [
     { id: 'general' as SettingsTab, label: t('settings.tabs.general', 'General'), icon: Settings },
     { id: 'data' as SettingsTab, label: t('settings.tabs.data', 'Data Management'), icon: Database },
-    { id: 'appearance' as SettingsTab, label: t('settings.tabs.appearance', 'Appearance'), icon: Palette },
+    { id: 'languages' as SettingsTab, label: t('settings.tabs.languages', 'Languages'), icon: Globe },
     { id: 'advanced' as SettingsTab, label: t('settings.tabs.advanced', 'Advanced'), icon: Sliders },
   ]
 
@@ -317,26 +313,13 @@ export function UnifiedSettingsModal({
             )}
 
 
-            {/* Appearance Tab */}
-            {activeTab === 'appearance' && (
+            {/* Languages Tab */}
+            {activeTab === 'languages' && (
               <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold theme-text-primary mb-2">{t('settings.appearance.title')}</h3>
-                  <p className="text-sm theme-text-secondary">{t('settings.appearance.subtitle')}</p>
-                </div>
-
-                <div className="theme-filter rounded-lg p-4">
-                  <h4 className="font-medium theme-text-primary mb-3 flex items-center gap-2">
-                    <Palette size={16} />
-                    {t('settings.appearance.theme.label')}
-                  </h4>
-                  <ThemeSelector />
-                </div>
-
-                <div className="theme-filter rounded-lg p-4">
-                  <h4 className="font-medium theme-text-primary mb-3 flex items-center gap-2">
+                <div className="theme-filter rounded-lg p-3 sm:p-4">
+                  <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
                     <Globe size={16} />
-                    {t('settings.language.title')}
+                    {t('settings.language.title', 'Languages')}
                   </h4>
                   <LanguageSwitcher />
                 </div>

@@ -12,8 +12,6 @@
     "noResults": "No results found"
   },
   "header": {
-    "darkMode": "Switch to dark theme",
-    "lightMode": "Switch to light theme",
     "notifications": "Notifications",
     "settings": "Settings"
   },
@@ -137,18 +135,14 @@
     "tabs": {
       "general": "General",
       "data": "Data Management",
+      "languages": "Languages",
       "appearance": "Appearance",
       "advanced": "Advanced"
     },
     "appearance": {
       "title": "Appearance",
       "subtitle": "Choose how the app looks",
-      "theme": {
-        "label": "Theme",
-        "light": "Light",
-        "dark": "Dark",
-        "auto": "Auto"
-      }
+      "theme": {}
     },
     "about": {
       "version": "Version 1.0.0",

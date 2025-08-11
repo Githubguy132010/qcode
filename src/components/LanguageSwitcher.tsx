@@ -13,19 +13,19 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4">
-      <div className="space-y-2 sm:space-y-3">
+    <div className="space-y-2 sm:space-y-3">
+      <div className="space-y-2">
         {supportedLanguages.map((lang) => (
           <button
             key={lang}
             onClick={() => changeLanguage(lang)}
-            className={`w-full flex items-center justify-between p-3 sm:p-4 rounded-lg transition-all duration-200 min-h-[44px] touch-manipulation ${
+            className={`w-full flex items-center justify-between p-3 sm:p-3 rounded-lg transition-all duration-200 min-h-[44px] touch-manipulation ${
               language === lang
                 ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
                 : 'theme-filter border theme-border hover:bg-blue-50 dark:hover:bg-blue-900/10'
             }`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {lang === 'auto' ? (
                 <Globe className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               ) : (

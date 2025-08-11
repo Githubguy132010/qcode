@@ -23,6 +23,8 @@ export function HeaderWrapper() {
     window.location.reload()
   }
 
+  const safeInitialTab = initialTab === 'appearance' ? 'languages' : initialTab
+
   return (
     <>
       <Header
@@ -33,7 +35,7 @@ export function HeaderWrapper() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         onRestartTutorial={handleRestartTutorial}
-        initialTab={initialTab}
+        initialTab={safeInitialTab}
       />
     </>
   )

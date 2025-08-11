@@ -17,10 +17,12 @@ describe('Header', () => {
               tagline: 'Manage Discount Codes'
             },
             header: {
-              darkMode: 'Switch to dark theme',
-              lightMode: 'Switch to light theme',
               notifications: 'Notifications',
               settings: 'Settings'
+            },
+            navigation: {
+              home: 'Home',
+              analytics: 'Analytics'
             }
           }
         }
@@ -28,12 +30,19 @@ describe('Header', () => {
     });
   });
 
-  it('renders the app title', () => {
+  it('renders title, tagline, and header actions (no theme toggle expected)', () => {
     render(
       <I18nextProvider i18n={i18next}>
         <Header onNotificationClick={() => {}} onSettingsClick={() => {}} />
       </I18nextProvider>
     );
+
+    // With the project i18n test mock, untranslated keys render as keys
     expect(screen.getByText('common.appName')).toBeInTheDocument();
+    expect(screen.getByText('common.tagline')).toBeInTheDocument();
+
+    // Header actions present (notifications and settings)
+    expect(screen.getByLabelText('header.notifications')).toBeInTheDocument();
+    expect(screen.getByLabelText('header.settings')).toBeInTheDocument();
   });
 });

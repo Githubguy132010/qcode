@@ -77,6 +77,7 @@ export default function HomePage() {
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
   const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
   const [quickAddInitialData, setQuickAddInitialData] = useState<Partial<DiscountCodeFormData> | undefined>(undefined)
+  const safeInitialTab = (initialTab === 'appearance' ? 'languages' : initialTab) as 'general' | 'data' | 'advanced' | 'languages'
 
   // Create refs for each discount code for scrolling
   const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
@@ -430,7 +431,7 @@ export default function HomePage() {
         isOpen={isUnifiedModalOpen}
         onClose={() => setIsUnifiedModalOpen(false)}
         onRestartTutorial={handleRestartTutorial}
-        initialTab={initialTab}
+        initialTab={safeInitialTab}
       />
 
       {/* Changelog Popup */}

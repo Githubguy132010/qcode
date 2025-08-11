@@ -11,7 +11,7 @@ const SETTINGS_KEY = 'qcode-settings'
 const PENDING_SYNC_KEY = 'qcode-pending-sync'
 
 export interface AppSettings {
-  theme: 'light' | 'dark' | 'system'
+  theme: 'dark' // Dark-only app: theme is fixed
   notifications: boolean
   expiryWarningDays: number
   autoArchiveExpired: boolean
@@ -24,7 +24,7 @@ export interface PendingSync {
 }
 
 export const defaultSettings: AppSettings = {
-  theme: 'system',
+  theme: 'dark',
   notifications: true,
   expiryWarningDays: 7,
   autoArchiveExpired: false,
@@ -121,7 +121,8 @@ export const loadSettings = (): AppSettings => {
     const stored = localStorage.getItem(SETTINGS_KEY)
     if (!stored) return defaultSettings
     
-    return { ...defaultSettings, ...JSON.parse(stored) }
+    // Dark-only app: force theme to 'dark' regardless of stored value
+    return { ...defaultSettings, ...JSON.parse(stored), theme: 'dark' }
   } catch (error) {
     console.error('Error loading settings:', error)
     return defaultSettings
@@ -132,7 +133,9 @@ export const saveSettings = (settings: AppSettings): void => {
   try {
     if (typeof window === 'undefined') return
     
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings))
+    // Dark-only app: ensure we always store theme as 'dark'
+    const toSave: AppSettings = { ...settings, theme: 'dark' }
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(toSave))
   } catch (error) {
     console.error('Error saving settings:', error)
   }
@@ -197,7 +200,8 @@ export const restoreBackup = (backupData: string): void => {
     }
     
     if (backup.settings) {
-      saveSettings({ ...defaultSettings, ...backup.settings })
+      // Dark-only app: always coerce theme to 'dark' on restore
+      saveSettings({ ...defaultSettings, ...backup.settings, theme: 'dark' })
     }
   } catch (error) {
     console.error('Error restoring backup:', error)

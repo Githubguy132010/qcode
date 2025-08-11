@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { UnifiedSettingsModal } from '../UnifiedSettingsModal'
 import { I18nProvider } from '../I18nProvider'
 
@@ -8,24 +8,16 @@ jest.mock('@/hooks/useDiscountCodes', () => ({
 }))
 
 
-jest.mock('@/hooks/useDarkMode', () => ({
-  useDarkMode: () => ({
-    theme: 'light',
-    setThemeMode: jest.fn(),
-    isDark: false
-  })
-}))
-
-// Mock react-i18next
+ // Mock react-i18next (include i18n object for hooks that read i18n.language/changeLanguage)
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string, defaultValue?: string, options?: { count?: number }) => {
       const translations: Record<string, string> = {
         'settings.tabs.general': 'General',
         'settings.tabs.data': 'Data Management',
-        'settings.tabs.appearance': 'Appearance',
         'settings.tabs.advanced': 'Advanced',
         'settings.title': 'Settings',
+        'settings.tabs.languages': 'Languages',
         'settings.export.codesFound': options?.count !== undefined ? `${options.count} codes found` : '0 codes found',
         'settings.export.including': 'Including all your data',
         'settings.export.subtitle': 'Export your data',
@@ -41,10 +33,7 @@ jest.mock('react-i18next', () => ({
         'settings.about.privacyPoints.2': 'Your privacy is protected',
         'settings.about.privacyPoints.3': 'Open source and transparent',
         'common.appName': 'QCode',
-        'settings.appearance.title': 'Appearance',
-        'settings.appearance.subtitle': 'Customize the look and feel',
-        'settings.appearance.theme.label': 'Theme',
-        'settings.language.title': 'Language',
+        'settings.language.title': 'Change language',
         'settings.developer.title': 'Developer Settings',
         'settings.developer.subtitle': 'Advanced options for developers',
         'settings.developer.releaseNotes.title': 'Release Notes',
@@ -63,6 +52,10 @@ jest.mock('react-i18next', () => ({
         'settings.developer.development.userAgent': 'User Agent'
       }
       return translations[key] || defaultValue || key
+    },
+    i18n: {
+      language: 'en',
+      changeLanguage: jest.fn()
     }
   })
 }))
@@ -99,7 +92,7 @@ describe('UnifiedSettingsModal Fixed Sizing', () => {
     expect(modal).toBeInTheDocument()
 
     // Test that tab labels are present in the DOM
-    const tabs = ['Data Management', 'Appearance', 'Advanced']
+    const tabs = ['Data Management', 'Languages', 'Advanced']
 
     tabs.forEach(tabName => {
       const tabButtons = screen.getAllByText(tabName)
@@ -133,5 +126,25 @@ describe('UnifiedSettingsModal Fixed Sizing', () => {
     expect(modal).toHaveClass('w-[95vw]', 'h-[85vh]')
     expect(modal).toHaveClass('sm:w-[90vw]', 'sm:h-[80vh]')
     expect(modal).toHaveClass('lg:w-[900px]', 'lg:h-[600px]')
+  })
+
+  test('languages tab shows language switcher UI', () => {
+    render(<MockedModal />)
+
+    // Open the Languages tab
+    const languagesTabs = screen.getAllByText('Languages')
+    fireEvent.click(languagesTabs[0])
+
+    // Assert the Languages section is visible via a unique heading
+    const heading = screen.getByRole('heading', { name: 'Change language' })
+    expect(heading).toBeInTheDocument()
+
+    // Assert that the Languages panel contains interactive controls (from LanguageSwitcher)
+    const section = heading.closest('.theme-filter') ?? heading.parentElement
+    const buttons = section
+      ? section.querySelectorAll('button')
+      : document.querySelectorAll('.theme-filter button')
+
+    expect(buttons.length).toBeGreaterThan(0)
   })
 })

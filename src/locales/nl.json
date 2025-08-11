@@ -12,8 +12,6 @@
     "noResults": "Geen resultaten gevonden"
   },
   "header": {
-    "darkMode": "Schakel naar donker thema",
-    "lightMode": "Schakel naar licht thema",
     "notifications": "Notificaties",
     "settings": "Instellingen"
   },
@@ -137,18 +135,14 @@
     "tabs": {
       "general": "Algemeen",
       "data": "Gegevensbeheer",
+      "languages": "Talen",
       "appearance": "Weergave",
       "advanced": "Geavanceerd"
     },
     "appearance": {
       "title": "Weergave",
       "subtitle": "Kies hoe de app eruitziet",
-      "theme": {
-        "label": "Thema",
-        "light": "Licht",
-        "dark": "Donker",
-        "auto": "Automatisch"
-      }
+      "theme": {}
     },
     "about": {
       "version": "Versie 1.0.0",
