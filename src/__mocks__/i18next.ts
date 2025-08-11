@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'test') {
           return translation;
         },
         i18n: {
-          changeLanguage: () => new Promise(() => {}),
+          changeLanguage: () => Promise.resolve(),
           language: 'en',
         },
       };

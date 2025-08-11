@@ -37,7 +37,7 @@ describe('ThemeSelector', () => {
     const lightBtn = screen.getByText('settings.appearance.theme.light').closest('button');
     expect(lightBtn).toBeInTheDocument();
     // When theme === 'light', selected classes are applied
-    expect(lightBtn).toHaveClass('theme-border-blue-500');
+    expect(lightBtn).toHaveClass('border-blue-500');
   });
 
   it('invokes setThemeMode with "dark" when Dark is clicked', () => {

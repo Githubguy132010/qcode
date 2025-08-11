@@ -42,7 +42,7 @@ describe('LanguageSwitcher', () => {
     const englishButton = screen.getByText('settings.language.english').closest('button');
     expect(englishButton).toBeInTheDocument();
     // Active styles include a specific border color in the class string
-    expect(englishButton).toHaveClass('border-blue-300');
+    expect(englishButton).toHaveClass('border-blue-500');
   });
 
   it('changes language when a different option is clicked', () => {

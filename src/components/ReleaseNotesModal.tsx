@@ -55,7 +55,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            className="p-2 theme-text-muted hover:theme-text-primary transition-colors"
           >
             <X size={20} />
           </button>
@@ -69,7 +69,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
                 selectedTab === 'summary'
                   ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
-                  : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                  : 'border-transparent theme-text-secondary hover:theme-text-primary hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
               {t('releaseNotes.tabs.summary')} ({allEntries.length})
@@ -79,7 +79,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
                 selectedTab === 'commits'
                   ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
-                  : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                  : 'border-transparent theme-text-secondary hover:theme-text-primary hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
               {t('releaseNotes.tabs.commits')} ({commits.length})

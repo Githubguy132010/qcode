@@ -128,7 +128,7 @@ export function UnifiedSettingsModal({
             <h2 id="settings-modal-title" className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl"
+              className="w-11 h-11 flex items-center justify-center theme-text-secondary hover:theme-text-primary transition-colors"
             >
               <X size={20} />
             </button>
@@ -143,8 +143,8 @@ export function UnifiedSettingsModal({
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap min-h-[44px] ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-[var(--settings-active-bg)] to-blue-500 text-white shadow-lg border-2 border-[var(--settings-active-border)]'
-                      : 'theme-text-secondary hover:theme-text-primary hover:bg-white/50 dark:hover:bg-white/10 border border-transparent'
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg border-2 border-blue-500'
+                      : 'theme-text-secondary hover:theme-text-primary theme-menu-hover border border-transparent'
                   }`}
                 >
                   <tab.icon size={16} className={activeTab === tab.id ? 'text-white' : ''} />
@@ -168,8 +168,8 @@ export function UnifiedSettingsModal({
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 transform min-h-[44px] ${
                   activeTab === tab.id
-                    ? 'bg-gradient-to-r from-[var(--settings-active-bg)] to-blue-500 text-white shadow-lg scale-105 border-2 border-[var(--settings-active-border)]'
-                    : 'theme-text-secondary hover:theme-text-primary hover:bg-white/50 dark:hover:bg-white/10 hover:scale-102 hover:shadow-md'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg scale-105 border-2 border-blue-500'
+                    : 'theme-text-secondary hover:theme-text-primary theme-menu-hover hover:scale-102 hover:shadow-md'
                 }`}
               >
                 <tab.icon size={18} className={activeTab === tab.id ? 'text-white' : ''} />
@@ -184,7 +184,7 @@ export function UnifiedSettingsModal({
           {/* Desktop Close Button */}
           <button
             onClick={onClose}
-            className="hidden lg:block absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl min-h-[44px] min-w-[44px]"
+            className="hidden lg:block absolute top-4 right-4 w-11 h-11 flex items-center justify-center theme-text-secondary hover:theme-text-primary transition-colors z-10"
           >
             <X size={20} />
           </button>
@@ -253,13 +253,13 @@ export function UnifiedSettingsModal({
                   <p className="text-sm theme-text-secondary mb-4">{t('settings.export.subtitle')}</p>
                 </div>
 
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 border border-blue-300 dark:border-blue-500 rounded-xl p-4 shadow-lg">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 border border-blue-300 dark:border-blue-500 rounded-xl p-4 shadow-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-slate-900 dark:text-blue-100">
+                      <p className="font-semibold text-white">
                         {t('settings.export.codesFound', { count: codes.length })}
                       </p>
-                      <p className="text-sm text-slate-800 dark:text-blue-200">
+                      <p className="text-sm text-blue-100">
                         {t('settings.export.including')}
                       </p>
                     </div>
@@ -280,7 +280,7 @@ export function UnifiedSettingsModal({
 
                 <div className="space-y-3">
                   <div className="theme-code-display border-2 border-dashed rounded-lg p-4 sm:p-6 text-center">
-                    <Upload className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400 dark:text-gray-500 mb-3 sm:mb-4" />
+                    <Upload className="mx-auto h-10 w-10 sm:h-12 sm:w-12 theme-text-muted mb-3 sm:mb-4" />
                     <label htmlFor="import-file" className="cursor-pointer">
                       <span className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-semibold px-4 py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation">
                         <Upload size={16} />
@@ -299,9 +299,9 @@ export function UnifiedSettingsModal({
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-r from-red-50 to-pink-100 dark:from-red-900/40 dark:to-pink-900/40 border border-red-300 dark:border-red-500 rounded-xl p-4 shadow-lg">
-                    <h4 className="font-semibold text-slate-900 dark:text-red-100 mb-2">{t('settings.import.dangerTitle')}</h4>
-                    <p className="text-sm text-slate-800 dark:text-red-200 mb-3">
+                  <div className="bg-gradient-to-r from-red-600 to-pink-600 dark:from-red-700 dark:to-pink-700 border border-red-300 dark:border-red-500 rounded-xl p-4 shadow-lg">
+                    <h4 className="font-semibold text-white mb-2">{t('settings.import.dangerTitle')}</h4>
+                    <p className="text-sm text-red-100 mb-3">
                       {t('settings.import.dangerSubtitle')}
                     </p>
                     <button
@@ -415,11 +415,11 @@ export function UnifiedSettingsModal({
                     {t('settings.developer.sampleData.title')}
                   </h4>
                   
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-100 dark:from-purple-900/40 dark:to-pink-900/40 border border-purple-300 dark:border-purple-500 rounded-xl p-4 shadow-lg">
-                    <h5 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
+                  <div className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-700 dark:to-pink-700 border border-purple-300 dark:border-purple-500 rounded-xl p-4 shadow-lg">
+                    <h5 className="font-semibold text-white mb-2">
                       {t('settings.developer.sampleData.loadSampleTitle')}
                     </h5>
-                    <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
+                    <p className="text-sm text-purple-100 mb-3">
                       {t('settings.developer.sampleData.loadSampleDescription')}
                     </p>
                     <button

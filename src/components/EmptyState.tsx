@@ -39,7 +39,7 @@ export function EmptyState({ hasAnyCodes, onAddCode, onResetFilters }: EmptyStat
   return (
     <div className="theme-card rounded-xl shadow-lg border p-8 text-center transition-all duration-300">
       <div className="theme-code-display w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border">
-        <ShoppingBag size={28} className="text-gray-500 dark:text-gray-400" />
+        <ShoppingBag size={28} className="theme-text-muted" />
       </div>
       <h3 className="text-xl font-bold theme-text-primary mb-3">
         {t('homePage.noCodesFiltered.title')}
@@ -51,7 +51,7 @@ export function EmptyState({ hasAnyCodes, onAddCode, onResetFilters }: EmptyStat
         {onResetFilters && (
           <button
             onClick={onResetFilters}
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800/20 px-4 py-2 rounded-lg transition-all duration-200"
+            className="inline-flex items-center gap-2 theme-text-secondary hover:theme-text-primary font-semibold theme-menu-hover px-4 py-2 rounded-lg transition-all duration-200"
           >
             <RotateCcw size={16} />
             {t('homePage.noCodesFiltered.resetButton')}

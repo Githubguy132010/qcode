@@ -65,7 +65,7 @@ export function CombinedDashboard({
   return (
     <div className="theme-card rounded-2xl shadow-lg border p-2 sm:p-4 transition-all duration-300 card-hover mb-8">
       {/* Tabs */}
-      <div className="flex justify-between items-center bg-gray-100/50 dark:bg-gray-800/20 rounded-lg p-1 mb-4">
+      <div className="flex justify-between items-center theme-filter rounded-lg p-1 mb-4">
         <div className="flex space-x-1">
           {TABS.map(tab => (
             <button
@@ -73,8 +73,8 @@ export function CombinedDashboard({
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-3 py-1.5 text-sm font-semibold rounded-md transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'bg-white dark:bg-gray-700/50 shadow-sm text-blue-600 dark:text-blue-400'
-                  : 'theme-text-secondary hover:bg-gray-200/50 dark:hover:bg-gray-700/30'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'theme-text-secondary theme-menu-hover'
               }`}
             >
               <tab.icon size={16} />
@@ -91,7 +91,7 @@ export function CombinedDashboard({
           {activeTab === 'search' && onReset && (
             <button
               onClick={onReset}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm theme-text-secondary hover:theme-text-primary theme-filter hover:bg-gray-200/50 dark:hover:bg-gray-700/30 rounded-lg transition-all duration-200"
+              className="flex items-center gap-2 px-3 py-1.5 text-sm theme-text-secondary hover:theme-text-primary theme-filter theme-menu-hover rounded-lg transition-all duration-200"
               title={t('filters.reset', 'Reset filters')}
             >
               <RotateCcw size={14} />
@@ -104,8 +104,8 @@ export function CombinedDashboard({
               onClick={() => onViewModeChange?.('list')}
               className={`p-1.5 rounded-md transition-all duration-200 ${
                 viewMode === 'list'
-                  ? 'bg-white dark:bg-gray-700/50 shadow-sm text-blue-600 dark:text-blue-400'
-                  : 'theme-text-secondary hover:bg-gray-200/50 dark:hover:bg-gray-700/30'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'theme-text-secondary theme-menu-hover'
               }`}
               title={t('view.listView', 'List View')}
             >
@@ -115,8 +115,8 @@ export function CombinedDashboard({
               onClick={() => onViewModeChange?.('grid')}
               className={`p-1.5 rounded-md transition-all duration-200 ${
                 viewMode === 'grid'
-                  ? 'bg-white dark:bg-gray-700/50 shadow-sm text-blue-600 dark:text-blue-400'
-                  : 'theme-text-secondary hover:bg-gray-200/50 dark:hover:bg-gray-700/30'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'theme-text-secondary theme-menu-hover'
               }`}
               title={t('view.gridView', 'Grid View')}
             >
@@ -131,18 +131,18 @@ export function CombinedDashboard({
         {activeTab === 'search' && (
           <div className="space-y-4">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
               <input
                 type="text"
                 placeholder={t('filters.searchPlaceholder')}
                 value={filters.searchTerm}
                 onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
-                className="theme-input w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all duration-200 font-medium"
+                className="theme-input w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:theme-text-muted transition-all duration-200 font-medium"
               />
             </div>
             <div className="flex flex-wrap gap-3">
               <div className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5" data-tutorial="categories">
-                <Filter size={14} className="text-gray-500 dark:text-gray-400" />
+                <Filter size={14} className="theme-text-muted" />
                 <select
                   value={filters.category}
                   onChange={(e) => onFiltersChange({ ...filters, category: e.target.value })}
@@ -155,7 +155,7 @@ export function CombinedDashboard({
                 </select>
               </div>
               <div className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5">
-                <SortAsc size={14} className="text-gray-500 dark:text-gray-400" />
+                <SortAsc size={14} className="theme-text-muted" />
                 <select
                   value={filters.sortBy}
                   onChange={(e) => onFiltersChange({ ...filters, sortBy: e.target.value as SearchFilters['sortBy'] })}
@@ -220,7 +220,7 @@ export function CombinedDashboard({
           <div>
             {notificationCount === 0 ? (
               <div className="text-center py-8">
-                <Bell size={40} className="mx-auto text-gray-300 dark:text-gray-600 mb-2" />
+                <Bell size={40} className="mx-auto theme-text-muted mb-2" />
                 <p className="font-semibold theme-text-primary">{t('dashboard.notifications.allClear', 'All clear!')}</p>
                 <p className="text-sm theme-text-secondary">{t('dashboard.notifications.noExpiring', 'No codes are expiring soon.')}</p>
               </div>
@@ -245,7 +245,7 @@ export function CombinedDashboard({
                       </div>
                        <button
                         onClick={(e) => { e.stopPropagation(); handleDismissNotification(code.id); }}
-                        className="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                        className="ml-2 theme-text-muted hover:theme-text-primary p-1 rounded-full theme-menu-hover"
                        >
                          <X size={14} />
                       </button>

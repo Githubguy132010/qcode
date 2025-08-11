@@ -121,7 +121,7 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
         <div className="relative">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200"
+            className="p-2 theme-text-muted hover:theme-text-primary theme-menu-hover rounded-lg transition-all duration-200"
           >
             <MoreVertical size={16} />
           </button>
@@ -213,7 +213,7 @@ export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps
           disabled={isExpired}
           className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
             isExpired
-              ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+              ? 'theme-filter theme-text-muted cursor-not-allowed'
               : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
           } ${viewMode === 'grid' ? 'w-full' : ''}`}
         >

@@ -39,12 +39,14 @@ export function ThemeSelector({ className = '' }: ThemeSelectorProps) {
             onClick={() => setThemeMode(value)}
             className={`flex items-center gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 min-h-[44px] touch-manipulation ${
               theme === value
-                ? 'theme-border-blue-500 theme-bg-blue-50 theme-blue-700 shadow-sm'
-                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 theme-text-primary hover:bg-gray-50 dark:hover:bg-gray-700/30'
+                ? 'bg-blue-600 text-white border-blue-500 shadow-lg'
+                : 'theme-card border theme-text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-500'
             }`}
           >
-            {icon}
-            <span className="font-medium">{label}</span>
+            <span className={theme === value ? 'text-white' : 'theme-text-primary'}>
+              {icon}
+            </span>
+            <span className={`font-medium ${theme === value ? 'text-white' : 'theme-text-primary'}`}>{label}</span>
           </button>
         ))}
       </div>

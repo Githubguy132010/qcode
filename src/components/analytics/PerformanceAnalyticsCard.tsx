@@ -40,10 +40,10 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
           
           <div className="flex justify-between items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
             <div className="flex items-center gap-3">
-              <Archive size={24} className="text-gray-600 dark:text-gray-400" />
+              <Archive size={24} className="theme-text-secondary" />
               <div>
                 <p className="theme-text-secondary text-sm">{t('analytics.performance.archiveRatio', 'Archived Codes')}</p>
-                <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">{(analytics.archiveRatio * 100).toFixed(1)}%</p>
+                <p className="text-2xl font-bold theme-text-secondary">{(analytics.archiveRatio * 100).toFixed(1)}%</p>
               </div>
             </div>
           </div>
