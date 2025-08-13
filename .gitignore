@@ -49,3 +49,4 @@ next-env.d.ts
 
 # Local docs not for commit
 AGENTS.md
+QWEN.md
