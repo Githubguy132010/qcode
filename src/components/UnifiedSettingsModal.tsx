@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders, Megaphone } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
@@ -405,6 +405,42 @@ export function UnifiedSettingsModal({
                         {t('settings.developer.releaseNotes.openReleaseNotes')}
                       </button>
                     )}
+                  </div>
+                </div>
+
+                {/* Changelog Tester */}
+                <div className="theme-filter rounded-lg p-4">
+                  <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
+                    <Megaphone size={16} />
+                    {t('settings.developer.changelogTester.title', 'Changelog Tester')}
+                  </h4>
+
+                  <p className="text-sm theme-text-secondary mb-3">
+                    {t('settings.developer.changelogTester.description', 'Open the changelog popup to validate styling and i18n.')}
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={() => {
+                        try {
+                          // Force "last visit" to a far past date so popup logic considers there are updates
+                          localStorage.setItem('qcode-last-visit', new Date('2000-01-01T00:00:00.000Z').toISOString())
+                          // Close settings so the popup can overlay
+                          onClose()
+                          // Trigger a soft reload to allow popup effect hooks to run cleanly on parent
+                          setTimeout(() => {
+                            // No full reload to keep SPA feel; components relying on effect will re-check soon
+                            // If the page has logic to mount ChangelogPopup at root, it will show after this tick
+                          }, 0)
+                        } catch (e) {
+                          console.error('Failed to trigger changelog tester', e)
+                        }
+                      }}
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
+                    >
+                      <Sparkles size={16} />
+                      {t('settings.developer.changelogTester.openButton', 'Open changelog popup')}
+                    </button>
                   </div>
                 </div>
 
