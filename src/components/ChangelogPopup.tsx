@@ -90,11 +90,11 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </div>
 
           {/* User Impact */}
-          <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">
+          <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border theme-border-blue-200 dark:theme-border-blue-800">
+            <h4 className="font-semibold theme-text-primary mb-2">
               {t('releaseNotes.summary.userImpactTitle')}:
             </h4>
-            <p className="text-sm text-blue-800 dark:text-blue-300">
+            <p className="text-sm theme-text-secondary">
               {aiSummary!.userImpact}
             </p>
           </div>

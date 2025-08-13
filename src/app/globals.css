@@ -525,3 +525,109 @@ button, input, select, textarea {
 .theme-hover-blue-700:hover { color: var(--accent-blue-700); }
 .theme-hover-bg-blue-600:hover { background-color: var(--accent-blue-600); }
 .theme-hover-bg-blue-700:hover { background-color: var(--accent-blue-700); }
+
+/* Material Design 3 Checkbox (20px) */
+.m3-checkbox {
+  /* Theme-aware variables */
+  --m3-size: 20px;
+  --m3-radius: 4px;
+  --m3-border: var(--input-border);
+  --m3-bg: var(--card-bg);
+  --m3-checked: var(--accent-blue-600);
+  --m3-checked-hover: var(--accent-blue-700);
+  --m3-focus: var(--accent-blue-400);
+}
+
+.m3-checkbox .m3-box {
+  inline-size: var(--m3-size);
+  block-size: var(--m3-size);
+  border-radius: var(--m3-radius);
+  border: 2px solid var(--m3-border);
+  background: var(--m3-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.04);
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+
+/* Hover (only on pointer devices) */
+@media (hover:hover) and (pointer:fine) {
+  .m3-checkbox:hover .m3-box {
+    border-color: var(--text-secondary);
+  }
+  .m3-checkbox input:checked:hover + .m3-box {
+    background-color: var(--m3-checked-hover);
+    border-color: var(--m3-checked-hover);
+  }
+}
+
+/* Focus ring on the visual box (input is sr-only) */
+.m3-checkbox input:focus-visible + .m3-box {
+  outline: 3px solid var(--m3-focus);
+  outline-offset: 2px;
+}
+
+/* Checked state */
+.m3-checkbox input:checked + .m3-box {
+  background-color: var(--m3-checked);
+  border-color: var(--m3-checked);
+  color: #ffffff; /* currentColor for checkmark */
+}
+
+/* Disabled */
+.m3-checkbox input:disabled + .m3-box {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* Checkmark (material style) */
+.m3-checkbox .m3-box::after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border: 2px solid transparent;
+  border-left-color: currentColor;
+  border-bottom-color: currentColor;
+  transform: rotate(-45deg) scale(0);
+  transform-origin: bottom left;
+  transition: transform .15s ease;
+  pointer-events: none;
+}
+
+.m3-checkbox input:checked + .m3-box::after {
+  transform: rotate(-45deg) scale(1);
+  color: #ffffff;
+}
+
+/* Indeterminate (mixed) — supports both native :indeterminate and ARIA mixed */
+.m3-checkbox .m3-box::before {
+  content: "";
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transition: transform .15s ease;
+  pointer-events: none;
+}
+
+.m3-checkbox input:indeterminate + .m3-box,
+.m3-checkbox input[aria-checked="mixed"] + .m3-box {
+  background-color: var(--m3-checked);
+  border-color: var(--m3-checked);
+}
+
+.m3-checkbox input:indeterminate + .m3-box::before,
+.m3-checkbox input[aria-checked="mixed"] + .m3-box::before {
+  transform: scaleX(1);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .m3-checkbox .m3-box,
+  .m3-checkbox .m3-box::before,
+  .m3-checkbox .m3-box::after {
+    transition: none;
+  }
+}
