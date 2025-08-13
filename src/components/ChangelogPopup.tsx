@@ -105,8 +105,6 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </div>
 
           {/* User Impact */}
-          <div className="mb-8 p-5 rounded-2xl theme-card shadow-sm">
-            <h4 className="text-lg font-semibold theme-text-primary mb-2">
               {t('releaseNotes.summary.userImpactTitle')}:
             </h4>
             <p className="text-sm theme-text-secondary">

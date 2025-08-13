@@ -359,13 +359,15 @@ export function UnifiedSettingsModal({
                   </h4>
                   
                   <div className="space-y-4">
-                    <label className="flex items-start gap-3 py-2 cursor-pointer">
+                    <label className="m3-checkbox flex items-start gap-3 py-2 cursor-pointer touch-manipulation">
                       <input
                         type="checkbox"
                         checked={developerSettings.showAdvancedReleaseNotes}
                         onChange={(e) => updateDeveloperSettings({ showAdvancedReleaseNotes: e.target.checked })}
-                        className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 touch-manipulation"
+                        aria-checked={developerSettings.showAdvancedReleaseNotes ? 'true' : 'false'}
+                        className="sr-only peer"
                       />
+                      <span aria-hidden="true" className="m3-box mt-0.5"></span>
                       <div>
                         <span className="text-sm font-medium theme-text-primary">
                           {t('settings.developer.releaseNotes.showAdvancedLabel')}
@@ -376,13 +378,15 @@ export function UnifiedSettingsModal({
                       </div>
                     </label>
 
-                    <label className="flex items-start gap-3 py-2 cursor-pointer">
+                    <label className="m3-checkbox flex items-start gap-3 py-2 cursor-pointer touch-manipulation">
                       <input
                         type="checkbox"
                         checked={developerSettings.enableChangelogPopup}
                         onChange={(e) => updateDeveloperSettings({ enableChangelogPopup: e.target.checked })}
-                        className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 touch-manipulation"
+                        aria-checked={developerSettings.enableChangelogPopup ? 'true' : 'false'}
+                        className="sr-only peer"
                       />
+                      <span aria-hidden="true" className="m3-box mt-0.5"></span>
                       <div>
                         <span className="text-sm font-medium theme-text-primary">
                           {t('settings.developer.releaseNotes.showChangelogLabel')}
