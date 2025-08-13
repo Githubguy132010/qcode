@@ -46,3 +46,6 @@ next-env.d.ts
 /public/workbox-*
 /public/worker-*
 /public/fallback-*
+
+# Local docs not for commit
+AGENTS.md
