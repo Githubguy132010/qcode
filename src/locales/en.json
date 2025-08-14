@@ -222,11 +222,6 @@
         "environment": "Environment:",
         "development": "Development",
         "production": "Production"
-      },
-      "changelogTester": {
-        "title": "Changelog Tester",
-        "description": "Open the changelog popup to validate styling and i18n.",
-        "openButton": "Open changelog popup"
       }
     }
   },

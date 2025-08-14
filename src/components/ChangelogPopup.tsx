@@ -49,23 +49,10 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
   const { aiSummary, entries } = changelogData!
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
-      <div className="rounded-3xl shadow-2xl max-w-2xl w-full theme-card animate-in slide-in-from-bottom-4 duration-300 overflow-hidden">
-        <div className="h-1 w-full rounded-t-3xl bg-[var(--accent-blue-500)]" />
-        {/* Colorful subtle background blob */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-        >
-          <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full blur-3xl opacity-25"
-               style={{ background: 'radial-gradient(closest-side, var(--accent-blue-300), transparent)' }} />
-          <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full blur-3xl opacity-20"
-               style={{ background: 'radial-gradient(closest-side, var(--accent-purple), transparent)' }} />
-          <div className="absolute top-1/3 -left-10 h-56 w-56 rounded-full blur-3xl opacity-15"
-               style={{ background: 'radial-gradient(closest-side, var(--accent-orange), transparent)' }} />
-        </div>
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
+      <div className="theme-card rounded-2xl shadow-2xl max-w-lg w-full border border-white/20 animate-in slide-in-from-bottom-4 duration-300">
         {/* Header */}
-        <div className="relative theme-card rounded-t-3xl p-8 theme-text-primary">
+        <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-2xl p-6 text-white">
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-all duration-200"
@@ -74,29 +61,27 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </button>
           
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 rounded-full theme-bg-blue-100 theme-border-blue-300 border">
-              <Sparkles size={24} className="theme-blue-700" />
+            <div className="bg-white/20 p-2 rounded-full">
+              <Sparkles size={24} className="text-white" />
             </div>
-            <h2 className="text-2xl font-extrabold tracking-tight theme-text-primary">
-              {aiSummary!.title}
-            </h2>
+            <h2 className="text-xl font-bold">{aiSummary!.title}</h2>
           </div>
           
-          <p className="theme-text-secondary leading-relaxed">
+          <p className="text-white/90 leading-relaxed">
             {aiSummary!.summary}
           </p>
         </div>
 
         {/* Content */}
-        <div className="p-8 pt-6">
+        <div className="p-6">
           {/* Highlights */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold theme-text-primary mb-3">{t('releaseNotes.summary.title')}:</h3>
-            <div className="space-y-3">
+            <h3 className="font-semibold theme-text-primary mb-3">{t('releaseNotes.summary.title')}:</h3>
+            <div className="space-y-2">
               {aiSummary!.highlights.map((highlight, index) => (
-                <div key={index} className="flex items-start gap-3 p-3 rounded-xl theme-filter">
-                  <span className="text-lg leading-6 theme-blue-600">✨</span>
-                  <span className="text-base theme-text-primary flex-1">
+                <div key={index} className="flex items-start gap-3 p-3 rounded-lg theme-filter">
+                  <span className="text-lg">{highlight.split(' ')[0]}</span>
+                  <span className="text-sm theme-text-secondary flex-1">
                     {highlight.split(' ').slice(1).join(' ')}
                   </span>
                 </div>
@@ -105,8 +90,8 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </div>
 
           {/* User Impact */}
-          <div className="mb-6">
-            <h4 className="text-base font-semibold theme-text-primary mb-2">
+          <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border theme-border-blue-200 dark:theme-border-blue-800">
+            <h4 className="font-semibold theme-text-primary mb-2">
               {t('releaseNotes.summary.userImpactTitle')}:
             </h4>
             <p className="text-sm theme-text-secondary">
@@ -115,17 +100,17 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleClose}
-              className="flex-1 inline-flex items-center justify-center gap-2 bg-[var(--foreground)] hover:opacity-90 text-[var(--background)] font-semibold py-3.5 px-5 rounded-xl transition-colors shadow-sm"
+              className="flex-1 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               {t('releaseNotes.buttons.gotIt')}
             </button>
             
             <button
               onClick={handleViewAdvanced}
-              className="flex-1 inline-flex items-center justify-center gap-2 bg-[var(--accent-blue-600)] hover:bg-[var(--accent-blue-700)] text-white font-semibold py-3.5 px-5 rounded-xl transition-colors shadow-sm"
+              className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               <FileText size={16} />
               {t('releaseNotes.buttons.technicalDetails')}
@@ -133,8 +118,8 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           </div>
 
           {/* Update count */}
-          <div className="mt-6 text-center">
-            <p className="text-sm theme-text-muted">
+          <div className="mt-4 text-center">
+            <p className="text-xs theme-text-muted">
               {t('releaseNotes.popup.updateCount', { count: entries.length })}
             </p>
           </div>
