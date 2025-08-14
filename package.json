@@ -16,7 +16,7 @@
     "test:all": "jest && next lint && next build"
   },
   "dependencies": {
-    "@radix-ui/react-tooltip": "^1.2.7",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",
     "i18next": "^25.3.4",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
     "@types/minimatch": "^6.0.0",
