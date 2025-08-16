@@ -330,14 +330,19 @@ export default function HomePage() {
     }
   }, [isLoading, isInitialized, codes.length, shouldShowTutorial, startTutorial])
 
-  if (isLoading) {
+  // Move all state that depends on browser APIs into useEffect
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Render loading state or null on server
+  if (!mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center transition-colors">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
-          <p className="theme-text-secondary font-medium" suppressHydrationWarning>
-            {t('common.loading')}
-          </p>
         </div>
       </div>
     )
@@ -345,13 +350,11 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen transition-colors">
-      {/* Offline Status Banner */}
+      {/* Remove suppressHydrationWarning and handle client-side rendering properly */}
       <OnlineStatusBanner />
-      
       <Header
         onNotificationClick={() => {
-          // This can be repurposed or removed if no longer needed
-          console.log('Notification icon clicked')
+          console.log('Notification clicked')
         }}
         onSettingsClick={() => {
           setInitialTab('general')
@@ -360,8 +363,21 @@ export default function HomePage() {
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Install Prompt */}
         <InstallPrompt />
+
+        {/* Only show top add button if there are existing codes */}
+        {codes.length > 0 && (
+          <div className="mb-8">
+            <button
+              onClick={handleOpenAdd}
+              data-tutorial="add-button"
+              className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
+            >
+              <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
+              <span className="text-lg">{t('homePage.addNewCode')}</span>
+            </button>
+          </div>
+        )}
 
         <CombinedDashboard
           filters={searchFilters}
@@ -377,18 +393,6 @@ export default function HomePage() {
           viewMode={viewMode}
           onViewModeChange={setViewMode}
         />
-
-        {/* Add Button */}
-        <div className="mb-8">
-          <button
-            onClick={handleOpenAdd}
-            data-tutorial="add-button"
-            className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
-          >
-            <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
-            <span className="text-lg">{t('homePage.addNewCode')}</span>
-          </button>
-        </div>
 
         {/* Codes List */}
         {filteredCodes.length === 0 ? (
