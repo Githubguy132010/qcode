@@ -379,16 +379,18 @@ export default function HomePage() {
         />
 
         {/* Add Button */}
-        <div className="mb-8">
-          <button
-            onClick={handleOpenAdd}
-            data-tutorial="add-button"
-            className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
-          >
-            <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
-            <span className="text-lg">{t('homePage.addNewCode')}</span>
-          </button>
-        </div>
+        {codes.length > 0 && (
+          <div className="mb-8">
+            <button
+              onClick={handleOpenAdd}
+              data-tutorial="add-button"
+              className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
+            >
+              <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
+              <span className="text-lg">{t('homePage.addNewCode')}</span>
+            </button>
+          </div>
+        )}
 
         {/* Codes List */}
         {filteredCodes.length === 0 ? (
