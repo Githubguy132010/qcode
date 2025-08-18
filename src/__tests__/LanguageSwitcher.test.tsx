@@ -1,21 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
-import { changeLanguageMock } from '@/hooks/useLanguage';
 
 // Mock useLanguage so we can control current language and assert interactions
+const changeLanguageMock = jest.fn();
+
 jest.mock('@/hooks/useLanguage', () => {
-  const changeLanguage = jest.fn();
   return {
     __esModule: true,
     useLanguage: () => ({
       language: 'en',
       currentLanguage: 'en',
-      changeLanguage,
+      changeLanguage: changeLanguageMock,
       supportedLanguages: ['auto', 'en', 'nl'] as const,
     }),
-    // expose mock for assertions
-    changeLanguageMock: changeLanguage,
   };
 });
 
