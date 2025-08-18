@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next'
 import { useDarkMode, type ThemeMode } from '@/hooks/useDarkMode'
-import { Sun, Moon, Monitor } from 'lucide-react'
+import { Sun, Moon, Monitor, Circle } from 'lucide-react'
 
 interface ThemeSelectorProps {
   className?: string
@@ -22,6 +22,11 @@ export function ThemeSelector({ className = '' }: ThemeSelectorProps) {
       value: 'dark',
       label: t('settings.appearance.theme.dark', 'Dark'),
       icon: <Moon className="w-4 h-4" />
+    },
+    {
+      value: 'oled',
+      label: t('settings.appearance.theme.oled', 'OLED Dark'),
+      icon: <Circle className="w-4 h-4 fill-current" />
     },
     {
       value: 'auto',

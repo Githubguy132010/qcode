@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-export type ThemeMode = 'light' | 'dark' | 'auto'
+export type ThemeMode = 'light' | 'dark' | 'auto' | 'oled'
 
 export function useDarkMode() {
   const [theme, setTheme] = useState<ThemeMode>('auto')
@@ -29,7 +29,7 @@ export function useDarkMode() {
     if (theme === 'auto') {
       shouldBeDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     } else {
-      shouldBeDark = theme === 'dark'
+      shouldBeDark = theme === 'dark' || theme === 'oled'
     }
 
     setIsDark(shouldBeDark)
@@ -37,8 +37,15 @@ export function useDarkMode() {
     // Apply dark mode class to document
     if (shouldBeDark) {
       document.documentElement.classList.add('dark')
+      // Add oled class if oled theme is selected
+      if (theme === 'oled') {
+        document.documentElement.classList.add('oled')
+      } else {
+        document.documentElement.classList.remove('oled')
+      }
     } else {
       document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove('oled')
     }
 
     // Save preference
@@ -55,8 +62,13 @@ export function useDarkMode() {
       setIsDark(e.matches)
       if (e.matches) {
         document.documentElement.classList.add('dark')
+        // Keep oled class if user had selected oled theme
+        if (localStorage.getItem('themeMode') === 'oled') {
+          document.documentElement.classList.add('oled')
+        }
       } else {
         document.documentElement.classList.remove('dark')
+        document.documentElement.classList.remove('oled')
       }
     }
 

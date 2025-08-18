@@ -142,6 +142,77 @@
   --settings-active-border: #60a5fa;
 }
 
+.oled {
+  /* Base colors - True black for OLED displays */
+  --background: #000000;
+  --background-light: #000000;
+  --foreground: #f8fafc;
+  
+  /* Card system - Pure black for OLED */
+  --card-bg: #000000;
+  --card-border: #334155;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --card-shadow-hover: 0 8px 25px -5px rgb(0 0 0 / 0.25), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+  
+  /* Input system */
+  --input-bg: #1e293b;
+  --input-border: #475569;
+  --input-focus: #60a5fa;
+  
+  /* Text system - Enhanced contrast for OLED */
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-muted: #cbd5e1;
+  
+  /* Enhanced accent colors for OLED */
+  --accent-blue: #60a5fa;
+  --accent-blue-hover: #93c5fd;
+  --accent-blue-50: #1e3a8a;
+  --accent-blue-100: #1e40af;
+  --accent-blue-200: #1d4ed8;
+  --accent-blue-300: #2563eb;
+  --accent-blue-400: #3b82f6;
+  --accent-blue-500: #60a5fa;
+  --accent-blue-600: #93c5fd;
+  --accent-blue-700: #bfdbfe;
+  --accent-blue-800: #dbeafe;
+  --accent-blue-900: #eff6ff;
+  --accent-green: #22d3ee;
+  --accent-red: #f87171;
+  --accent-orange: #fb923c;
+  --accent-yellow: #fbbf24;
+  --accent-purple: #a78bfa;
+  --accent-indigo: #818cf8;
+  
+  /* Enhanced status colors */
+  --success-bg: #022c22;
+  --success-border: #059669;
+  --warning-bg: #291303;
+  --warning-border: #d97706;
+  --error-bg: #290707;
+  --error-border: #dc2626;
+  
+  /* Component-specific colors - Pure black for OLED */
+  --filter-bg: #000000;
+  --filter-border: #475569;
+  --code-display-bg: #000000;
+  --code-display-bg-light: #1e293b;
+  --code-display-border: #475569;
+  --stat-card-bg: #000000;
+  --stat-card-bg-light: #1e293b;
+  --stat-card-border: #475569;
+  --menu-bg: #000000;
+  --menu-border: #334155;
+  --menu-hover: #1e293b;
+  
+  /* Settings modal specific colors for OLED */
+  --settings-sidebar-bg: #000000;
+  --settings-sidebar-border: #334155;
+  --settings-active-bg: #1e40af;
+  --settings-active-text: #dbeafe;
+  --settings-active-border: #60a5fa;
+}
+
 @theme inline {
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -163,6 +234,11 @@ body {
 /* FIXED: Use consistent gradient approach for both themes */
 .dark body {
   background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
+}
+
+/* OLED mode - pure black */
+.oled body {
+  background: #000000;
 }
 
 /* Native select dropdown readability */
@@ -257,6 +333,19 @@ select:disabled {
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* OLED mode scrollbar */
+.oled ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.oled ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.oled ::-webkit-scrollbar-thumb:hover {
   background: #64748b;
 }
 
@@ -420,6 +509,15 @@ button, input, select, textarea {
 }
 
 .dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* OLED mode scrollbar */
+.oled .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.oled .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 

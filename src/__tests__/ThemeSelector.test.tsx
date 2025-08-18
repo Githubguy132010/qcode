@@ -1,20 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeSelector } from '../components/ThemeSelector';
-import { setThemeModeMock } from '@/hooks/useDarkMode';
 
 // Mock useDarkMode to control current theme and capture setThemeMode calls
+const setThemeModeMock = jest.fn();
+
 jest.mock('@/hooks/useDarkMode', () => {
-  const setThemeMode = jest.fn();
   return {
     __esModule: true,
     useDarkMode: () => ({
       theme: 'light' as const,
-      setThemeMode,
+      setThemeMode: setThemeModeMock,
       isDark: false,
       isLoaded: true,
     }),
-    setThemeModeMock: setThemeMode,
   };
 });
 
@@ -24,11 +23,12 @@ describe('ThemeSelector', () => {
     setThemeModeMock.mockClear();
   });
 
-  it('renders Light, Dark and Auto options', () => {
+  it('renders Light, Dark, OLED and Auto options', () => {
     render(<ThemeSelector />);
     // With the i18n test mock, missing keys return the key itself
     expect(screen.getByText('settings.appearance.theme.light')).toBeInTheDocument();
     expect(screen.getByText('settings.appearance.theme.dark')).toBeInTheDocument();
+    expect(screen.getByText('settings.appearance.theme.oled')).toBeInTheDocument();
     expect(screen.getByText('settings.appearance.theme.auto')).toBeInTheDocument();
   });
 
@@ -47,6 +47,15 @@ describe('ThemeSelector', () => {
     fireEvent.click(darkBtn!);
     expect(setThemeModeMock).toHaveBeenCalledTimes(1);
     expect(setThemeModeMock).toHaveBeenCalledWith('dark');
+  });
+
+  it('invokes setThemeMode with "oled" when OLED is clicked', () => {
+    render(<ThemeSelector />);
+    const oledBtn = screen.getByText('settings.appearance.theme.oled').closest('button');
+    expect(oledBtn).toBeInTheDocument();
+    fireEvent.click(oledBtn!);
+    expect(setThemeModeMock).toHaveBeenCalledTimes(1);
+    expect(setThemeModeMock).toHaveBeenCalledWith('oled');
   });
 
   it('invokes setThemeMode with "auto" when Auto is clicked', () => {
