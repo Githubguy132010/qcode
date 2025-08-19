@@ -1,16 +1,15 @@
-import { Ticket, Bell, Settings, Moon, Sun, BarChart3, Home } from 'lucide-react'
+import { Ticket, Settings, Moon, Sun, BarChart3, Home } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 interface HeaderProps {
-  onNotificationClick: () => void
   onSettingsClick: () => void
   'data-tutorial'?: string
 }
 
-export function Header({ onNotificationClick, onSettingsClick, ...props }: HeaderProps) {
+export function Header({ onSettingsClick, ...props }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, setThemeMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
@@ -91,14 +90,6 @@ export function Header({ onNotificationClick, onSettingsClick, ...props }: Heade
               disabled={!isLoaded}
             >
               {isLoaded && (isDark ? <Sun size={16} className="sm:w-5 sm:h-5" /> : <Moon size={16} className="sm:w-5 sm:h-5" />)}
-            </button>
-            <button
-              onClick={onNotificationClick}
-              className="p-1.5 sm:p-2.5 theme-text-secondary hover:theme-text-primary theme-menu-hover rounded-lg transition-all duration-200"
-              aria-label={t('header.notifications')}
-              data-tutorial="notifications"
-            >
-              <Bell size={16} className="sm:w-5 sm:h-5" />
             </button>
             <button
               onClick={onSettingsClick}

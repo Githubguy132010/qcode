@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { X, Info } from 'lucide-react'
 import * as Tooltip from '@radix-ui/react-tooltip'
+import { AnimatePresence } from 'framer-motion'
 import type { DiscountCodeFormData } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
 import { useTranslation } from 'react-i18next'
+import { AnimatedModal } from '@/components/AnimatedModal'
 
 interface AddCodeModalProps {
   isOpen: boolean
@@ -106,215 +108,184 @@ export function AddCodeModal({ isOpen, onClose, onAdd, initialData, prefillSourc
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-[var(--card-border)]">
-          <h2 className="text-xl font-semibold theme-text-primary">
-            {t('addCode.title')}
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 theme-text-muted hover:theme-text-secondary transition-colors"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {prefillSource === 'clipboard' && (
-            <div className="-mt-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 text-xs rounded-full px-2 py-1 border border-[var(--card-border)] bg-[var(--filter-bg)] theme-text-secondary">
-                <Tooltip.Provider delayDuration={150}>
-                  <Tooltip.Root>
-                    <Tooltip.Trigger asChild>
-                      <button
-                        type="button"
-                        aria-label={t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
-                        className="inline-flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg,#fff)]"
-                      >
-                        <Info size={14} className="theme-text-muted" aria-hidden="true" />
-                      </button>
-                    </Tooltip.Trigger>
-                    <Tooltip.Portal>
-                      <Tooltip.Content
-                        side="top"
-                        sideOffset={6}
-                        className="z-50 rounded-md bg-gray-900 px-2 py-1 text-xs text-white shadow-lg
-                          opacity-0 scale-95 transition-all duration-150 will-change-transform
-                          data-[state=delayed-open]:opacity-100 data-[state=delayed-open]:scale-100
-                          data-[state=closed]:opacity-0 data-[state=closed]:scale-95
-                          data-[side=top]:translate-y-[-4px] data-[state=delayed-open]:data-[side=top]:translate-y-0
-                          data-[side=bottom]:translate-y-[4px] data-[state=delayed-open]:data-[side=bottom]:translate-y-0
-                          data-[side=left]:translate-x-[-4px] data-[state=delayed-open]:data-[side=left]:translate-x-0
-                          data-[side=right]:translate-x-[4px] data-[state=delayed-open]:data-[side=right]:translate-x-0"
-                      >
-                        {t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
-                        <Tooltip.Arrow className="fill-gray-900" />
-                      </Tooltip.Content>
-                    </Tooltip.Portal>
-                  </Tooltip.Root>
-                </Tooltip.Provider>
-                {t('addCode.prefilledFromClipboard', 'Prefilled from clipboard')}
-              </span>
-            </div>
-          )}
-          {/* Code */}
-          <div>
-            <label htmlFor="code" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.codeLabel')}
-            </label>
-            <input
-              type="text"
-              id="code"
-              value={formData.code}
-              onChange={(e) => handleChange('code', e.target.value)}
-              placeholder={t('addCode.codePlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.code ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.code && (
-              <p className="text-red-500 text-sm mt-1">{errors.code}</p>
-            )}
-          </div>
-
-          {/* Store */}
-          <div>
-            <label htmlFor="store" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.storeLabel')}
-            </label>
-            <input
-              type="text"
-              id="store"
-              value={formData.store}
-              onChange={(e) => handleChange('store', e.target.value)}
-              placeholder={t('addCode.storePlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.store ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.store && (
-              <p className="text-red-500 text-sm mt-1">{errors.store}</p>
-            )}
-          </div>
-
-          {/* Discount */}
-          <div>
-            <label htmlFor="discount" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.discountLabel')}
-            </label>
-            <input
-              type="text"
-              id="discount"
-              value={formData.discount}
-              onChange={(e) => handleChange('discount', e.target.value)}
-              placeholder={t('addCode.discountPlaceholder')}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.discount ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.discount && (
-              <p className="text-red-500 text-sm mt-1">{errors.discount}</p>
-            )}
-          </div>
-
-          {/* Original Price */}
-          <div>
-            <label htmlFor="originalPrice" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.originalPriceLabel', 'Original Price')}
-            </label>
-            <input
-              type="number"
-              id="originalPrice"
-              value={formData.originalPrice}
-              onChange={(e) => handleChange('originalPrice', e.target.value)}
-              placeholder={t('addCode.originalPricePlaceholder', '50.00')}
-              min="0"
-              step="0.01"
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.originalPrice ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.originalPrice && (
-              <p className="text-red-500 text-sm mt-1">{errors.originalPrice}</p>
-            )}
-            <p className="text-xs theme-text-secondary mt-1">
-              {t('addCode.originalPriceHelp', 'Optional: Helps calculate accurate savings and better analytics')}
-            </p>
-          </div>
-
-          {/* Category */}
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.categoryLabel')}
-            </label>
-            <select
-              id="category"
-              value={formData.category}
-              onChange={(e) => handleChange('category', e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent"
-            >
-              {DISCOUNT_CATEGORIES.map((category) => (
-                <option key={category} value={category}>
-                  {t(CATEGORY_TRANSLATION_KEYS[category])}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Expiry Date */}
-          <div>
-            <label htmlFor="expiryDate" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.expiryDateLabel')}
-            </label>
-            <input
-              type="date"
-              id="expiryDate"
-              value={formData.expiryDate}
-              onChange={(e) => handleChange('expiryDate', e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
-                errors.expiryDate ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.expiryDate && (
-              <p className="text-red-500 text-sm mt-1">{errors.expiryDate}</p>
-            )}
-          </div>
-
-          {/* Description */}
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.descriptionLabel')}
-            </label>
-            <textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => handleChange('description', e.target.value)}
-              placeholder={t('addCode.descriptionPlaceholder')}
-              rows={3}
-              className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent resize-none"
-            />
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-3 pt-4">
+    <AnimatePresence>
+      <AnimatedModal isOpen={isOpen} onClose={onClose}>
+        <div className="theme-card rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between p-6 border-b border-[var(--card-border)]">
+            <h2 className="text-xl font-semibold theme-text-primary">
+              {t('addCode.title')}
+            </h2>
             <button
-              type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-[var(--input-border)] theme-text-secondary rounded-lg hover:bg-[var(--filter-bg)] transition-colors"
+              className="p-2 theme-text-muted hover:theme-text-secondary transition-colors"
             >
-              {t('common.cancel')}
-            </button>
-            <button
-              type="submit"
-              className="flex-1 px-4 py-2 bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] text-white rounded-lg transition-colors"
-            >
-              {t('addCode.saveButton')}
+              <X size={20} />
             </button>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {prefillSource === 'clipboard' && (
+              <div className="-mt-2 mb-2">
+                <span className="inline-flex items-center gap-1.5 text-xs rounded-full px-2 py-1 border border-[var(--card-border)] bg-[var(--filter-bg)] theme-text-secondary">
+                  <Tooltip.Provider delayDuration={150}>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <button
+                          type="button"
+                          aria-label={t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
+                          className="inline-flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card-bg,#fff)]"
+                        >
+                          <Info size={14} className="theme-text-muted" aria-hidden="true" />
+                        </button>
+                      </Tooltip.Trigger>
+                      <Tooltip.Portal>
+                        <Tooltip.Content
+                          side="top"
+                          sideOffset={6}
+                          className="z-50 rounded-md bg-gray-900 px-2 py-1 text-xs text-white shadow-lg
+                            opacity-0 scale-95 transition-all duration-150 will-change-transform
+                            data-[state=delayed-open]:opacity-100 data-[state=delayed-open]:scale-100
+                            data-[state=closed]:opacity-0 data-[state=closed]:scale-95
+                            data-[side=top]:translate-y-[-4px] data-[state=delayed-open]:data-[side=top]:translate-y-0
+                            data-[side=bottom]:translate-y-[4px] data-[state=delayed-open]:data-[side=bottom]:translate-y-0
+                            data-[side=left]:translate-x-[-4px] data-[state=delayed-open]:data-[side=left]:translate-x-0
+                            data-[side=right]:translate-x-[4px] data-[state=delayed-open]:data-[side=right]:translate-x-0"
+                        >
+                          {t('addCode.prefilledFromClipboardHelp', 'These values were detected from your clipboard. Please review before saving.')}
+                          <Tooltip.Arrow className="fill-gray-900" />
+                        </Tooltip.Content>
+                      </Tooltip.Portal>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
+                  {t('addCode.prefilledFromClipboard', 'Prefilled from clipboard')}
+                </span>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="code" className="block text-sm font-medium theme-text-primary mb-1">
+                {t('addCode.codeLabel')}
+              </label>
+              <input
+                id="code"
+                type="text"
+                value={formData.code}
+                onChange={(e) => handleChange('code', e.target.value)}
+                className={`theme-input w-full px-3 py-2 rounded-lg border ${errors.code ? 'border-red-500' : ''} focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent`}
+                placeholder={t('addCode.codePlaceholder')}
+              />
+              {errors.code && <p className="mt-1 text-sm text-red-500">{errors.code}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="store" className="block text-sm font-medium theme-text-primary mb-1">
+                {t('addCode.storeLabel')}
+              </label>
+              <input
+                id="store"
+                type="text"
+                value={formData.store}
+                onChange={(e) => handleChange('store', e.target.value)}
+                className={`theme-input w-full px-3 py-2 rounded-lg border ${errors.store ? 'border-red-500' : ''} focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent`}
+                placeholder={t('addCode.storePlaceholder')}
+              />
+              {errors.store && <p className="mt-1 text-sm text-red-500">{errors.store}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="discount" className="block text-sm font-medium theme-text-primary mb-1">
+                {t('addCode.discountLabel')}
+              </label>
+              <input
+                id="discount"
+                type="text"
+                value={formData.discount}
+                onChange={(e) => handleChange('discount', e.target.value)}
+                className={`theme-input w-full px-3 py-2 rounded-lg border ${errors.discount ? 'border-red-500' : ''} focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent`}
+                placeholder={t('addCode.discountPlaceholder')}
+              />
+              {errors.discount && <p className="mt-1 text-sm text-red-500">{errors.discount}</p>}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="originalPrice" className="block text-sm font-medium theme-text-primary mb-1">
+                  {t('addCode.originalPriceLabel')}
+                </label>
+                <input
+                  id="originalPrice"
+                  type="text"
+                  value={formData.originalPrice}
+                  onChange={(e) => handleChange('originalPrice', e.target.value)}
+                  className="theme-input w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent"
+                  placeholder={t('addCode.originalPricePlaceholder')}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium theme-text-primary mb-1">
+                  {t('addCode.categoryLabel')}
+                </label>
+                <select
+                  id="category"
+                  value={formData.category}
+                  onChange={(e) => handleChange('category', e.target.value)}
+                  className="theme-input w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent"
+                >
+                  {DISCOUNT_CATEGORIES.map(category => (
+                    <option key={category} value={category}>{t(CATEGORY_TRANSLATION_KEYS[category])}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="expiryDate" className="block text-sm font-medium theme-text-primary mb-1">
+                {t('addCode.expiryDateLabel')}
+              </label>
+              <input
+                id="expiryDate"
+                type="date"
+                value={formData.expiryDate}
+                onChange={(e) => handleChange('expiryDate', e.target.value)}
+                className={`theme-input w-full px-3 py-2 rounded-lg border ${errors.expiryDate ? 'border-red-500' : ''} focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent`}
+              />
+              {errors.expiryDate && <p className="mt-1 text-sm text-red-500">{errors.expiryDate}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium theme-text-primary mb-1">
+                {t('addCode.descriptionLabel')}
+              </label>
+              <textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => handleChange('description', e.target.value)}
+                placeholder={t('addCode.descriptionPlaceholder')}
+                rows={3}
+                className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent resize-none"
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3 pt-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-2 border border-[var(--input-border)] theme-text-secondary rounded-lg hover:bg-[var(--filter-bg)] transition-colors"
+              >
+                {t('common.cancel')}
+              </button>
+              <button
+                type="submit"
+                className="flex-1 px-4 py-2 bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] text-white rounded-lg transition-colors"
+              >
+                {t('addCode.saveButton')}
+              </button>
+            </div>
+          </form>
+        </div>
+      </AnimatedModal>
+    </AnimatePresence>
   )
 }
