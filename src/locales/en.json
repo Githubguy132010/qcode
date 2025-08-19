@@ -444,9 +444,10 @@
       "title": "List & Grid View",
       "description": "Switch between list and grid view to display your discount codes. Grid view allows you to see more codes at once on larger screens, while list view provides more details for each code."
     },
-    "notifications": {
-      "title": "Notifications & Management",
-      "description": "Click the bell icon in the header to view notifications about expiring codes. Use the gear icon to access settings, export/import, and other options."
+    
+    "settingsAccess": {
+      "title": "Accessing Settings",
+      "description": "Use the gear icon to access settings, export/import, and other options."
     },
     "completion": {
       "title": "You're All Set!",

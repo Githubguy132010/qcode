@@ -95,6 +95,7 @@ export function Header({ onSettingsClick, ...props }: HeaderProps) {
               onClick={onSettingsClick}
               className="p-1.5 sm:p-2.5 theme-text-secondary hover:theme-text-primary theme-menu-hover rounded-lg transition-all duration-200"
               aria-label={t('header.settings')}
+              data-tutorial="settings-button"
             >
               <Settings size={16} className="sm:w-5 sm:h-5" />
             </button>

@@ -5,6 +5,7 @@ import { X, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { OnboardingTutorialProps } from '@/types/onboarding'
 import { ONBOARDING_STEPS } from '@/types/onboarding'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: OnboardingTutorialProps) {
   const { t } = useTranslation()
@@ -223,115 +224,137 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/40 dark:bg-black/60 transition-opacity z-[9998]"
-      />
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 dark:bg-black/60 z-[9998]"
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Tutorial Card */}
-      <div
-        ref={tooltipRef}
-        className={`
-          theme-card rounded-xl shadow-2xl border
-          w-full max-w-xs sm:max-w-sm md:max-w-md mx-2 sm:mx-3 md:mx-4 transition-all duration-300 transform
-          ring-4 ring-white/10 backdrop-blur-sm
-          ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
-        `}
-        style={{ zIndex: 10000 }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b theme-text-primary">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              {isLastStep ? (
-                <CheckCircle size={20} className="text-white" />
-              ) : (
-                <span className="text-white text-sm font-semibold">{currentStep + 1}</span>
-              )}
-            </div>
-            <h2 className="text-lg font-semibold theme-text-primary">
-              {t(currentStepData.title)}
-            </h2>
-          </div>
-          
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-            aria-label={t('common.close', 'Close')}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            ref={tooltipRef}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className={`
+              theme-card rounded-xl shadow-2xl border
+              w-full max-w-xs sm:max-w-sm md:max-w-md mx-2 sm:mx-3 md:mx-4
+              ring-4 ring-white/10 backdrop-blur-sm
+            `}
+            style={{ zIndex: 10000 }}
           >
-            <X size={20} className="theme-text-secondary" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-3 sm:p-4 md:p-6">
-          <p className="theme-text-secondary leading-relaxed mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm md:text-base">
-            {t(currentStepData.description)}
-          </p>
-
-          {/* Progress bar */}
-          <div className="mb-3 sm:mb-4 md:mb-6">
-            <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-1 sm:mb-2">
-              <span>
-                {t('onboarding.navigation.stepOf', { 
-                  current: currentStep + 1, 
-                  total: totalSteps 
-                })}
-              </span>
-              <span>{Math.round((currentStep + 1) / totalSteps * 100)}%</span>
-            </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 sm:h-2">
-              <div 
-                className="bg-blue-500 h-1.5 sm:h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(currentStep + 1) / totalSteps * 100}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Navigation buttons */}
-          <div className="flex items-center justify-between gap-1 sm:gap-2">
-            <div className="flex gap-1 sm:gap-2">
-              {!isFirstStep && (
-                <button
-                  onClick={handlePrevious}
-                  className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-xs sm:text-sm"
-                >
-                  <ArrowLeft size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                  <span className="hidden sm:inline">{t('onboarding.navigation.previous')}</span>
-                </button>
-              )}
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b theme-text-primary">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                  {isLastStep ? (
+                    <CheckCircle size={20} className="text-white" />
+                  ) : (
+                    <span className="text-white text-sm font-semibold">{currentStep + 1}</span>
+                  )}
+                </div>
+                <h2 className="text-lg font-semibold theme-text-primary">
+                  {t(currentStepData.title)}
+                </h2>
+              </div>
               
-              {currentStepData.allowSkip && !isLastStep && (
-                <button
-                  onClick={handleSkip}
-                  className="px-2 sm:px-3 md:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs sm:text-sm"
-                >
-                  {t('onboarding.navigation.skip')}
-                </button>
-              )}
+              <button
+                onClick={onClose}
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                aria-label={t('common.close', 'Close')}
+              >
+                <X size={20} className="theme-text-secondary" />
+              </button>
             </div>
 
-            <button
-              onClick={handleNext}
-              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-xs sm:text-sm"
-            >
-              {isLastStep ? (
-                <>
-                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                  <span className="hidden sm:inline">{t('onboarding.navigation.finish')}</span>
-                  <span className="sm:hidden">✓</span>
-                </>
-              ) : (
-                <>
-                  <span className="hidden sm:inline">{t('onboarding.navigation.next')}</span>
-                  <span className="sm:hidden">→</span>
-                  <ArrowRight size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
+            {/* Content */}
+            <div className="p-3 sm:p-4 md:p-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep} // Key is crucial for AnimatePresence to detect changes
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="theme-text-secondary leading-relaxed mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm md:text-base">
+                    {t(currentStepData.description)}
+                  </p>
+
+                  {/* Progress bar */}
+                  <div className="mb-3 sm:mb-4 md:mb-6">
+                    <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-1 sm:mb-2">
+                      <span>
+                        {t('onboarding.navigation.stepOf', { 
+                          current: currentStep + 1, 
+                          total: totalSteps 
+                        })}
+                      </span>
+                      <span>{Math.round((currentStep + 1) / totalSteps * 100)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 sm:h-2">
+                      <div 
+                        className="bg-blue-500 h-1.5 sm:h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${(currentStep + 1) / totalSteps * 100}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Navigation buttons */}
+                  <div className="flex items-center justify-between gap-1 sm:gap-2">
+                    <div className="flex gap-1 sm:gap-2">
+                      {!isFirstStep && (
+                        <button
+                          onClick={handlePrevious}
+                          className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-xs sm:text-sm"
+                        >
+                          <ArrowLeft size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                          <span className="hidden sm:inline">{t('onboarding.navigation.previous')}</span>
+                        </button>
+                      )}
+                      
+                      {currentStepData.allowSkip && !isLastStep && (
+                        <button
+                          onClick={handleSkip}
+                          className="px-2 sm:px-3 md:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs sm:text-sm"
+                        >
+                          {t('onboarding.navigation.skip')}
+                        </button>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={handleNext}
+                      className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-xs sm:text-sm"
+                    >
+                      {isLastStep ? (
+                        <>
+                          <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                          <span className="hidden sm:inline">{t('onboarding.navigation.finish')}</span>
+                          <span className="sm:hidden">✓</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="hidden sm:inline">{t('onboarding.navigation.next')}</span>
+                          <span className="sm:hidden">→</span>
+                          <ArrowRight size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Spotlight effect for highlighted elements */}
       {highlightedElement && currentStepData.position !== 'center' && (
@@ -339,8 +362,6 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           :root {
             --onboarding-shadow-normal-start: 0 0 0 4px var(--accent-blue), 0 0 0 8px var(--accent-blue), 0 0 0 12px var(--accent-blue);
             --onboarding-shadow-normal-mid: 0 0 0 5px var(--accent-blue), 0 0 0 10px var(--accent-blue), 0 0 0 15px var(--accent-blue);
-            --onboarding-shadow-notifications-start: 0 0 0 6px var(--accent-blue), 0 0 0 12px var(--accent-blue), 0 0 0 18px var(--accent-blue);
-            --onboarding-shadow-notifications-mid: 0 0 0 8px var(--accent-blue), 0 0 0 16px var(--accent-blue), 0 0 0 24px var(--accent-blue);
             --onboarding-overlay-light: 0 0 0 9999px rgba(0, 0, 0, 0.5);
             --onboarding-overlay-dark: 0 0 0 9999px rgba(0, 0, 0, 0.6);
           }
@@ -349,28 +370,18 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             position: relative;
             z-index: 9999;
             box-shadow:
-              ${currentStepData.id === 'notifications-archiving' ? `
-                var(--onboarding-shadow-notifications-start),
-                var(--onboarding-overlay-light);
-              ` : `
-                var(--onboarding-shadow-normal-start),
-                var(--onboarding-overlay-light);
-              `}
+              var(--onboarding-shadow-normal-start),
+              var(--onboarding-overlay-light);
             border-radius: 12px;
             transition: all 0.3s ease;
-            animation: ${currentStepData.id === 'notifications-archiving' ? 'onboarding-pulse-notifications' : 'onboarding-pulse'} 3s ease-in-out infinite;
+            animation: onboarding-pulse 3s ease-in-out infinite;
           }
           
           .dark .onboarding-highlight {
             box-shadow:
-              ${currentStepData.id === 'notifications-archiving' ? `
-                var(--onboarding-shadow-notifications-start),
-                var(--onboarding-overlay-dark);
-              ` : `
-                var(--onboarding-shadow-normal-start),
-                var(--onboarding-overlay-dark);
-              `}
-            animation: ${currentStepData.id === 'notifications-archiving' ? 'onboarding-pulse-notifications-dark' : 'onboarding-pulse-dark'} 3s ease-in-out infinite;
+              var(--onboarding-shadow-normal-start),
+              var(--onboarding-overlay-dark);
+            animation: onboarding-pulse-dark 3s ease-in-out infinite;
           }
           
           @keyframes onboarding-pulse {
@@ -386,19 +397,6 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             }
           }
           
-          @keyframes onboarding-pulse-notifications {
-            0%, 100% {
-              box-shadow:
-                var(--onboarding-shadow-notifications-start),
-                var(--onboarding-overlay-light);
-            }
-            50% {
-              box-shadow:
-                var(--onboarding-shadow-notifications-mid),
-                var(--onboarding-overlay-light);
-            }
-          }
-          
           @keyframes onboarding-pulse-dark {
             0%, 100% {
               box-shadow:
@@ -408,19 +406,6 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             50% {
               box-shadow:
                 var(--onboarding-shadow-normal-mid),
-                var(--onboarding-overlay-dark);
-            }
-          }
-          
-          @keyframes onboarding-pulse-notifications-dark {
-            0%, 100% {
-              box-shadow:
-                var(--onboarding-shadow-notifications-start),
-                var(--onboarding-overlay-dark);
-            }
-            50% {
-              box-shadow:
-                var(--onboarding-shadow-notifications-mid),
                 var(--onboarding-overlay-dark);
             }
           }
