@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 
-export type LanguageOption = 'auto' | 'en' | 'nl';
+export type LanguageOption = 'auto' | 'en' | 'nl' | 'fr' | 'de' | 'it' | 'es';
 
 export const useLanguage = () => {
   const { i18n } = useTranslation();
@@ -30,7 +30,7 @@ export const useLanguage = () => {
     // If auto, use browser language or default to English
     if (newLanguage === 'auto') {
       const browserLang = navigator.language.split('-')[0];
-      const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
+      const supportedLanguage = ['en', 'nl', 'fr', 'de', 'it', 'es'].includes(browserLang) ? browserLang : 'en';
       i18n.changeLanguage(supportedLanguage);
     } else {
       i18n.changeLanguage(newLanguage);
@@ -41,6 +41,6 @@ export const useLanguage = () => {
     language,
     currentLanguage,
     changeLanguage,
-    supportedLanguages: ['auto', 'en', 'nl'] as const,
+    supportedLanguages: ['auto', 'en', 'nl', 'fr', 'de', 'it', 'es'] as const,
   };
 };

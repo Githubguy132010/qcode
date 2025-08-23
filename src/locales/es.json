@@ -1,0 +1,486 @@
+{
+  "common": {
+    "appName": "QCode",
+    "tagline": "Gestionar códigos de descuento",
+    "loading": "Cargando...",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "search": "Buscar...",
+    "noResults": "No se encontraron resultados"
+  },
+  "header": {
+    "darkMode": "Cambiar a tema oscuro",
+    "lightMode": "Cambiar a tema claro",
+    "notifications": "Notificaciones",
+    "settings": "Configuración"
+  },
+  "homePage": {
+    "welcome": "¡Bienvenido a QCode!",
+    "welcomeMessage": "Comienza agregando tu primer código de descuento. ¡Mantén todos tus descuentos en un solo lugar y nunca pierdas una oferta!",
+    "addNewCode": "Agregar nuevo código de descuento",
+    "noCodes": {
+      "title": "No se encontraron códigos de descuento",
+      "subtitle": "Agrega tu primer código de descuento para comenzar",
+      "addButton": "Agregar primer código"
+    },
+    "noCodesFiltered": {
+      "title": "No se encontraron códigos de descuento",
+      "subtitle": "Prueba diferentes criterios de búsqueda o filtro",
+      "resetButton": "Restablecer filtros"
+    }
+  },
+  "filters": {
+    "title": "Buscar y filtrar",
+    "searchPlaceholder": "Buscar por código o tienda...",
+    "reset": "Restablecer filtros",
+    "category": {
+      "label": "Categoría",
+      "all": "Todas las categorías",
+      "favorites": "Favoritos"
+    },
+    "sortBy": {
+      "label": "Ordenar por",
+      "dateAdded": "Más reciente primero",
+      "expiryDate": "Fecha de vencimiento",
+      "discount": "Descuento",
+      "store": "Tienda",
+      "timesUsed": "Más usado"
+    },
+    "filterBy": {
+      "label": "Mostrar",
+      "all": "Todos los códigos",
+      "active": "Códigos activos",
+      "expired": "Códigos vencidos",
+      "archived": "Archivados"
+    },
+    "view": {
+      "label": "Vista",
+      "listView": "Vista de lista",
+      "gridView": "Vista de cuadrícula"
+    }
+  },
+  "codeCard": {
+    "expires": "Vence el",
+    "expired": "Vencido",
+    "expiryToday": "Vence hoy",
+    "expiryTomorrow": "Vence mañana",
+    "expiryDays": "Vence en {{days}} días",
+    "noExpiryDate": "Sin fecha de vencimiento",
+    "discountCodeLabel": "CÓDIGO DE DESCUENTO",
+    "timesUsed": "Usado {{count}} veces",
+    "copyCode": "Copiar código",
+    "codeCopied": "¡Copiado!",
+    "archive": "Archivar",
+    "unarchive": "Desarchivar",
+    "favorite": "Agregar a favoritos",
+    "unfavorite": "Quitar de favoritos",
+    "details": "Ver detalles",
+    "used": "Usado",
+    "added": "Agregado",
+    "use": "Usar"
+  },
+  "addCode": {
+    "title": "Nuevo código de descuento",
+    "editTitle": "Editar código de descuento",
+    "codeLabel": "Código de descuento *",
+    "codePlaceholder": "Ej. WELCOME10",
+    "storeLabel": "Tienda *",
+    "storePlaceholder": "Ej. Amazon",
+    "discountLabel": "Descuento *",
+    "discountPlaceholder": "Ej. 10% o $5",
+    "originalPriceLabel": "Precio original",
+    "originalPricePlaceholder": "50.00",
+    "originalPriceHelp": "Opcional: Ayuda a calcular ahorros precisos y mejores análisis",
+    "expiryDateLabel": "Fecha de vencimiento",
+    "categoryLabel": "Categoría",
+    "categoryPlaceholder": "Ej. Ropa",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Ej. Válido solo para nuevos clientes",
+    "saveButton": "Guardar",
+    "editButton": "Guardar cambios",
+    "cancelButton": "Cancelar",
+    "required": "* Campo requerido",
+    "prefilledFromClipboard": "Prellenado desde el portapapeles",
+    "prefilledFromClipboardHelp": "Estos valores fueron detectados desde tu portapapeles. Verifícalos antes de guardar."
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "expiringSoon": "Códigos de descuento venciendo pronto",
+    "singleExpiring": "Código de descuento venciendo pronto",
+    "multipleExpiring": "{{count}} códigos de descuento venciendo pronto",
+    "expiryToday": " vence hoy",
+    "expiryTomorrow": " vence mañana",
+    "expiryDays": " vence en {{days}} días",
+    "andMore": "Y {{count}} más...",
+    "noExpiring": "No hay códigos de descuento venciendo pronto",
+    "daysLeft": "{{count}} días restantes",
+    "clickToJump": "Haz clic para ir a este código"
+  },
+  "stats": {
+    "title": "Resumen",
+    "totalCodes": "Códigos totales",
+    "activeCodes": "Activos",
+    "expiredCodes": "Vencidos",
+    "favoriteCodes": "Favoritos",
+    "expiringSoon": "Venciendo pronto",
+    "archivedCodes": "Códigos archivados",
+    "clickToView": "Haz clic para ver códigos {{type}}",
+    "viewExpired": "vencidos",
+    "viewFavorites": "favoritos",
+    "viewExpiringSoon": "venciendo pronto"
+  },
+  "settings": {
+    "title": "Configuración",
+    "tabs": {
+      "general": "General",
+      "data": "Gestión de datos",
+      "appearance": "Apariencia",
+      "advanced": "Avanzado"
+    },
+    "appearance": {
+      "title": "Apariencia",
+      "subtitle": "Elige cómo se ve la app",
+      "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "dark": "Oscuro",
+        "auto": "Auto"
+      }
+    },
+    "about": {
+      "version": "Versión 1.0.0",
+      "subtitle": "Gestionar códigos de descuento, simple y efectivo",
+      "aboutApp": "Acerca de esta app",
+      "aboutText": "QCode es una Progressive Web App que te ayuda a mantener todos tus códigos de descuento en un solo lugar. La app funciona completamente offline y tus datos se almacenan localmente en tu dispositivo.",
+      "privacy": "Privacidad y seguridad",
+      "privacyPoints": [
+        "Todos tus datos se almacenan localmente",
+        "No se requieren cuentas o registro",
+        "No se comparten datos con terceros",
+        "Completamente funcional offline"
+      ],
+      "tutorial": "Tutorial",
+      "tutorialDescription": "Haz el tour de la app nuevamente para aprender todas las funciones.",
+      "footer": "Construido con ❤️ usando Next.js, TypeScript y Tailwind CSS"
+    },
+    "export": {
+      "title": "Exportar tus códigos de descuento",
+      "subtitle": "Crea una copia de seguridad de todos tus códigos de descuento. Puedes importarlos más tarde o compartirlos con otros dispositivos.",
+      "codesFound": "{{count}} códigos de descuento encontrados",
+      "including": "Incluyendo códigos archivados y vencidos",
+      "exportButton": "Exportar",
+      "tip": "💡 Consejo: Guarda tu copia de seguridad en un lugar seguro como almacenamiento en la nube."
+    },
+    "import": {
+      "title": "Importar códigos de descuento",
+      "subtitle": "Importa códigos de descuento desde un archivo de copia de seguridad. Esto reemplazará todos tus códigos actuales.",
+      "selectButton": "Seleccionar archivo de copia de seguridad",
+      "onlyJson": "Solo se admiten archivos .json",
+      "demoTitle": "O prueba datos de ejemplo",
+      "demoSubtitle": "Carga algunos ejemplos para probar la app.",
+      "demoButton": "Cargar datos de ejemplo",
+      "dangerTitle": "Acciones peligrosas",
+      "dangerSubtitle": "Esto eliminará permanentemente todos tus códigos de descuento.",
+      "clearButton": "Eliminar todo"
+    },
+    "language": {
+      "title": "Cambiar idioma",
+      "subtitle": "Elige el idioma para la interfaz de la app",
+      "auto": "Automático (basado en navegador)",
+      "dutch": "Holandés",
+      "english": "Inglés",
+      "french": "Francés",
+      "german": "Alemán",
+      "italian": "Italiano",
+      "spanish": "Español"
+    },
+    "developer": {
+      "title": "Opciones de desarrollador",
+      "subtitle": "Configuraciones avanzadas y herramientas para desarrolladores y usuarios avanzados.",
+      "releaseNotes": {
+        "title": "Notas de versión",
+        "subtitle": "Información técnica detallada sobre actualizaciones recientes",
+        "showAdvancedLabel": "Mostrar notas de versión avanzadas",
+        "showAdvancedDescription": "Mostrar información técnica detallada sobre actualizaciones y cambios.",
+        "showChangelogLabel": "Mostrar popup de changelog al actualizar",
+        "showChangelogDescription": "Mostrar una notificación cuando hay una nueva versión disponible.",
+        "openReleaseNotes": "Abrir notas de versión"
+      },
+      "sampleData": {
+        "title": "Datos de ejemplo",
+        "loadSampleTitle": "Cargar datos de ejemplo",
+        "loadSampleButton": "Cargar datos de ejemplo",
+        "loadSampleDescription": "Agregar códigos de descuento de ejemplo para probar las funciones de la app.",
+        "clearAllButton": "Borrar todo",
+        "clearAllDescription": "⚠️ Eliminar permanentemente todos tus códigos de descuento. ¡Esta acción no se puede deshacer!"
+      },
+      "development": {
+        "title": "Información de desarrollo",
+        "storageUsed": "Almacenamiento usado:",
+        "totalCodes": "Códigos totales:",
+        "userAgent": "User-Agent:",
+        "appVersion": "Versión de la app:",
+        "environment": "Entorno:",
+        "development": "Desarrollo",
+        "production": "Producción"
+      }
+    }
+  },
+  "releaseNotes": {
+    "title": "Notas de versión",
+    "subtitle": "Información técnica detallada sobre actualizaciones recientes",
+    "ai": {
+      "title_one": "1 nueva actualización disponible",
+      "title_other": "{{count}} nuevas actualizaciones disponibles",
+      "summaryPrefix": "¡Hemos hecho mejoras increíbles a {{appName}}!",
+      "highlights": {
+        "newFeatures": "🎉 Nuevas funciones agregadas para mejorar tu experiencia",
+        "bugFixes": "🐛 Correcciones de errores para una experiencia más fluida",
+        "uiChanges": "✨ Mejoras visuales y actualizaciones de diseño",
+        "general": "📝 Mejoras generales y mantenimiento"
+      },
+      "userImpact": {
+        "newFeatures": "Ahora tienes acceso a nuevas herramientas y funcionalidades.",
+        "bugFixes": "La app debería funcionar de manera más confiable.",
+        "uiChanges": "La interfaz ha sido refinada para mejor usabilidad.",
+        "general": "Se han hecho varias mejoras en segundo plano."
+      }
+    },
+    "tabs": {
+      "summary": "Resumen",
+      "commits": "Commits"
+    },
+    "summary": {
+      "title": "Novedades",
+      "userImpactTitle": "Cómo esto te afecta",
+      "recentChanges": "Cambios recientes",
+      "noChanges": "No hay nuevos cambios para resumir.",
+      "andMore": "Y {{count}} más... Ve a la pestaña Commits para todos los detalles."
+    },
+    "commits": {
+      "title": "Todos los commits",
+      "noCommits": "No hay commits para mostrar.",
+      "lastChecked": "Última verificación: {{date}}",
+      "commit": "Commit",
+      "author": "Autor",
+      "date": "Fecha",
+      "message": "Mensaje"
+    },
+    "buttons": {
+      "close": "Cerrar",
+      "gotIt": "¡Entendido, gracias!",
+      "technicalDetails": "Detalles técnicos"
+    },
+    "popup": {
+      "updateCount": "{{count}} actualizaciones desde tu última visita"
+    }
+  },
+  "pwa": {
+    "installTitle": "Instalar app QCode",
+    "installText": "Instala QCode como app para acceso más rápido y uso offline",
+    "installButton": "Instalar",
+    "laterButton": "Después",
+    "offlineAlert": "Estás offline. Los cambios se guardarán localmente."
+  },
+  "validation": {
+    "codeRequired": "El código de descuento es requerido",
+    "storeRequired": "La tienda es requerida",
+    "discountRequired": "El descuento es requerido",
+    "expiryDateInPast": "La fecha de vencimiento no puede ser en el pasado"
+  },
+  "confirmDialog": {
+    "deleteAllCodes": "¿Estás seguro de que quieres eliminar todos los códigos de descuento? Esta acción no se puede deshacer.",
+    "confirm": "OK",
+    "cancel": "Cancelar"
+  },
+  "errors": {
+    "importFailed": "Error al importar: "
+  },
+  "navigation": {
+    "home": "Inicio",
+    "analytics": "Análisis"
+  },
+  "analytics": {
+    "title": "Panel de análisis",
+    "subtitle": "Perspectivas sobre el uso de tus códigos de descuento y ahorros",
+    "tabs": {
+      "overview": "Resumen",
+      "usage": "Uso",
+      "savings": "Ahorros",
+      "lifecycle": "Ciclo de vida",
+      "performance": "Rendimiento"
+    },
+    "noData": {
+      "title": "No hay datos disponibles",
+      "description": "Agrega códigos de descuento para ver perspectivas analíticas."
+    },
+    "overview": {
+      "totalCodes": "Códigos totales",
+      "totalUsages": "Usos totales",
+      "totalSavings": "Ahorros totales",
+      "expiringSoon": "Venciendo pronto",
+      "thisMonth": "este mes",
+      "avgPerCode": "promedio por código",
+      "potential": "potencial",
+      "expiredThisMonth": "vencido este mes",
+      "topCodes": "Códigos con mejor rendimiento",
+      "categoryDistribution": "Distribución por categoría",
+      "usageTrend": "Tendencia de uso (últimos 30 días)",
+      "recentActivity": "Actividad reciente",
+      "usages": "usos"
+    },
+    "usage": {
+      "summary": "Resumen de uso",
+      "totalUsages": "Usos totales",
+      "averagePerCode": "Promedio por código",
+      "mostUsed": "Códigos más usados",
+      "byStore": "Uso por tienda",
+      "byCategory": "Uso por categoría",
+      "overTime": "Uso a lo largo del tiempo (últimos 30 días)",
+      "usages": "usos",
+      "noUsageData": "No hay datos de uso disponibles",
+      "noTimeData": "No hay datos de uso disponibles para el período seleccionado"
+    },
+    "savings": {
+      "summary": "Resumen de ahorros",
+      "totalSaved": "Total ahorrado",
+      "averagePerCode": "Promedio por código",
+      "potential": "Ahorros potenciales",
+      "breakdown": "Desglose de ahorros",
+      "realized": "Ahorros realizados",
+      "unused": "Potencial no utilizado",
+      "byStore": "Ahorros por tienda",
+      "byCategory": "Ahorros por categoría",
+      "tips": "Consejos de ahorro",
+      "noSavings": "Aún no hay datos de ahorro disponibles",
+      "startUsing": "¡Comienza a usar tus códigos para rastrear ahorros!",
+      "noStoreData": "No hay datos de ahorro por tienda disponibles",
+      "noCategoryData": "No hay datos de ahorro por categoría disponibles",
+      "tip1Title": "Usa tus códigos",
+      "tip1": "Tienes €",
+      "tip1End": " en códigos no utilizados esperando ahorrarte dinero!",
+      "tip2Title": "Verifica las fechas de vencimiento",
+      "tip2": "Asegúrate de usar los códigos antes de que venzan para maximizar tus ahorros.",
+      "tip3Title": "Rastrea más códigos",
+      "tip3": "¡Agrega más códigos de descuento para aumentar tus ahorros potenciales!"
+    },
+    "lifecycle": {
+      "summary": "Resumen del ciclo de vida",
+      "addedThisMonth": "Agregado este mes",
+      "expiredThisMonth": "Vencido este mes",
+      "averageLifespan": "Vida útil promedio",
+      "days": "días",
+      "upcomingExpirations": "Próximos vencimientos",
+      "daysLeft": "días",
+      "expirationPattern": "Patrón de vencimiento (últimos 6 meses)",
+      "codesAdded": "Códigos agregados",
+      "codesExpired": "Códigos vencidos",
+      "insights": "Perspectivas del ciclo de vida",
+      "additionTrend": "Tendencia de adición",
+      "additionTrendPositive": "¡Has agregado códigos este mes. ¡Sigue así!",
+      "additionTrendNeutral": "Considera agregar más códigos para maximizar tus oportunidades de ahorro.",
+      "expirationAlert": "Alerta de vencimiento",
+      "expirationAlertWarning": "códigos vencen pronto. ¡Úsalos antes de que desaparezcan!",
+      "expirationAlertGood": "No hay vencimientos inminentes. ¡Tus códigos están bien administrados!",
+      "lifespanTip": "Consejo de vida útil",
+      "lifespanTipWithData": "La vida útil promedio del código es días. Planifica tu uso en consecuencia.",
+      "lifespanTipNoData": "Agrega fechas de vencimiento a tus códigos para rastrear mejor su ciclo de vida.",
+      "noUpcomingExpirations": "No hay códigos que venzan en los próximos 30 días"
+    },
+    "performance": {
+      "overview": "Resumen de rendimiento",
+      "activeRatio": "Códigos activos",
+      "favoriteRatio": "Códigos favoritos",
+      "archiveRatio": "Códigos archivados",
+      "topCodes": "Códigos con mejor rendimiento",
+      "categoryDistribution": "Distribución por categoría",
+      "storeDistribution": "Distribución por tienda",
+      "metricsBreakdown": "Desglose de métricas de rendimiento",
+      "activeStatus": "Estado activo",
+      "favoriteStatus": "Estado favorito",
+      "archivedStatus": "Estado archivado",
+      "activeCodes": "Códigos activos",
+      "favoriteCodes": "Códigos favoritos",
+      "archivedCodes": "Códigos archivados",
+      "insights": "Perspectivas de rendimiento",
+      "codeUsage": "Uso de códigos",
+      "goodUsage": "¡Excelente! La mayoría de tus códigos están activos y listos para usar.",
+      "improveUsage": "Considera usar más de tus códigos para maximizar los ahorros.",
+      "favoriteStrategy": "Estrategia de favoritos",
+      "goodFavorites": "Tienes un buen equilibrio de códigos favoritos para acceso rápido.",
+      "moreFavorites": "Considera marcar los códigos frecuentemente usados como favoritos.",
+      "noPerformanceData": "Aún no hay datos de rendimiento disponibles"
+    }
+  },
+  "categories": {
+    "Kleding": "Ropa",
+    "Elektronica": "Electrónica",
+    "Eten & Drinken": "Comida y bebidas",
+    "Sport & Fitness": "Deporte y fitness",
+    "Boeken & Media": "Libros y medios",
+    "Reizen": "Viajes",
+    "Beauty & Verzorging": "Belleza y cuidado",
+    "Wonen & Tuin": "Hogar y jardín",
+    "Speelgoed": "Juguetes",
+    "Anders": "Otro"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "¡Bienvenido a QCode!",
+      "description": "Hagamos un breve recorrido por las principales funciones de la app. Este tutorial te ayudará a sacar el máximo provecho de la gestión de tus códigos de descuento."
+    },
+    "addCode": {
+      "title": "Agregar códigos de descuento",
+      "description": "Comienza haciendo clic en este botón para agregar tu primer código de descuento. Puedes almacenar el código, el nombre de la tienda, el monto del descuento, la fecha de vencimiento y más."
+    },
+    "searchFilter": {
+      "title": "Buscar y filtrar",
+      "description": "Usa la barra de búsqueda y los filtros para encontrar rápidamente códigos específicos. Puedes buscar por nombre de tienda, filtrar por categoría o ordenar según diferentes criterios."
+    },
+    "categories": {
+      "title": "Categorías y favoritos",
+      "description": "Organiza tus códigos por categorías y marca los códigos importantes como favoritos para acceso rápido. También puedes archivar los códigos que ya no necesitas."
+    },
+    "viewToggle": {
+      "title": "Vista de lista y cuadrícula",
+      "description": "Cambia entre vista de lista y cuadrícula para mostrar tus códigos de descuento. La vista de cuadrícula te permite ver más códigos a la vez en pantallas más grandes, mientras que la vista de lista proporciona más detalles para cada código."
+    },
+    "settingsAccess": {
+      "title": "Acceso a configuración",
+      "description": "Usa el icono de engranaje para acceder a configuración, exportación/importación y otras opciones."
+    },
+    "completion": {
+      "title": "¡Estás listo!",
+      "description": "¡Has completado el tutorial! Puedes reiniciarlo en cualquier momento desde el menú de Configuración. ¡Comienza ahora a agregar tus códigos de descuento y nunca pierdas una oferta!"
+    },
+    "navigation": {
+      "next": "Siguiente",
+      "previous": "Anterior",
+      "skip": "Omitir tutorial",
+      "restart": "Reiniciar tutorial",
+      "finish": "Finalizar",
+      "close": "Cerrar",
+      "stepOf": "Paso {{current}} de {{total}}"
+    }
+  },
+  "dashboard": {
+    "tabs": {
+      "search": "Buscar",
+      "stats": "Estadísticas",
+      "notifications": "Notificaciones"
+    },
+    "notifications": {
+      "title": "Venciendo pronto",
+      "dismissAll": "Descartar todo",
+      "allClear": "¡Todo bien!",
+      "noExpiring": "No hay códigos que venzan pronto."
+    }
+  },
+  "view": {
+    "listView": "Vista de lista",
+    "gridView": "Vista de cuadrícula"
+  }
+}

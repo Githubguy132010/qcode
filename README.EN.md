@@ -1,4 +1,3 @@
-[🇳🇱 Nederlandse versie](README.NL.md)
 
 # QCode - Discount Code Manager
 
