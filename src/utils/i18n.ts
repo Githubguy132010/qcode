@@ -3,6 +3,10 @@ import { initReactI18next } from 'react-i18next';
 // LanguageDetector is dynamically imported later
 import enTranslation from '@/locales/en.json' assert { type: 'json' };
 import nlTranslation from '@/locales/nl.json' assert { type: 'json' };
+import frTranslation from '@/locales/fr.json' assert { type: 'json' };
+import deTranslation from '@/locales/de.json' assert { type: 'json' };
+import itTranslation from '@/locales/it.json' assert { type: 'json' };
+import esTranslation from '@/locales/es.json' assert { type: 'json' };
 
 const resources = {
   en: {
@@ -10,6 +14,18 @@ const resources = {
   },
   nl: {
     translation: nlTranslation,
+  },
+  fr: {
+    translation: frTranslation,
+  },
+  de: {
+    translation: deTranslation,
+  },
+  it: {
+    translation: itTranslation,
+  },
+  es: {
+    translation: esTranslation,
   },
 };
 
@@ -34,14 +50,14 @@ if (!i18n.isInitialized) {
     const savedLanguage = localStorage.getItem('qcode-language');
     if (savedLanguage === 'auto') {
       const browserLang = navigator.language.split('-')[0];
-      const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
+      const supportedLanguage = ['en', 'nl', 'fr', 'de', 'it', 'es'].includes(browserLang) ? browserLang : 'en';
       i18n.changeLanguage(supportedLanguage);
-    } else if (savedLanguage === 'en' || savedLanguage === 'nl') {
+    } else if (savedLanguage && ['en', 'nl', 'fr', 'de', 'it', 'es'].includes(savedLanguage)) {
       i18n.changeLanguage(savedLanguage);
     } else {
       // First-time visitor: detect system language
       const browserLang = navigator.language.split('-')[0];
-      const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
+      const supportedLanguage = ['en', 'nl', 'fr', 'de', 'it', 'es'].includes(browserLang) ? browserLang : 'en';
       i18n.changeLanguage(supportedLanguage);
     }
   }

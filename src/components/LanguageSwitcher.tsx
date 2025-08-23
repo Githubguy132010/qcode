@@ -10,6 +10,10 @@ export function LanguageSwitcher() {
     auto: t('settings.language.auto'),
     en: t('settings.language.english'),
     nl: t('settings.language.dutch'),
+    fr: t('settings.language.french'),
+    de: t('settings.language.german'),
+    it: t('settings.language.italian'),
+    es: t('settings.language.spanish'),
   };
 
   return (
@@ -28,11 +32,16 @@ export function LanguageSwitcher() {
             <div className="flex items-center gap-3">
               {lang === 'auto' ? (
                 <Globe className={`h-5 w-5 ${language === lang ? 'text-white' : 'theme-text-muted'}`} />
-              ) : (
-                <span className="w-5 h-5 flex items-center justify-center text-lg">
-                  {lang === 'en' ? '🇬🇧' : '🇳🇱'}
-                </span>
-              )}
+               ) : (
+                 <span className="w-5 h-5 flex items-center justify-center text-lg">
+                   {lang === 'en' ? '🇬🇧' :
+                    lang === 'nl' ? '🇳🇱' :
+                    lang === 'fr' ? '🇫🇷' :
+                    lang === 'de' ? '🇩🇪' :
+                    lang === 'it' ? '🇮🇹' :
+                    lang === 'es' ? '🇪🇸' : '🇺🇳'}
+                 </span>
+               )}
               <span className={`font-medium ${language === lang ? 'text-white' : 'theme-text-primary'}`}>{languageNames[lang]}</span>
             </div>
             {language === lang && (

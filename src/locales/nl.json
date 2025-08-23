@@ -191,7 +191,11 @@
       "subtitle": "Kies de taal voor de app interface",
       "auto": "Automatisch (op basis van browser)",
       "dutch": "Nederlands",
-      "english": "Engels"
+      "english": "Engels",
+      "french": "Frans",
+      "german": "Duits",
+      "italian": "Italiaans",
+      "spanish": "Spaans"
     },
     "developer": {
         "title": "Ontwikkelaarsopties",

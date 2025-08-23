@@ -6,6 +6,10 @@ A Progressive Web App (PWA) for managing discount codes.
 
 - [English Documentation](README.EN.md)
 - [Nederlandse Documentatie](README.NL.md)
+- [Documentation Française](README.FR.md)
+- [Deutsche Dokumentation](README.DE.md)
+- [Documentazione Italiana](README.IT.md)
+- [Documentación en Español](README.ES.md)
 
 ---
 
