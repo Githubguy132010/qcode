@@ -2,6 +2,7 @@
 
 import { useState, useRef, createRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
 import { DiscountCodeCard } from '@/components/DiscountCodeCard'
@@ -16,6 +17,8 @@ import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
 import { OnboardingTutorial } from '@/components/OnboardingTutorial'
 import { useOnboarding } from '@/hooks/useOnboarding'
 import { useTranslation } from 'react-i18next'
+import { staggerContainer } from '@/lib/animations'
+import { AnimatedPage } from '@/components/AnimatedPage'
 import type { SearchFilters, DiscountCodeFormData } from '@/types/discount-code'
 
 export default function HomePage() {
@@ -332,127 +335,175 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center transition-colors">
+      <motion.div 
+        className="min-h-screen flex items-center justify-center transition-colors"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
-          <p className="theme-text-secondary font-medium" suppressHydrationWarning>
+          <motion.div 
+            className="rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"
+            animate={{ rotate: 360 }}
+            transition={{ 
+              duration: 1, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+          />
+          <motion.p 
+            className="theme-text-secondary font-medium" 
+            suppressHydrationWarning
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             {t('common.loading')}
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div className="min-h-screen transition-colors">
-      {/* Offline Status Banner */}
-      <OnlineStatusBanner />
-      
-      <Header
-        onNotificationClick={() => {
-          // This can be repurposed or removed if no longer needed
-          console.log('Notification icon clicked')
-        }}
-        onSettingsClick={() => {
-          setInitialTab('general')
-          setIsUnifiedModalOpen(true)
-        }}
-      />
-      
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Install Prompt */}
-        <InstallPrompt />
-
-        <CombinedDashboard
-          filters={searchFilters}
-          onFiltersChange={(newFilters) => {
-            setSearchFilters(newFilters);
-            setShowOnlyExpiringSoon(false);
+    <AnimatedPage>
+      <div className="min-h-screen transition-colors">
+        {/* Offline Status Banner */}
+        <OnlineStatusBanner />
+        
+        <Header
+          onSettingsClick={() => {
+            setInitialTab('general')
+            setIsUnifiedModalOpen(true)
           }}
-          onReset={resetFilters}
-          stats={stats}
-          onStatClick={handleStatClick}
-          expiringSoon={expiringSoon}
-          onCodeClick={scrollToCode}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
+        />
+        
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          {/* Install Prompt */}
+          <InstallPrompt />
+
+          <CombinedDashboard
+            filters={searchFilters}
+            onFiltersChange={(newFilters) => {
+              setSearchFilters(newFilters);
+              setShowOnlyExpiringSoon(false);
+            }}
+            onReset={resetFilters}
+            stats={stats}
+            onStatClick={handleStatClick}
+            expiringSoon={expiringSoon}
+            onCodeClick={scrollToCode}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
+
+          {/* Add Button */}
+          {codes.length > 0 && (
+            <motion.div 
+              className="mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <motion.button
+                onClick={handleOpenAdd}
+                data-tutorial="add-button"
+                className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg group"
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: '0 20px 25px -5px rgba(59, 130, 246, 0.2), 0 8px 10px -6px rgba(59, 130, 246, 0.2)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30, mass: 1 }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 0, 0, 90] }}
+                  whileHover={{ rotate: 90 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Plus size={24} />
+                </motion.div>
+                <span className="text-lg">{t('homePage.addNewCode')}</span>
+              </motion.button>
+            </motion.div>
+          )}
+
+          {/* Codes List */}
+          {filteredCodes.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <EmptyState
+                hasAnyCodes={codes.length > 0}
+                onAddCode={handleOpenAdd}
+                onResetFilters={resetFilters}
+              />
+            </motion.div>
+          ) : (
+            <motion.div 
+              className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'space-y-6'}`} 
+              data-codes-list
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              <AnimatePresence>
+                {filteredCodes.map((code) => (
+                  <DiscountCodeCard
+                    key={code.id}
+                    ref={getCodeRef(code.id)}
+                    code={code}
+                    isExpired={isExpired(code)}
+                    onToggleFavorite={() => toggleFavorite(code.id)}
+                    onToggleArchived={() => toggleArchived(code.id)}
+                    onIncrementUsage={() => incrementUsage(code.id)}
+                    onDelete={() => deleteCode(code.id)}
+                    viewMode={viewMode}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </main>
+
+        {/* Add Code Modal */}
+        <AddCodeModal
+          isOpen={isAddModalOpen}
+          onClose={() => { setIsAddModalOpen(false); setQuickAddInitialData(undefined) }}
+          onAdd={addCode}
+          initialData={quickAddInitialData}
+          prefillSource={quickAddInitialData ? 'clipboard' : undefined}
         />
 
-        {/* Add Button */}
-        {codes.length > 0 && (
-          <div className="mb-8">
-            <button
-              onClick={handleOpenAdd}
-              data-tutorial="add-button"
-              className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
-            >
-              <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
-              <span className="text-lg">{t('homePage.addNewCode')}</span>
-            </button>
-          </div>
-        )}
+        {/* Unified Settings Modal */}
+        <UnifiedSettingsModal
+          isOpen={isUnifiedModalOpen}
+          onClose={() => setIsUnifiedModalOpen(false)}
+          onRestartTutorial={handleRestartTutorial}
+          initialTab={initialTab}
+        />
 
-        {/* Codes List */}
-        {filteredCodes.length === 0 ? (
-          <EmptyState
-            hasAnyCodes={codes.length > 0}
-            onAddCode={handleOpenAdd}
-            onResetFilters={resetFilters}
-          />
-        ) : (
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'space-y-6'}`} data-codes-list>
-            {filteredCodes.map((code) => (
-              <DiscountCodeCard
-                key={code.id}
-                ref={getCodeRef(code.id)}
-                code={code}
-                isExpired={isExpired(code)}
-                onToggleFavorite={() => toggleFavorite(code.id)}
-                onToggleArchived={() => toggleArchived(code.id)}
-                onIncrementUsage={() => incrementUsage(code.id)}
-                onDelete={() => deleteCode(code.id)}
-                viewMode={viewMode}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+        {/* Changelog Popup */}
+        <ChangelogPopup
+          onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
+        />
 
-      {/* Add Code Modal */}
-      <AddCodeModal
-        isOpen={isAddModalOpen}
-        onClose={() => { setIsAddModalOpen(false); setQuickAddInitialData(undefined) }}
-        onAdd={addCode}
-        initialData={quickAddInitialData}
-        prefillSource={quickAddInitialData ? 'clipboard' : undefined}
-      />
+        {/* Release Notes Modal */}
+        <ReleaseNotesModal
+          isOpen={isReleaseNotesOpen}
+          onClose={() => setIsReleaseNotesOpen(false)}
+        />
 
-      {/* Unified Settings Modal */}
-      <UnifiedSettingsModal
-        isOpen={isUnifiedModalOpen}
-        onClose={() => setIsUnifiedModalOpen(false)}
-        onRestartTutorial={handleRestartTutorial}
-        initialTab={initialTab}
-      />
-
-      {/* Changelog Popup */}
-      <ChangelogPopup
-        onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
-      />
-
-      {/* Release Notes Modal */}
-      <ReleaseNotesModal
-        isOpen={isReleaseNotesOpen}
-        onClose={() => setIsReleaseNotesOpen(false)}
-      />
-
-      {/* Onboarding Tutorial */}
-      <OnboardingTutorial
-        isOpen={tutorialState.isActive}
-        onClose={closeTutorial}
-        onComplete={completeTutorial}
-        onSkip={skipTutorial}
-      />
-    </div>
+        {/* Onboarding Tutorial */}
+        <OnboardingTutorial
+          isOpen={tutorialState.isActive}
+          onClose={closeTutorial}
+          onComplete={completeTutorial}
+          onSkip={skipTutorial}
+        />
+      </div>
+    </AnimatedPage>
   )
 }

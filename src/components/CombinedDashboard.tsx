@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Search, Bell, BarChart2, Filter, SortAsc, RotateCcw, X, List, Grid } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
 import type { SearchFilters, DiscountCode } from '@/types/discount-code'
 import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
+import { AnimatedTab } from '@/components/AnimatedTab'
+import { AnimatedStatCard } from '@/components/AnimatedStatCard'
 
 type TabId = 'search' | 'stats' | 'notifications'
 
@@ -68,12 +71,13 @@ export function CombinedDashboard({
       <div className="flex justify-between items-center theme-filter rounded-lg p-1 mb-4">
         <div className="flex space-x-1">
           {TABS.map(tab => (
-            <button
+            <AnimatedTab
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-3 py-1.5 text-sm font-semibold rounded-md transition-all duration-200 ${
+              isActive={activeTab === tab.id}
+              className={`flex items-center gap-2 px-3 py-1.5 text-sm font-semibold rounded-md transition-all duration-200 relative ${
                 activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? 'text-white'
                   : 'theme-text-secondary theme-menu-hover'
               }`}
             >
@@ -84,44 +88,50 @@ export function CombinedDashboard({
                   {tab.count}
                 </span>
               )}
-            </button>
+            </AnimatedTab>
           ))}
         </div>
         <div className="flex items-center gap-2">
           {activeTab === 'search' && onReset && (
-            <button
+            <motion.button
               onClick={onReset}
               className="flex items-center gap-2 px-3 py-1.5 text-sm theme-text-secondary hover:theme-text-primary theme-filter theme-menu-hover rounded-lg transition-all duration-200"
               title={t('filters.reset', 'Reset filters')}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 1 }}
             >
               <RotateCcw size={14} />
               <span className="hidden sm:inline">{t('filters.reset', 'Reset')}</span>
-            </button>
+            </motion.button>
           )}
           {/* View Mode Toggle */}
           <div className="flex items-center gap-1 theme-filter rounded-lg px-1" data-tutorial="view-toggle">
-            <button
+            <motion.button
               onClick={() => onViewModeChange?.('list')}
               className={`p-1.5 rounded-md transition-all duration-200 ${
                 viewMode === 'list'
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? 'text-white'
                   : 'theme-text-secondary theme-menu-hover'
               }`}
               title={t('view.listView', 'List View')}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 1 }}
             >
               <List size={16} />
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               onClick={() => onViewModeChange?.('grid')}
               className={`p-1.5 rounded-md transition-all duration-200 ${
                 viewMode === 'grid'
-                  ? 'bg-blue-600 text-white shadow-lg'
+                  ? 'text-white'
                   : 'theme-text-secondary theme-menu-hover'
               }`}
               title={t('view.gridView', 'Grid View')}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 1 }}
             >
               <Grid size={16} />
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -130,7 +140,11 @@ export function CombinedDashboard({
         {/* Search & Filter Content */}
         {activeTab === 'search' && (
           <div className="space-y-4">
-            <div className="relative">
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 theme-text-muted" size={20} />
               <input
                 type="text"
@@ -139,9 +153,15 @@ export function CombinedDashboard({
                 onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
                 className="theme-input w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:theme-text-muted transition-all duration-200 font-medium"
               />
-            </div>
+            </motion.div>
             <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5" data-tutorial="categories">
+              <motion.div 
+                className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5"
+                data-tutorial="categories"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
                 <Filter size={14} className="theme-text-muted" />
                 <select
                   value={filters.category}
@@ -153,8 +173,13 @@ export function CombinedDashboard({
                     <option key={cat} value={cat}>{t(CATEGORY_TRANSLATION_KEYS[cat])}</option>
                   ))}
                 </select>
-              </div>
-              <div className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5">
+              </motion.div>
+              <motion.div 
+                className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 <SortAsc size={14} className="theme-text-muted" />
                 <select
                   value={filters.sortBy}
@@ -167,8 +192,13 @@ export function CombinedDashboard({
                   <option value="category">{t('filters.category.label')}</option>
                   <option value="timesUsed">{t('filters.sortBy.timesUsed')}</option>
                 </select>
-              </div>
-              <div className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5">
+              </motion.div>
+              <motion.div 
+                className="flex items-center gap-2 theme-filter rounded-lg px-3 py-1.5"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
                 <select
                   value={filters.filterBy}
                   onChange={(e) => onFiltersChange({ ...filters, filterBy: e.target.value as SearchFilters['filterBy'] })}
@@ -180,7 +210,7 @@ export function CombinedDashboard({
                   <option value="favorites">{t('filters.category.favorites')}</option>
                   <option value="archived">{t('filters.filterBy.archived')}</option>
                 </select>
-              </div>
+              </motion.div>
             </div>
           </div>
         )}
@@ -189,24 +219,33 @@ export function CombinedDashboard({
         {activeTab === 'stats' && (
           <div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-              {[
-                { label: t('stats.activeCodes'), value: stats.active, filter: 'active' as const, grad: 'stat-gradient-green' },
-                { label: t('stats.expiredCodes'), value: stats.expired, filter: 'expired' as const, grad: 'stat-gradient-red' },
-                { label: t('stats.favoriteCodes'), value: stats.favorites, filter: 'favorites' as const, grad: 'stat-gradient-yellow' },
-                { label: t('stats.expiringSoon', { count: stats.expiringSoon }), value: stats.expiringSoon, filter: 'expiringSoon' as const, grad: 'stat-gradient-orange' },
-              ].map(stat => (
-                <button
-                  key={stat.label}
-                  disabled={stat.value === 0 || !onStatClick || stat.filter === 'active'}
-                  onClick={() => onStatClick?.(stat.filter as 'expired' | 'favorites' | 'expiringSoon')}
-                  className={`p-3 rounded-lg transition-all duration-200 group disabled:opacity-60 disabled:cursor-default ${stat.filter !== 'active' ? 'hover:shadow-lg hover:scale-105' : ''}`}
-                >
-                  <div className={`${stat.grad} w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 shadow-md group-hover:shadow-lg transition-all`}>
-                    <span className="text-white font-bold text-base">{stat.value}</span>
-                  </div>
-                  <p className="text-xs font-medium theme-text-secondary group-hover:theme-text-primary transition-colors">{stat.label}</p>
-                </button>
-              ))}
+              <AnimatedStatCard
+                label={t('stats.activeCodes')}
+                value={stats.active}
+                gradientClass="stat-gradient-green"
+                disabled
+              />
+              <AnimatedStatCard
+                label={t('stats.expiredCodes')}
+                value={stats.expired}
+                gradientClass="stat-gradient-red"
+                onClick={() => onStatClick?.('expired')}
+                disabled={stats.expired === 0 || !onStatClick}
+              />
+              <AnimatedStatCard
+                label={t('stats.favoriteCodes')}
+                value={stats.favorites}
+                gradientClass="stat-gradient-yellow"
+                onClick={() => onStatClick?.('favorites')}
+                disabled={stats.favorites === 0 || !onStatClick}
+              />
+              <AnimatedStatCard
+                label={t('stats.expiringSoon', { count: stats.expiringSoon })}
+                value={stats.expiringSoon}
+                gradientClass="stat-gradient-orange"
+                onClick={() => onStatClick?.('expiringSoon')}
+                disabled={stats.expiringSoon === 0 || !onStatClick}
+              />
             </div>
             <div className="mt-4 pt-3 border-t border-[var(--card-border)]/50 flex justify-between text-xs">
               <span className="theme-text-secondary">{t('stats.totalCodes')}: <span className="font-semibold theme-text-primary">{stats.total}</span></span>

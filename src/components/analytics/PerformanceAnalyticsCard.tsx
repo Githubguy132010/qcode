@@ -1,6 +1,8 @@
 import { PerformanceAnalytics } from '@/utils/analytics'
+import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { Target, Star, Archive, BarChart3, TrendingUp, Award } from 'lucide-react'
+import { dashboardCardVariants, chartVariants, staggerDashboard } from '@/lib/animations'
 
 interface PerformanceAnalyticsCardProps {
   analytics: PerformanceAnalytics
@@ -10,48 +12,98 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
   const { t } = useTranslation()
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <motion.div 
+      className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+      variants={staggerDashboard}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Performance Overview */}
-      <div className="theme-card rounded-xl shadow-lg border p-6">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <Target size={20} className="text-blue-500" />
           {t('analytics.performance.overview', 'Performance Overview')}
         </h3>
         <div className="space-y-4">
-          <div className="flex justify-between items-center p-4 rounded-lg bg-green-50 dark:bg-green-900/20">
+          <motion.div 
+            className="flex justify-between items-center p-4 rounded-lg bg-green-50 dark:bg-green-900/20"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.1 }}
+          >
             <div className="flex items-center gap-3">
               <TrendingUp size={24} className="text-green-600" />
               <div>
                 <p className="theme-text-secondary text-sm">{t('analytics.performance.activeRatio', 'Active Codes')}</p>
-                <p className="text-2xl font-bold text-green-600">{(analytics.activeRatio * 100).toFixed(1)}%</p>
+                <motion.p 
+                  className="text-2xl font-bold text-green-600"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
+                >
+                  {(analytics.activeRatio * 100).toFixed(1)}%
+                </motion.p>
               </div>
             </div>
-          </div>
+          </motion.div>
           
-          <div className="flex justify-between items-center p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20">
+          <motion.div 
+            className="flex justify-between items-center p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.2 }}
+          >
             <div className="flex items-center gap-3">
               <Star size={24} className="text-yellow-600" />
               <div>
                 <p className="theme-text-secondary text-sm">{t('analytics.performance.favoriteRatio', 'Favorite Codes')}</p>
-                <p className="text-2xl font-bold text-yellow-600">{(analytics.favoriteRatio * 100).toFixed(1)}%</p>
+                <motion.p 
+                  className="text-2xl font-bold text-yellow-600"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+                >
+                  {(analytics.favoriteRatio * 100).toFixed(1)}%
+                </motion.p>
               </div>
             </div>
-          </div>
+          </motion.div>
           
-          <div className="flex justify-between items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+          <motion.div 
+            className="flex justify-between items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.3 }}
+          >
             <div className="flex items-center gap-3">
               <Archive size={24} className="theme-text-secondary" />
               <div>
                 <p className="theme-text-secondary text-sm">{t('analytics.performance.archiveRatio', 'Archived Codes')}</p>
-                <p className="text-2xl font-bold theme-text-secondary">{(analytics.archiveRatio * 100).toFixed(1)}%</p>
+                <motion.p 
+                  className="text-2xl font-bold theme-text-secondary"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
+                >
+                  {(analytics.archiveRatio * 100).toFixed(1)}%
+                </motion.p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Top Performing Codes */}
-      <div className="theme-card rounded-xl shadow-lg border p-6">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <Award size={20} className="text-gold-500" />
           {t('analytics.performance.topCodes', 'Top Performing Codes')}
@@ -59,7 +111,15 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
         <div className="space-y-3 max-h-64 overflow-y-auto">
           {analytics.codeEffectiveness.length > 0 ? (
             analytics.codeEffectiveness.map((item, itemIndex) => (
-              <div key={item.code.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <motion.div 
+                key={item.code.id} 
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                variants={chartVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: itemIndex * 0.05 }}
+                whileHover={{ x: 5, transition: { duration: 0.2 } }}
+              >
                 <div className="flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
                     itemIndex === 0 ? 'bg-yellow-500' :
@@ -83,28 +143,43 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                   <span className="text-lg font-bold theme-text-primary">{item.score}</span>
                   <p className="text-xs theme-text-secondary">score</p>
                 </div>
-              </div>
+              </motion.div>
             ))
           ) : (
-            <div className="text-center py-6">
+            <motion.div 
+              className="text-center py-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               <Award size={48} className="mx-auto theme-text-secondary mb-2" />
               <p className="theme-text-secondary">
                 {t('analytics.performance.noPerformanceData', 'No performance data available yet')}
               </p>
-            </div>
+            </motion.div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* Category Distribution */}
-      <div className="theme-card rounded-xl shadow-lg border p-6">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <BarChart3 size={20} className="text-purple-500" />
           {t('analytics.performance.categoryDistribution', 'Category Distribution')}
         </h3>
         <div className="space-y-3 max-h-64 overflow-y-auto">
-          {analytics.categoryDistribution.map((category) => (
-            <div key={category.category} className="space-y-2">
+          {analytics.categoryDistribution.map((category, index) => (
+            <motion.div 
+              key={category.category} 
+              className="space-y-2"
+              variants={chartVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: index * 0.05 }}
+            >
               <div className="flex justify-between text-sm">
                 <span className="theme-text-primary font-medium">{category.category}</span>
                 <span className="theme-text-secondary">
@@ -112,25 +187,37 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                 </span>
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-purple-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${category.percentage}%` }}
-                ></div>
+                <motion.div 
+                  className="bg-purple-500 h-2 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${category.percentage}%` }}
+                  transition={{ duration: 0.8, delay: index * 0.05, ease: "easeOut" }}
+                ></motion.div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Store Distribution */}
-      <div className="theme-card rounded-xl shadow-lg border p-6">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <BarChart3 size={20} className="text-indigo-500" />
           {t('analytics.performance.storeDistribution', 'Store Distribution')}
         </h3>
         <div className="space-y-3 max-h-64 overflow-y-auto">
-          {analytics.storeDistribution.slice(0, 10).map((store) => (
-            <div key={store.store} className="space-y-2">
+          {analytics.storeDistribution.slice(0, 10).map((store, index) => (
+            <motion.div 
+              key={store.store} 
+              className="space-y-2"
+              variants={chartVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: index * 0.05 }}
+            >
               <div className="flex justify-between text-sm">
                 <span className="theme-text-primary font-medium truncate">{store.store}</span>
                 <span className="theme-text-secondary">
@@ -138,25 +225,41 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                 </span>
               </div>
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-indigo-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${store.percentage}%` }}
-                ></div>
+                <motion.div 
+                  className="bg-indigo-500 h-2 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${store.percentage}%` }}
+                  transition={{ duration: 0.8, delay: index * 0.05, ease: "easeOut" }}
+                ></motion.div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Performance Metrics Chart */}
-      <div className="theme-card rounded-xl shadow-lg border p-6 lg:col-span-2">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6 lg:col-span-2"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <Target size={20} className="text-emerald-500" />
           {t('analytics.performance.metricsBreakdown', 'Performance Metrics Breakdown')}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          variants={staggerDashboard}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Active vs Inactive */}
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.1 }}
+          >
             <h4 className="font-semibold theme-text-primary mb-4">
               {t('analytics.performance.activeStatus', 'Active Status')}
             </h4>
@@ -171,30 +274,43 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                   fill="none"
                   className="theme-text-secondary opacity-20"
                 />
-                <circle
+                <motion.circle
                   cx="60"
                   cy="60"
                   r="50"
                   stroke="#10B981"
                   strokeWidth="10"
                   fill="none"
-                  strokeDasharray={`${analytics.activeRatio * 314} 314`}
+                  initial={{ strokeDasharray: "0 314" }}
+                  animate={{ strokeDasharray: `${analytics.activeRatio * 314} 314` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="transition-all duration-1000"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold theme-text-primary">
+                <motion.span 
+                  className="text-2xl font-bold theme-text-primary"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 300 }}
+                >
                   {(analytics.activeRatio * 100).toFixed(0)}%
-                </span>
+                </motion.span>
               </div>
             </div>
             <p className="text-sm theme-text-secondary mt-2">
               {t('analytics.performance.activeCodes', 'Active Codes')}
             </p>
-          </div>
+          </motion.div>
 
           {/* Favorites */}
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.2 }}
+          >
             <h4 className="font-semibold theme-text-primary mb-4">
               {t('analytics.performance.favoriteStatus', 'Favorite Status')}
             </h4>
@@ -209,30 +325,43 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                   fill="none"
                   className="theme-text-secondary opacity-20"
                 />
-                <circle
+                <motion.circle
                   cx="60"
                   cy="60"
                   r="50"
                   stroke="#F59E0B"
                   strokeWidth="10"
                   fill="none"
-                  strokeDasharray={`${analytics.favoriteRatio * 314} 314`}
+                  initial={{ strokeDasharray: "0 314" }}
+                  animate={{ strokeDasharray: `${analytics.favoriteRatio * 314} 314` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="transition-all duration-1000"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold theme-text-primary">
+                <motion.span 
+                  className="text-2xl font-bold theme-text-primary"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 300 }}
+                >
                   {(analytics.favoriteRatio * 100).toFixed(0)}%
-                </span>
+                </motion.span>
               </div>
             </div>
             <p className="text-sm theme-text-secondary mt-2">
               {t('analytics.performance.favoriteCodes', 'Favorite Codes')}
             </p>
-          </div>
+          </motion.div>
 
           {/* Archived */}
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.3 }}
+          >
             <h4 className="font-semibold theme-text-primary mb-4">
               {t('analytics.performance.archivedStatus', 'Archived Status')}
             </h4>
@@ -247,38 +376,59 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                   fill="none"
                   className="theme-text-secondary opacity-20"
                 />
-                <circle
+                <motion.circle
                   cx="60"
                   cy="60"
                   r="50"
                   stroke="#6B7280"
                   strokeWidth="10"
                   fill="none"
-                  strokeDasharray={`${analytics.archiveRatio * 314} 314`}
+                  initial={{ strokeDasharray: "0 314" }}
+                  animate={{ strokeDasharray: `${analytics.archiveRatio * 314} 314` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
                   className="transition-all duration-1000"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold theme-text-primary">
+                <motion.span 
+                  className="text-2xl font-bold theme-text-primary"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 300 }}
+                >
                   {(analytics.archiveRatio * 100).toFixed(0)}%
-                </span>
+                </motion.span>
               </div>
             </div>
             <p className="text-sm theme-text-secondary mt-2">
               {t('analytics.performance.archivedCodes', 'Archived Codes')}
             </p>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
 
       {/* Performance Insights */}
-      <div className="theme-card rounded-xl shadow-lg border p-6 lg:col-span-2">
+      <motion.div 
+        className="theme-card rounded-xl shadow-lg border p-6 lg:col-span-2"
+        variants={dashboardCardVariants}
+      >
         <h3 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
           <TrendingUp size={20} className="text-cyan-500" />
           {t('analytics.performance.insights', 'Performance Insights')}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          variants={staggerDashboard}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div 
+            className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.1 }}
+          >
             <h4 className="font-semibold text-blue-800 dark:text-blue-400 mb-2">
               {t('analytics.performance.codeUsage', 'Code Usage')}
             </h4>
@@ -288,9 +438,15 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                 : t('analytics.performance.improveUsage', 'Consider using more of your codes to maximize savings.')
               }
             </p>
-          </div>
+          </motion.div>
           
-          <div className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+          <motion.div 
+            className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
+            variants={chartVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.2 }}
+          >
             <h4 className="font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
               {t('analytics.performance.favoriteStrategy', 'Favorite Strategy')}
             </h4>
@@ -300,9 +456,9 @@ export function PerformanceAnalyticsCard({ analytics }: PerformanceAnalyticsCard
                 : t('analytics.performance.moreFavorites', 'Consider marking frequently used codes as favorites.')
               }
             </p>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   )
 }

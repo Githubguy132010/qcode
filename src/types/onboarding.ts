@@ -58,10 +58,10 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     position: 'bottom'
   },
   {
-    id: 'notifications-archiving',
-    title: 'onboarding.notifications.title',
-    description: 'onboarding.notifications.description',
-    targetElement: '[data-tutorial="notifications"]',
+    id: 'settings-access',
+    title: 'onboarding.settingsAccess.title',
+    description: 'onboarding.settingsAccess.description',
+    targetElement: '[data-tutorial="settings-button"]',
     position: 'bottom'
   },
   {

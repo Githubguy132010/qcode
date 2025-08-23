@@ -444,9 +444,10 @@
       "title": "Lijst & Rasterweergave",
       "description": "Wissel tussen lijst- en rasterweergave om je kortingscodes weer te geven. Rasterweergave stelt je in staat om meer codes tegelijk te zien op grotere schermen, terwijl lijstweergave meer details voor elke code biedt."
     },
-    "notifications": {
-      "title": "Notificaties & Beheer",
-      "description": "Klik op het belletje in de header om notificaties te bekijken over bijna verlopende codes. Via de tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
+    
+    "settingsAccess": {
+      "title": "Instellingen Toegang",
+      "description": "Via het tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
     },
     "completion": {
       "title": "Je bent er klaar voor!",
