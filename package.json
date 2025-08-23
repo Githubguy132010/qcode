@@ -13,7 +13,8 @@
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod",
     "clear-cache": "node cache-handler.js",
-    "test:all": "jest && next lint && next build"
+    "test:all": "jest && next lint && next build",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-tooltip": "^1.2.8",
@@ -45,6 +46,7 @@
     "@typescript-eslint/parser": "^8.40.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.7",
+    "husky": "^9.1.7",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "tailwindcss": "^4",

@@ -1,1 +1,0 @@
-This is a temporary test file for verifying the Husky pre-commit hook functionality.
