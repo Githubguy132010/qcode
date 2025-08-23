@@ -28,23 +28,23 @@ const nextConfig = {
   // Webpack configuration for production builds
   webpack: (config, { dev, isServer }) => {
     if (!dev) {
-      // Enable persistent caching in production
-      config.cache = {
-        type: 'filesystem',
-        buildDependencies: {
-          config: [__filename],
-        },
-        cacheDirectory: path.join(process.cwd(), '.next', 'cache', 'webpack'),
-        name: 'webpack',
-      };
+      // Enable persistent caching in production - COMMENTED OUT TO PREVENT CACHE CORRUPTION
+      // config.cache = {
+      //   type: 'filesystem',
+      //   buildDependencies: {
+      //     config: [__filename],
+      //   },
+      //   cacheDirectory: path.join(process.cwd(), '.next', 'cache', 'webpack'),
+      //   name: 'webpack',
+      // };
     }
 
-    // Resolve Mini CSS Extract Plugin warning
-    config.plugins.forEach(plugin => {
-      if (plugin.constructor.name === 'MiniCssExtractPlugin') {
-        plugin.options.ignoreOrder = true;
-      }
-    });
+    // Resolve Mini CSS Extract Plugin warning - COMMENTED OUT TO PREVENT CACHE ISSUES
+    // config.plugins.forEach(plugin => {
+    //   if (plugin.constructor.name === 'MiniCssExtractPlugin') {
+    //     plugin.options.ignoreOrder = true;
+    //   }
+    // });
     return config;
   }
 }
