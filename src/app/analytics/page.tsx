@@ -10,6 +10,8 @@ import { SavingsAnalyticsCard } from '@/components/analytics/SavingsAnalyticsCar
 import { LifecycleAnalyticsCard } from '@/components/analytics/LifecycleAnalyticsCard'
 import { PerformanceAnalyticsCard } from '@/components/analytics/PerformanceAnalyticsCard'
 import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview'
+import { UnifiedSettingsModal } from '@/components/UnifiedSettingsModal'
+import { useOnboarding } from '@/hooks/useOnboarding'
 import { useTranslation } from 'react-i18next'
 import { BarChart3, TrendingUp, Calendar, Target } from 'lucide-react'
 import { tabVariants } from '@/lib/animations'
@@ -18,12 +20,22 @@ export default function AnalyticsPage() {
   const { t } = useTranslation()
   const { codes, isLoading } = useDiscountCodes()
   const [activeTab, setActiveTab] = useState<'overview' | 'usage' | 'savings' | 'lifecycle' | 'performance'>('overview')
-  
+  const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
+  const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
+  const { resetTutorial } = useOnboarding()
+
   // Handler functions for Header component
   const handleSettingsClick = () => {
-    // Analytics page doesn't need settings functionality currently
+    setInitialTab('general')
+    setIsUnifiedModalOpen(true)
   }
-  
+
+  const handleRestartTutorial = () => {
+    setIsUnifiedModalOpen(false)
+    setTimeout(() => {
+      resetTutorial()
+    }, 300)
+  }
 
   if (isLoading) {
     return (
@@ -183,6 +195,13 @@ export default function AnalyticsPage() {
           </motion.div>
         )}
       </main>
+
+      <UnifiedSettingsModal
+        isOpen={isUnifiedModalOpen}
+        onClose={() => setIsUnifiedModalOpen(false)}
+        onRestartTutorial={handleRestartTutorial}
+        initialTab={initialTab}
+      />
     </div>
   )
 }
