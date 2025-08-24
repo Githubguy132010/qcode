@@ -81,163 +81,169 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
   }, [currentStep, isOpen, currentStepData.targetElement])
 
   // Position tooltip relative to highlighted element or center it
-  useEffect(() => {
-    if (!tooltipRef.current) return
+   useEffect(() => {
+     if (!tooltipRef.current) return
 
-    const updatePosition = () => {
-      if (!tooltipRef.current) return
+     const updatePosition = () => {
+       if (!tooltipRef.current) return
 
-      const tooltipRect = tooltipRef.current.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const viewportWidth = window.innerWidth
-      const tooltipWidth = tooltipRect.width
-      const tooltipHeight = tooltipRect.height
+       const tooltipRect = tooltipRef.current.getBoundingClientRect()
+       const viewportHeight = window.innerHeight
+       const viewportWidth = window.innerWidth
+       const tooltipWidth = tooltipRect.width
+       const tooltipHeight = tooltipRect.height
 
-      // Get dynamic configuration values
-      const config = POSITIONING_CONFIG
-      const gap = config.getGap(viewportWidth)
-      const padding = config.getPadding(viewportWidth)
+       // If tooltip has no dimensions, wait a bit longer for it to render
+       if (tooltipWidth === 0 || tooltipHeight === 0) {
+         setTimeout(updatePosition, 50)
+         return
+       }
 
-      let top = 0
-      let left = 0
+       // Get dynamic configuration values
+       const config = POSITIONING_CONFIG
+       const gap = config.getGap(viewportWidth)
+       const padding = config.getPadding(viewportWidth)
 
-      // Handle positioning based on whether we have a target element
-      if (highlightedElement && currentStepData.position !== 'center') {
-        const elementRect = highlightedElement.getBoundingClientRect()
+       let top = 0
+       let left = 0
 
-        switch (currentStepData.position) {
-          case 'top':
-            // Position above element, but check if there's enough space
-            const topPos = elementRect.top - tooltipHeight - gap
-            if (topPos < padding) {
-              // Not enough space above, position below instead
-              top = elementRect.bottom + gap
-            } else {
-              top = topPos
-            }
-            // Center horizontally on element, but keep within viewport
-            left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
-            break
-          case 'bottom':
-            // Position below element, but check if there's enough space
-            const bottomPos = elementRect.bottom + gap
-            if (bottomPos + tooltipHeight > viewportHeight - padding) {
-              // Not enough space below, position above instead
-              top = elementRect.top - tooltipHeight - gap
-            } else {
-              top = bottomPos
-            }
-            left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
-            break
-          case 'left':
-            // Position to the left of element
-            const leftPos = elementRect.left - tooltipWidth - gap
-            if (leftPos < padding) {
-              // Not enough space left, position right instead
-              left = elementRect.right + gap
-            } else {
-              left = leftPos
-            }
-            top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
-            break
-          case 'right':
-            // Position to the right of element
-            const rightPos = elementRect.right + gap
-            if (rightPos + tooltipWidth > viewportWidth - padding) {
-              // Not enough space right, position left instead
-              left = elementRect.left - tooltipWidth - gap
-            } else {
-              left = rightPos
-            }
-            top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
-            break
-        }
-      } else {
-        // Center position (for steps with no target element or explicitly center)
-        top = (viewportHeight / 2) - (tooltipHeight / 2)
-        left = (viewportWidth / 2) - (tooltipWidth / 2)
-      }
+       // Handle positioning based on whether we have a target element
+       if (highlightedElement && currentStepData.position !== 'center') {
+         const elementRect = highlightedElement.getBoundingClientRect()
 
-      // Keep tooltip within viewport bounds with dynamic padding
-      top = Math.max(padding, Math.min(top, viewportHeight - tooltipHeight - padding))
-      left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding))
+         switch (currentStepData.position) {
+           case 'top':
+             // Position above element, but check if there's enough space
+             const topPos = elementRect.top - tooltipHeight - gap
+             if (topPos < padding) {
+               // Not enough space above, position below instead
+               top = elementRect.bottom + gap
+             } else {
+               top = topPos
+             }
+             // Center horizontally on element, but keep within viewport
+             left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
+             break
+           case 'bottom':
+             // Position below element, but check if there's enough space
+             const bottomPos = elementRect.bottom + gap
+             if (bottomPos + tooltipHeight > viewportHeight - padding) {
+               // Not enough space below, position above instead
+               top = elementRect.top - tooltipHeight - gap
+             } else {
+               top = bottomPos
+             }
+             left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
+             break
+           case 'left':
+             // Position to the left of element
+             const leftPos = elementRect.left - tooltipWidth - gap
+             if (leftPos < padding) {
+               // Not enough space left, position right instead
+               left = elementRect.right + gap
+             } else {
+               left = leftPos
+             }
+             top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
+             break
+           case 'right':
+             // Position to the right of element
+             const rightPos = elementRect.right + gap
+             if (rightPos + tooltipWidth > viewportWidth - padding) {
+               // Not enough space right, position left instead
+               left = elementRect.left - tooltipWidth - gap
+             } else {
+               left = rightPos
+             }
+             top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
+             break
+         }
+       } else {
+         // Center position (for steps with no target element or explicitly center)
+         top = (viewportHeight / 2) - (tooltipHeight / 2)
+         left = (viewportWidth / 2) - (tooltipWidth / 2)
+       }
 
-      // Additional collision detection - ensure tooltip doesn't overlap with highlighted element
-      if (highlightedElement && currentStepData.position !== 'center') {
-        const elementRect = highlightedElement.getBoundingClientRect()
-        const tooltipLeft = left
-        const tooltipRight = left + tooltipWidth
-        const tooltipTop = top
-        const tooltipBottom = top + tooltipHeight
+       // Keep tooltip within viewport bounds with dynamic padding
+       top = Math.max(padding, Math.min(top, viewportHeight - tooltipHeight - padding))
+       left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding))
 
-        // Check if tooltip would overlap with the element
-        const wouldOverlapHorizontally = tooltipLeft < elementRect.right && tooltipRight > elementRect.left
-        const wouldOverlapVertically = tooltipTop < elementRect.bottom && tooltipBottom > elementRect.top
+       // Additional collision detection - ensure tooltip doesn't overlap with highlighted element
+       if (highlightedElement && currentStepData.position !== 'center') {
+         const elementRect = highlightedElement.getBoundingClientRect()
+         const tooltipLeft = left
+         const tooltipRight = left + tooltipWidth
+         const tooltipTop = top
+         const tooltipBottom = top + tooltipHeight
 
-        if (wouldOverlapHorizontally && wouldOverlapVertically) {
-          // Try to reposition to avoid overlap - prefer bottom position for small elements
-          const spaceBelow = viewportHeight - elementRect.bottom
-          const spaceAbove = elementRect.top
-          const spaceLeft = elementRect.left
-          const spaceRight = viewportWidth - elementRect.right
+         // Check if tooltip would overlap with the element
+         const wouldOverlapHorizontally = tooltipLeft < elementRect.right && tooltipRight > elementRect.left
+         const wouldOverlapVertically = tooltipTop < elementRect.bottom && tooltipBottom > elementRect.top
 
-          if (spaceBelow >= tooltipHeight + padding) {
-            // Position below
-            top = elementRect.bottom + padding
-            left = Math.max(padding, Math.min(
-              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
-              viewportWidth - tooltipWidth - padding
-            ))
-          } else if (spaceAbove >= tooltipHeight + padding) {
-            // Position above
-            top = elementRect.top - tooltipHeight - padding
-            left = Math.max(padding, Math.min(
-              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
-              viewportWidth - tooltipWidth - padding
-            ))
-          } else if (spaceRight >= tooltipWidth + padding) {
-            // Position to the right with more gap
-            left = elementRect.right + padding + gap
-            top = Math.max(padding, Math.min(
-              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
-              viewportHeight - tooltipHeight - padding
-            ))
-          } else if (spaceLeft >= tooltipWidth + padding) {
-            // Position to the left with more gap
-            left = elementRect.left - tooltipWidth - padding - gap
-            top = Math.max(padding, Math.min(
-              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
-              viewportHeight - tooltipHeight - padding
-            ))
-          }
-        }
-      }
+         if (wouldOverlapHorizontally && wouldOverlapVertically) {
+           // Try to reposition to avoid overlap - prefer bottom position for small elements
+           const spaceBelow = viewportHeight - elementRect.bottom
+           const spaceAbove = elementRect.top
+           const spaceLeft = elementRect.left
+           const spaceRight = viewportWidth - elementRect.right
 
-      // Apply dynamic sizing to tooltip
-      if (tooltipRef.current) {
-        tooltipRef.current.style.position = 'fixed'
-        tooltipRef.current.style.top = `${top}px`
-        tooltipRef.current.style.left = `${left}px`
-        tooltipRef.current.style.zIndex = config.zIndex.tooltip.toString()
-        tooltipRef.current.style.maxWidth = config.getMaxWidth(viewportWidth)
-      }
-    }
+           if (spaceBelow >= tooltipHeight + padding) {
+             // Position below
+             top = elementRect.bottom + padding
+             left = Math.max(padding, Math.min(
+               elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+               viewportWidth - tooltipWidth - padding
+             ))
+           } else if (spaceAbove >= tooltipHeight + padding) {
+             // Position above
+             top = elementRect.top - tooltipHeight - padding
+             left = Math.max(padding, Math.min(
+               elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+               viewportWidth - tooltipWidth - padding
+             ))
+           } else if (spaceRight >= tooltipWidth + padding) {
+             // Position to the right with more gap
+             left = elementRect.right + padding + gap
+             top = Math.max(padding, Math.min(
+               elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+               viewportHeight - tooltipHeight - padding
+             ))
+           } else if (spaceLeft >= tooltipWidth + padding) {
+             // Position to the left with more gap
+             left = elementRect.left - tooltipWidth - padding - gap
+             top = Math.max(padding, Math.min(
+               elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+               viewportHeight - tooltipHeight - padding
+             ))
+           }
+         }
+       }
 
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(updatePosition, 10)
-    
-    const handleResize = () => updatePosition()
-    const handleScroll = () => updatePosition()
+       // Apply dynamic sizing to tooltip
+       if (tooltipRef.current) {
+         tooltipRef.current.style.position = 'fixed'
+         tooltipRef.current.style.top = `${top}px`
+         tooltipRef.current.style.left = `${left}px`
+         tooltipRef.current.style.zIndex = config.zIndex.tooltip.toString()
+         tooltipRef.current.style.maxWidth = config.getMaxWidth(viewportWidth)
+       }
+     }
 
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('scroll', handleScroll, true)
+     // Small delay to ensure DOM is ready
+     const timeoutId = setTimeout(updatePosition, 10)
 
-    return () => {
-      clearTimeout(timeoutId)
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('scroll', handleScroll, true)
-    }
-  }, [highlightedElement, currentStepData.position, isOpen])
+     const handleResize = () => updatePosition()
+     const handleScroll = () => updatePosition()
+
+     window.addEventListener('resize', handleResize)
+     window.addEventListener('scroll', handleScroll, true)
+
+     return () => {
+       clearTimeout(timeoutId)
+       window.removeEventListener('resize', handleResize)
+       window.removeEventListener('scroll', handleScroll, true)
+     }
+   }, [highlightedElement, currentStepData.position, isOpen])
 
   const handleNext = () => {
     if (isLastStep) {
