@@ -1,4 +1,4 @@
-name: NPM test workflow
+name: Run tests and checks
 permissions:
   contents: read
 
