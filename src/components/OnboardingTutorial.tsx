@@ -139,18 +139,6 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
        const hasContent = tooltipRef.current.textContent && tooltipRef.current.textContent.trim().length > 0
        const hasDimensions = tooltipWidth > 0 && tooltipHeight > 0
 
-       // Debug logging for restart issues
-       if (process.env.NODE_ENV === 'development') {
-         console.log('OnboardingTutorial positioning:', {
-           step: currentStep,
-           hasContent,
-           hasDimensions,
-           tooltipWidth,
-           tooltipHeight,
-           retryCount
-         })
-       }
-
        // If tooltip doesn't have content or dimensions, retry with exponential backoff
        if (!hasContent || !hasDimensions) {
          retryCount++
