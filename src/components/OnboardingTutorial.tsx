@@ -33,7 +33,13 @@ const POSITIONING_CONFIG = {
     highlight: 9999,
   },
   // Dynamic sizing constraints
+  // Dynamic sizing constraints
   getMaxWidth: (viewportWidth: number) => {
+    if (viewportWidth <= POSITIONING_CONFIG.breakpoints.small) return 'calc(100vw - 16px)'
+    if (viewportWidth <= POSITIONING_CONFIG.breakpoints.mobile) return 'calc(100vw - 24px)'
+    if (viewportWidth <= 768) return '400px'
+    return '500px'
+  },
     if (viewportWidth <= 375) return 'calc(100vw - 16px)'
     if (viewportWidth <= 640) return 'calc(100vw - 24px)'
     if (viewportWidth <= 768) return '400px'
