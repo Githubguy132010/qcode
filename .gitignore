@@ -49,3 +49,6 @@ next-env.d.ts
 
 # Local docs not for commit
 AGENTS.md
+
+# Sentry Config File
+.env.sentry-build-plugin
