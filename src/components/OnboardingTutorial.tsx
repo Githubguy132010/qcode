@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { X, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { OnboardingTutorialProps } from '@/types/onboarding'
@@ -80,11 +80,12 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     }
   }, [currentStep, isOpen, currentStepData.targetElement])
 
-  // Position tooltip relative to highlighted element or center it
-   useEffect(() => {
-     if (!tooltipRef.current) return
+  // Immediate positioning when component becomes visible (for restart scenarios)
+   useLayoutEffect(() => {
+     if (!tooltipRef.current || !isOpen || currentStep !== 0) return
 
-     const updatePosition = () => {
+     // For step 0 (welcome step), position immediately when component becomes visible
+     const positionImmediately = () => {
        if (!tooltipRef.current) return
 
        const tooltipRect = tooltipRef.current.getBoundingClientRect()
@@ -93,10 +94,81 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
        const tooltipWidth = tooltipRect.width
        const tooltipHeight = tooltipRect.height
 
-       // If tooltip has no dimensions, wait a bit longer for it to render
-       if (tooltipWidth === 0 || tooltipHeight === 0) {
-         setTimeout(updatePosition, 50)
-         return
+       // If we have valid dimensions, position immediately
+       if (tooltipWidth > 0 && tooltipHeight > 0) {
+         const config = POSITIONING_CONFIG
+         const padding = config.getPadding(viewportWidth)
+
+         // Center the tooltip
+         const top = Math.max(padding, (viewportHeight / 2) - (tooltipHeight / 2))
+         const left = Math.max(padding, (viewportWidth / 2) - (tooltipWidth / 2))
+
+         tooltipRef.current.style.position = 'fixed'
+         tooltipRef.current.style.top = `${top}px`
+         tooltipRef.current.style.left = `${left}px`
+         tooltipRef.current.style.zIndex = config.zIndex.tooltip.toString()
+         tooltipRef.current.style.maxWidth = config.getMaxWidth(viewportWidth)
+       }
+     }
+
+     // Try immediate positioning
+     positionImmediately()
+
+     // Also set up a fallback with the regular positioning logic
+     const timeoutId = setTimeout(positionImmediately, 50)
+     return () => clearTimeout(timeoutId)
+   }, [isOpen, currentStep])
+
+   // Position tooltip relative to highlighted element or center it
+   useEffect(() => {
+     if (!tooltipRef.current || !isOpen) return
+
+     let retryCount = 0
+     const maxRetries = 15
+
+     const updatePosition = () => {
+       if (!tooltipRef.current || !isOpen) return
+
+       const tooltipRect = tooltipRef.current.getBoundingClientRect()
+       const viewportHeight = window.innerHeight
+       const viewportWidth = window.innerWidth
+       const tooltipWidth = tooltipRect.width
+       const tooltipHeight = tooltipRect.height
+
+       // Check if tooltip has content and dimensions
+       const hasContent = tooltipRef.current.textContent && tooltipRef.current.textContent.trim().length > 0
+       const hasDimensions = tooltipWidth > 0 && tooltipHeight > 0
+
+       // Debug logging for restart issues
+       if (process.env.NODE_ENV === 'development') {
+         console.log('OnboardingTutorial positioning:', {
+           step: currentStep,
+           hasContent,
+           hasDimensions,
+           tooltipWidth,
+           tooltipHeight,
+           retryCount
+         })
+       }
+
+       // If tooltip doesn't have content or dimensions, retry with exponential backoff
+       if (!hasContent || !hasDimensions) {
+         retryCount++
+         if (retryCount < maxRetries) {
+           const delay = Math.min(50 * Math.pow(1.5, retryCount), 500) // Exponential backoff, max 500ms
+           setTimeout(updatePosition, delay)
+           return
+         }
+         // If we've exhausted retries, force a re-render and try one more time
+         if (tooltipRef.current) {
+           tooltipRef.current.style.display = 'none'
+           // Force reflow by accessing offsetHeight
+           void tooltipRef.current.offsetHeight
+           tooltipRef.current.style.display = ''
+           setTimeout(updatePosition, 10)
+           return
+         }
+         console.warn('OnboardingTutorial: Could not get tooltip dimensions after', maxRetries, 'retries')
        }
 
        // Get dynamic configuration values
@@ -160,8 +232,14 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
          }
        } else {
          // Center position (for steps with no target element or explicitly center)
-         top = (viewportHeight / 2) - (tooltipHeight / 2)
-         left = (viewportWidth / 2) - (tooltipWidth / 2)
+         // For step 0 (welcome step), ensure it's perfectly centered
+         if (currentStep === 0 && currentStepData.position === 'center') {
+           top = Math.max(padding, (viewportHeight / 2) - (tooltipHeight / 2))
+           left = Math.max(padding, (viewportWidth / 2) - (tooltipWidth / 2))
+         } else {
+           top = (viewportHeight / 2) - (tooltipHeight / 2)
+           left = (viewportWidth / 2) - (tooltipWidth / 2)
+         }
        }
 
        // Keep tooltip within viewport bounds with dynamic padding
@@ -229,8 +307,10 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
        }
      }
 
-     // Small delay to ensure DOM is ready
-     const timeoutId = setTimeout(updatePosition, 10)
+     // Wait for animation to complete before positioning
+     const animationDuration = 0.2 // matches the transition duration in motion.div
+     const initialDelay = isOpen && currentStep === 0 ? (animationDuration * 1000) + 50 : 10
+     const timeoutId = setTimeout(updatePosition, initialDelay)
 
      const handleResize = () => updatePosition()
      const handleScroll = () => updatePosition()
@@ -243,7 +323,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
        window.removeEventListener('resize', handleResize)
        window.removeEventListener('scroll', handleScroll, true)
      }
-   }, [highlightedElement, currentStepData.position, isOpen])
+   }, [highlightedElement, currentStepData.position, isOpen, currentStep])
 
   const handleNext = () => {
     if (isLastStep) {
