@@ -40,10 +40,10 @@ Una moderna Progressive Web App (PWA) per archiviare e gestire i codici sconto, 
 ### Sviluppo
 ```bash
 # Installare le dipendenze
-npm install
+pnpm install
 
 # Avviare il server di sviluppo
-npm run dev
+pnpm run dev
 
 # Aprire il browser su http://localhost:3000
 ```
@@ -51,10 +51,10 @@ npm run dev
 ### Produzione
 ```bash
 # Costruire l'applicazione
-npm run build
+pnpm run build
 
 # Avviare il server di produzione
-npm start
+pnpm start
 ```
 
 ## 📁 Struttura del progetto

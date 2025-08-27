@@ -41,10 +41,10 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 ### Development
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Open browser to http://localhost:3000
 ```
@@ -52,10 +52,10 @@ npm run dev
 ### Production
 ```bash
 # Build the application
-npm run build
+pnpm run build
 
 # Start production server
-npm start
+pnpm start
 ```
 
 ## 📁 Project Structure

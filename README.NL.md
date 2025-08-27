@@ -42,10 +42,10 @@ Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingsco
 ### Ontwikkeling
 ```bash
 # Installeer dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Open browser naar http://localhost:3000
 ```
@@ -53,10 +53,10 @@ npm run dev
 ### Productie
 ```bash
 # Bouw de applicatie
-npm run build
+pnpm run build
 
 # Start productie server
-npm start
+pnpm start
 ```
 
 ## 📁 Project Structuur
