@@ -3,19 +3,18 @@
 ## Build/Lint/Test Commands
 
 ### Build Commands
-- **Full build**: `npm run build` or `next build`
-- **Development server**: `npm run dev` or `next dev --turbopack`
-- **Production start**: `npm start` or `next start`
+- **Full build**: `pnpm run build` or `next build`
+- **Development server**: `pnpm run dev` or `next dev --turbopack`
+- **Production start**: `pnpm start` or `next start`
 
 ### Lint Commands
-- **Lint code**: `npm run lint` or `next lint`
-- **ESLint config**: Uses Next.js core web vitals and TypeScript rules
+- **Lint code**: `pnpm run lint` or `next lint`
 
 ### Test Commands
-- **Run all tests**: `npm test` or `jest`
-- **Run single test**: `jest <test-file>` or `npm test -- <test-file>`
-- **Run translation tests**: `npm run test:translations`
-- **Run all checks**: `npm run test:all` (tests + lint + build)
+- **Run all tests**: `pnpm test` or `jest`
+- **Run single test**: `jest <test-file>` or `pnpm test -- <test-file>`
+- **Run translation tests**: `pnpm run test:translations`
+- **Run all checks**: `pnpm run test:all` (tests + lint + build)
 
 ## Code Style Guidelines
 

@@ -40,10 +40,10 @@ Une application web progressive (PWA) moderne pour stocker et gérer les codes d
 ### Développement
 ```bash
 # Installer les dépendances
-npm install
+pnpm install
 
 # Démarrer le serveur de développement
-npm run dev
+pnpm run dev
 
 # Ouvrir le navigateur sur http://localhost:3000
 ```
@@ -51,10 +51,10 @@ npm run dev
 ### Production
 ```bash
 # Construire l'application
-npm run build
+pnpm run build
 
 # Démarrer le serveur de production
-npm start
+pnpm start
 ```
 
 ## 📁 Structure du projet

@@ -40,10 +40,10 @@ Eine moderne Progressive Web App (PWA) zum Speichern und Verwalten von Rabattcod
 ### Entwicklung
 ```bash
 # Abhängigkeiten installieren
-npm install
+pnpm install
 
 # Entwicklungsserver starten
-npm run dev
+pnpm run dev
 
 # Browser öffnen auf http://localhost:3000
 ```
@@ -51,10 +51,10 @@ npm run dev
 ### Produktion
 ```bash
 # Anwendung bauen
-npm run build
+pnpm run build
 
 # Produktionsserver starten
-npm start
+pnpm start
 ```
 
 ## 📁 Projektstruktur
