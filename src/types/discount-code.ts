@@ -7,6 +7,7 @@ export interface DiscountCode {
   expiryDate?: Date
   category: string
   description?: string
+  termsAndConditions?: string
   isFavorite: boolean
   isArchived: boolean
   dateAdded: Date
@@ -24,6 +25,7 @@ export interface DiscountCodeFormData {
   expiryDate?: string
   category: string
   description?: string
+  termsAndConditions?: string
 }
 
 export type SortOption = 'dateAdded' | 'expiryDate' | 'store' | 'category' | 'timesUsed'

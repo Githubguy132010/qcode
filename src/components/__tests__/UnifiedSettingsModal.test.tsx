@@ -77,6 +77,9 @@ const MockedModal = ({ isOpen = true, onClose = jest.fn(), ...props }) => (
     <UnifiedSettingsModal
       isOpen={isOpen}
       onClose={onClose}
+      selectedStores={[]}
+      toggleStore={jest.fn()}
+      supportedStores={['Amazon', 'Coolblue']}
       {...props}
     />
   </I18nProvider>

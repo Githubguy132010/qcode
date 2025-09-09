@@ -186,6 +186,10 @@
       "dangerSubtitle": "Dit verwijdert al je kortingscodes permanent.",
       "clearButton": "Alles verwijderen"
     },
+    "integrations": {
+      "title": "Winkel Integraties",
+      "description": "Selecteer van welke winkels je automatisch kortingscodes wilt ophalen."
+    },
     "language": {
       "title": "Taal wijzigen",
       "subtitle": "Kies de taal voor de app interface",

@@ -186,6 +186,10 @@
       "dangerSubtitle": "This will permanently delete all your discount codes.",
       "clearButton": "Delete everything"
     },
+    "integrations": {
+      "title": "Store Integrations",
+      "description": "Select which stores you want to automatically fetch coupons from."
+    },
     "language": {
       "title": "Change language",
       "subtitle": "Choose the language for the app interface",

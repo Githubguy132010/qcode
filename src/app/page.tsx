@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, createRef, useEffect } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Database } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
@@ -16,6 +16,7 @@ import { ChangelogPopup } from '@/components/ChangelogPopup'
 import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
 import { OnboardingTutorial } from '@/components/OnboardingTutorial'
 import { useOnboarding } from '@/hooks/useOnboarding'
+import { useStorePreferences } from '@/hooks/useStorePreferences'
 import { useTranslation } from 'react-i18next'
 import { staggerContainer } from '@/lib/animations'
 import { AnimatedPage } from '@/components/AnimatedPage'
@@ -36,6 +37,9 @@ export default function HomePage() {
     getStats,
     getExpiringSoon,
   } = useDiscountCodes()
+  const { selectedStores, toggleStore, supportedStores } = useStorePreferences()
+
+  const [isFetching, setIsFetching] = useState(false)
   
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
   const [isClient, setIsClient] = useState(false)
@@ -203,6 +207,44 @@ export default function HomePage() {
     } finally {
       setIsAddModalOpen(true)
     }
+  }
+
+  const handleFetchCoupons = async () => {
+    if (selectedStores.length === 0) {
+      alert('Please select stores to fetch from in the settings.')
+      return
+    }
+
+    setIsFetching(true)
+    let newCouponsCount = 0
+
+    for (const store of selectedStores) {
+      try {
+        const response = await fetch(`/api/scrape?store=${store.toLowerCase()}`)
+        if (!response.ok) {
+          throw new Error(`Failed to fetch coupons for ${store}`)
+        }
+        const newCoupons: DiscountCodeFormData[] = await response.json()
+
+        for (const newCoupon of newCoupons) {
+          const isDuplicate = codes.some(
+            (existingCode) =>
+              existingCode.code === newCoupon.code && existingCode.store.toLowerCase() === newCoupon.store.toLowerCase()
+          )
+
+          if (!isDuplicate) {
+            addCode(newCoupon)
+            newCouponsCount++
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching coupons for ${store}:`, error)
+        alert(`Could not fetch coupons for ${store}.`)
+      }
+    }
+
+    setIsFetching(false)
+    alert(`Finished fetching. Added ${newCouponsCount} new coupons.`)
   }
 
   /**
@@ -397,10 +439,10 @@ export default function HomePage() {
             onViewModeChange={setViewMode}
           />
 
-          {/* Add Button */}
+          {/* Action Buttons */}
           {codes.length > 0 && (
-            <motion.div 
-              className="mb-8"
+            <motion.div
+              className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -424,6 +466,30 @@ export default function HomePage() {
                   <Plus size={24} />
                 </motion.div>
                 <span className="text-lg">{t('homePage.addNewCode')}</span>
+              </motion.button>
+
+              <motion.button
+                onClick={handleFetchCoupons}
+                disabled={isFetching}
+                className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg group disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: '0 20px 25px -5px rgba(168, 85, 247, 0.2), 0 8px 10px -6px rgba(168, 85, 247, 0.2)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30, mass: 1 }}
+              >
+                {isFetching ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Database size={24} />
+                  </motion.div>
+                ) : (
+                  <Database size={24} />
+                )}
+                <span className="text-lg">{isFetching ? 'Fetching...' : 'Fetch Coupons'}</span>
               </motion.button>
             </motion.div>
           )}
@@ -483,6 +549,9 @@ export default function HomePage() {
           onClose={() => setIsUnifiedModalOpen(false)}
           onRestartTutorial={handleRestartTutorial}
           initialTab={initialTab}
+          selectedStores={selectedStores}
+          toggleStore={toggleStore}
+          supportedStores={supportedStores}
         />
 
         {/* Changelog Popup */}

@@ -11,6 +11,7 @@ import { LifecycleAnalyticsCard } from '@/components/analytics/LifecycleAnalytic
 import { PerformanceAnalyticsCard } from '@/components/analytics/PerformanceAnalyticsCard'
 import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview'
 import { UnifiedSettingsModal } from '@/components/UnifiedSettingsModal'
+import { useStorePreferences } from '@/hooks/useStorePreferences'
 import { useOnboarding } from '@/hooks/useOnboarding'
 import { useTranslation } from 'react-i18next'
 import { BarChart3, TrendingUp, Calendar, Target } from 'lucide-react'
@@ -19,6 +20,7 @@ import { tabVariants } from '@/lib/animations'
 export default function AnalyticsPage() {
   const { t } = useTranslation()
   const { codes, isLoading } = useDiscountCodes()
+  const { selectedStores, toggleStore, supportedStores } = useStorePreferences()
   const [activeTab, setActiveTab] = useState<'overview' | 'usage' | 'savings' | 'lifecycle' | 'performance'>('overview')
   const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
   const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
@@ -201,6 +203,9 @@ export default function AnalyticsPage() {
         onClose={() => setIsUnifiedModalOpen(false)}
         onRestartTutorial={handleRestartTutorial}
         initialTab={initialTab}
+        selectedStores={selectedStores}
+        toggleStore={toggleStore}
+        supportedStores={supportedStores}
       />
     </div>
   )

@@ -11,12 +11,17 @@ import { ThemeSelector } from './ThemeSelector'
 import { modalVariants } from '@/lib/animations'
 import type { DeveloperSettings } from '@/types/changelog'
 
+import type { SupportedStore } from '@/hooks/useStorePreferences'
+
 interface UnifiedSettingsModalProps {
   isOpen: boolean
   onClose: () => void
   onAdvancedReleaseNotes?: () => void
   onRestartTutorial?: () => void
   initialTab?: SettingsTab
+  selectedStores: SupportedStore[]
+  toggleStore: (store: SupportedStore) => void
+  supportedStores: readonly SupportedStore[]
 }
 
 type SettingsTab = 'general' | 'data' | 'appearance' | 'advanced'
@@ -26,7 +31,10 @@ export function UnifiedSettingsModal({
   onClose,
   onAdvancedReleaseNotes,
   onRestartTutorial,
-  initialTab = 'general'
+  initialTab = 'general',
+  selectedStores,
+  toggleStore,
+  supportedStores
 }: UnifiedSettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
@@ -144,6 +152,7 @@ export function UnifiedSettingsModal({
               <h2 id="settings-modal-title" className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
               <motion.button
                 onClick={onClose}
+                aria-label={t('common.close', 'Close')}
                 className="w-11 h-11 flex items-center justify-center theme-text-secondary hover:theme-text-primary transition-colors"
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
@@ -211,6 +220,7 @@ export function UnifiedSettingsModal({
             {/* Desktop Close Button */}
             <motion.button
               onClick={onClose}
+              aria-label={t('common.close', 'Close')}
               className="hidden lg:block absolute top-4 right-4 w-11 h-11 flex items-center justify-center theme-text-secondary hover:theme-text-primary transition-colors z-10"
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
@@ -296,6 +306,35 @@ export function UnifiedSettingsModal({
                         </motion.button>
                       </motion.div>
                     )}
+
+                    <motion.div
+                      className="theme-filter rounded-lg p-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <h4 className="font-medium theme-text-primary mb-3 flex items-center gap-2">
+                        <Database size={16} />
+                        {t('settings.integrations.title', 'Store Integrations')}
+                      </h4>
+                      <p className="text-sm theme-text-secondary mb-3">
+                        {t('settings.integrations.description', 'Select which stores you want to automatically fetch coupons from.')}
+                      </p>
+                      <div className="space-y-2">
+                        {supportedStores.map(store => (
+                          <label key={store} className="m3-checkbox flex items-center gap-3 py-2 cursor-pointer touch-manipulation">
+                            <input
+                              type="checkbox"
+                              checked={selectedStores.includes(store)}
+                              onChange={() => toggleStore(store)}
+                              className="sr-only peer"
+                            />
+                            <span aria-hidden="true" className="m3-box"></span>
+                            <span className="text-sm font-medium theme-text-primary">{store}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </motion.div>
                   </motion.div>
                 )}
 
