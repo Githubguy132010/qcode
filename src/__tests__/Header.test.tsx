@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Header } from '../components/Header';
+import { DarkModeProvider } from '../hooks/useDarkMode';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 
@@ -30,9 +31,11 @@ describe('Header', () => {
 
   it('renders the app title', () => {
     render(
-      <I18nextProvider i18n={i18next}>
-        <Header onSettingsClick={() => {}} />
-      </I18nextProvider>
+      <DarkModeProvider>
+        <I18nextProvider i18n={i18next}>
+          <Header onSettingsClick={() => {}} />
+        </I18nextProvider>
+      </DarkModeProvider>
     );
     expect(screen.getByText('common.appName')).toBeInTheDocument();
   });

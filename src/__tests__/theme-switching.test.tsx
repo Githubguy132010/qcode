@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react'
-import { useDarkMode } from '@/hooks/useDarkMode'
+import { useDarkMode, DarkModeProvider } from '@/hooks/useDarkMode'
 import { renderHook } from '@testing-library/react'
 
 describe('Theme Switching Functionality', () => {
@@ -12,7 +12,9 @@ describe('Theme Switching Functionality', () => {
   })
 
   it('should apply light theme correctly', () => {
-    const { result } = renderHook(() => useDarkMode())
+    const { result } = renderHook(() => useDarkMode(), {
+      wrapper: DarkModeProvider,
+    })
     
     act(() => {
       result.current.setThemeMode('light')
@@ -23,7 +25,9 @@ describe('Theme Switching Functionality', () => {
   })
 
   it('should apply dark theme correctly', () => {
-    const { result } = renderHook(() => useDarkMode())
+    const { result } = renderHook(() => useDarkMode(), {
+      wrapper: DarkModeProvider,
+    })
     
     act(() => {
       result.current.setThemeMode('dark')
@@ -34,7 +38,9 @@ describe('Theme Switching Functionality', () => {
   })
 
   it('should apply oled theme correctly', () => {
-    const { result } = renderHook(() => useDarkMode())
+    const { result } = renderHook(() => useDarkMode(), {
+      wrapper: DarkModeProvider,
+    })
     
     act(() => {
       result.current.setThemeMode('oled')
@@ -45,7 +51,9 @@ describe('Theme Switching Functionality', () => {
   })
 
   it('should apply auto theme correctly', () => {
-    const { result } = renderHook(() => useDarkMode())
+    const { result } = renderHook(() => useDarkMode(), {
+      wrapper: DarkModeProvider,
+    })
     
     act(() => {
       result.current.setThemeMode('auto')
@@ -59,7 +67,9 @@ describe('Theme Switching Functionality', () => {
   })
 
   it('should persist theme preference in localStorage', () => {
-    const { result } = renderHook(() => useDarkMode())
+    const { result } = renderHook(() => useDarkMode(), {
+      wrapper: DarkModeProvider,
+    })
     
     act(() => {
       result.current.setThemeMode('oled')
