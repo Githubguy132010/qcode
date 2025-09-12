@@ -729,3 +729,46 @@ button, input, select, textarea {
     transition: none;
   }
 }
+
+/* Predefined Themes */
+.ocean {
+  --background: #e0f7fa;
+  --background-light: #b2ebf2;
+  --foreground: #004d40;
+  --card-bg: #ffffff;
+  --card-border: #4dd0e1;
+  --input-bg: #ffffff;
+  --input-border: #26c6da;
+  --accent-blue: #0097a7;
+  --accent-blue-hover: #00838f;
+  --text-primary: #004d40;
+  --text-secondary: #006064;
+}
+
+.forest {
+  --background: #e8f5e9;
+  --background-light: #c8e6c9;
+  --foreground: #1b5e20;
+  --card-bg: #ffffff;
+  --card-border: #a5d6a7;
+  --input-bg: #ffffff;
+  --input-border: #81c784;
+  --accent-blue: #388e3c;
+  --accent-blue-hover: #2e7d32;
+  --text-primary: #1b5e20;
+  --text-secondary: #2e7d32;
+}
+
+.rose {
+  --background: #fce4ec;
+  --background-light: #f8bbd0;
+  --foreground: #880e4f;
+  --card-bg: #ffffff;
+  --card-border: #f48fb1;
+  --input-bg: #ffffff;
+  --input-border: #f06292;
+  --accent-blue: #d81b60;
+  --accent-blue-hover: #c2185b;
+  --text-primary: #880e4f;
+  --text-secondary: #ad1457;
+}

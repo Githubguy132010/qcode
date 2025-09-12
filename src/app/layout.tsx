@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
+import { DarkModeProvider } from "@/hooks/useDarkMode";
 import { HtmlLanguageAttribute } from "@/components/HtmlLanguageAttribute";
 import { headers } from "next/headers";
 
@@ -49,11 +50,13 @@ export default async function RootLayout({
       <body
         className={`font-sans antialiased min-h-screen transition-colors`}
       >
-        <I18nProvider>
-          <HtmlLanguageAttribute>
-            {children}
-          </HtmlLanguageAttribute>
-        </I18nProvider>
+        <DarkModeProvider>
+          <I18nProvider>
+            <HtmlLanguageAttribute>
+              {children}
+            </HtmlLanguageAttribute>
+          </I18nProvider>
+        </DarkModeProvider>
       </body>
     </html>
   );

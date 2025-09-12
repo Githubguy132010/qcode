@@ -11,6 +11,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.1.8(@types/react@19.1.11))(@types/react@19.1.11)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@types/react-color':
+        specifier: ^3.0.13
+        version: 3.0.13(@types/react@19.1.11)
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
@@ -41,6 +44,9 @@ importers:
       react:
         specifier: ^19.1.1
         version: 19.1.1
+      react-color:
+        specifier: ^2.19.3
+        version: 2.19.3(react@19.1.1)
       react-dom:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
@@ -824,6 +830,11 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
+  '@icons/material@0.2.4':
+    resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
+    peerDependencies:
+      react: '*'
+
   '@img/sharp-darwin-arm64@0.34.3':
     resolution: {integrity: sha512-ryFMfvxxpQRsgZJqBd4wsttYQbCxsJksrv9Lw/v798JcQ8+w84mBWuXwl+TT0WJ/WrYOLaYpwQXi3sA9nTIaIg==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
@@ -1597,6 +1608,11 @@ packages:
   '@types/node@24.3.0':
     resolution: {integrity: sha512-aPTXCrfwnDLj4VvXrm+UUCQjNEvJgNA8s5F1cvwQU+3KNltTOkBm1j30uNLyqqPNe7gE3KFzImYoZEfLhp4Yow==}
 
+  '@types/react-color@3.0.13':
+    resolution: {integrity: sha512-2c/9FZ4ixC5T3JzN0LP5Cke2Mf0MKOP2Eh0NPDPWmuVH3NjPyhEjqNMQpN1Phr5m74egAy+p2lYNAFrX1z9Yrg==}
+    peerDependencies:
+      '@types/react': '*'
+
   '@types/react-dom@19.1.8':
     resolution: {integrity: sha512-xG7xaBMJCpcK0RpN8jDbAACQo54ycO6h4dSSmgv8+fu6ZIAdANkx/WsawASUjVXYfy+J9AbUpRMNNEsXCDfDBQ==}
     peerDependencies:
@@ -1604,6 +1620,11 @@ packages:
 
   '@types/react@19.1.11':
     resolution: {integrity: sha512-lr3jdBw/BGj49Eps7EvqlUaoeA0xpj3pc0RoJkHpYaCHkVK7i28dKyImLQb3JVlqs3aYSXf7qYuWOW/fgZnTXQ==}
+
+  '@types/reactcss@1.2.13':
+    resolution: {integrity: sha512-gi3S+aUi6kpkF5vdhUsnkwbiSEIU/BEJyD7kBy2SudWBUuKmJk8AQKE0OVcQQeEy40Azh0lV6uynxlikYIJuwg==}
+    peerDependencies:
+      '@types/react': '*'
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -3335,6 +3356,9 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
+  lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
 
@@ -3388,6 +3412,9 @@ packages:
 
   makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
+
+  material-colors@1.2.6:
+    resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -3718,6 +3745,11 @@ packages:
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
+  react-color@2.19.3:
+    resolution: {integrity: sha512-LEeGE/ZzNLIsFWa1TMe8y5VYqr7bibneWmvJwm1pCn/eNmrabWDh659JSPn9BuaMpEfU83WTOJfnCcjDZwNQTA==}
+    peerDependencies:
+      react: '*'
+
   react-dom@19.1.1:
     resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
     peerDependencies:
@@ -3751,6 +3783,11 @@ packages:
   react@19.1.1:
     resolution: {integrity: sha512-w8nqGImo45dmMIfljjMwOGtbmC/mk4CMYhWIicdSflH91J9TyCyczcPFXJzrZ/ZXcgGRFeP6BU0BEJTw6tZdfQ==}
     engines: {node: '>=0.10.0'}
+
+  reactcss@1.2.3:
+    resolution: {integrity: sha512-KiwVUcFu1RErkI97ywr8nvx8dNOpT03rbnma0SSalTYjkrPYaEajR4a/MRt6DZ46K6arDRbWMNHF+xH7G7n/8A==}
+    peerDependencies:
+      react: '*'
 
   redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
@@ -4128,6 +4165,9 @@ packages:
   test-exclude@6.0.0:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
     engines: {node: '>=8'}
+
+  tinycolor2@1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
 
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
@@ -5366,6 +5406,10 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
+  '@icons/material@0.2.4(react@19.1.1)':
+    dependencies:
+      react: 19.1.1
+
   '@img/sharp-darwin-arm64@0.34.3':
     optionalDependencies:
       '@img/sharp-libvips-darwin-arm64': 1.2.0
@@ -6173,6 +6217,11 @@ snapshots:
     dependencies:
       undici-types: 7.10.0
 
+  '@types/react-color@3.0.13(@types/react@19.1.11)':
+    dependencies:
+      '@types/react': 19.1.11
+      '@types/reactcss': 1.2.13(@types/react@19.1.11)
+
   '@types/react-dom@19.1.8(@types/react@19.1.11)':
     dependencies:
       '@types/react': 19.1.11
@@ -6180,6 +6229,10 @@ snapshots:
   '@types/react@19.1.11':
     dependencies:
       csstype: 3.1.3
+
+  '@types/reactcss@1.2.13(@types/react@19.1.11)':
+    dependencies:
+      '@types/react': 19.1.11
 
   '@types/resolve@1.17.1':
     dependencies:
@@ -8295,6 +8348,8 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
+  lodash-es@4.17.21: {}
+
   lodash.debounce@4.0.8: {}
 
   lodash.memoize@4.1.2: {}
@@ -8342,6 +8397,8 @@ snapshots:
   makeerror@1.0.12:
     dependencies:
       tmpl: 1.0.5
+
+  material-colors@1.2.6: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -8660,6 +8717,17 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
+  react-color@2.19.3(react@19.1.1):
+    dependencies:
+      '@icons/material': 0.2.4(react@19.1.1)
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      material-colors: 1.2.6
+      prop-types: 15.8.1
+      react: 19.1.1
+      reactcss: 1.2.3(react@19.1.1)
+      tinycolor2: 1.6.0
+
   react-dom@19.1.1(react@19.1.1):
     dependencies:
       react: 19.1.1
@@ -8682,6 +8750,11 @@ snapshots:
   react-is@18.3.1: {}
 
   react@19.1.1: {}
+
+  reactcss@1.2.3(react@19.1.1):
+    dependencies:
+      lodash: 4.17.21
+      react: 19.1.1
 
   redent@3.0.0:
     dependencies:
@@ -9126,6 +9199,8 @@ snapshots:
       '@istanbuljs/schema': 0.1.3
       glob: 7.2.3
       minimatch: 3.1.2
+
+  tinycolor2@1.6.0: {}
 
   tinyglobby@0.2.14:
     dependencies:
