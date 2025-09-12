@@ -1,18 +1,23 @@
 import { render, fireEvent, screen, act } from '@testing-library/react'
 import { DarkModeProvider, useDarkMode, CustomTheme } from '@/hooks/useDarkMode'
 import { ThemeSelector } from '@/components/ThemeSelector'
-import { ThemeEditor } from '@/components/ThemeEditor'
 import { renderHook } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '../__mocks__/i18next'
 
+interface SketchPickerProps {
+  color: string
+  onChangeComplete: (color: { hex: string }) => void
+  'data-testid': string
+}
+
 // Mock react-color
 jest.mock('react-color', () => ({
-  SketchPicker: (props: any) => {
+  SketchPicker: (props: SketchPickerProps) => {
     return (
       <input
         type="text"
-        data-testid={props['data-testid']} // Use the passed data-testid
+        data-testid={props['data-testid']}
         value={props.color}
         onChange={e => props.onChangeComplete({ hex: e.target.value })}
       />
