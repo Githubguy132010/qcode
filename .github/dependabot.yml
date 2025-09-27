@@ -11,10 +11,14 @@ updates:
     labels:
       - 'dependencies'
     groups:
-      dev-dependencies:
-        patterns:
-          - '*'
+      production-dependencies:
+        dependency-type: "production"
         update-types:
-          - 'minor'
-          - 'patch'
-          - 'major'
+          - "minor"
+          - "patch"
+          - "major"
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
