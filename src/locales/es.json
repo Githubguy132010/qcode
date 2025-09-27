@@ -136,9 +136,18 @@
     "title": "Configuración",
     "tabs": {
       "general": "General",
+      "account": "Cuenta",
       "data": "Gestión de datos",
       "appearance": "Apariencia",
       "advanced": "Avanzado"
+    },
+    "account": {
+      "title": "Cuenta",
+      "subtitle": "Sincroniza tus datos entre dispositivos iniciando sesión.",
+      "logout": "Cerrar sesión",
+      "signInTitle": "Iniciar sesión con GitHub",
+      "signInSubtitle": "Habilita la sincronización en la nube para mantener tus códigos de descuento seguros y accesibles en todas partes.",
+      "signInButton": "Iniciar sesión con GitHub"
     },
     "appearance": {
       "title": "Apariencia",

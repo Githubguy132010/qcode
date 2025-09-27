@@ -136,9 +136,18 @@
     "title": "Settings",
     "tabs": {
       "general": "General",
+      "account": "Account",
       "data": "Data Management",
       "appearance": "Appearance",
       "advanced": "Advanced"
+    },
+    "account": {
+      "title": "Account",
+      "subtitle": "Sync your data across devices by signing in.",
+      "logout": "Log Out",
+      "signInTitle": "Sign in with GitHub",
+      "signInSubtitle": "Enable cloud sync to keep your discount codes safe and accessible everywhere.",
+      "signInButton": "Sign in with GitHub"
     },
     "appearance": {
       "title": "Appearance",

@@ -136,9 +136,18 @@
     "title": "Einstellungen",
     "tabs": {
       "general": "Allgemein",
+      "account": "Konto",
       "data": "Datenverwaltung",
       "appearance": "Erscheinungsbild",
       "advanced": "Erweitert"
+    },
+    "account": {
+      "title": "Konto",
+      "subtitle": "Synchronisieren Sie Ihre Daten über Geräte hinweg, indem Sie sich anmelden.",
+      "logout": "Abmelden",
+      "signInTitle": "Mit GitHub anmelden",
+      "signInSubtitle": "Aktivieren Sie die Cloud-Synchronisierung, um Ihre Rabattcodes sicher und überall zugänglich zu halten.",
+      "signInButton": "Mit GitHub anmelden"
     },
     "appearance": {
       "title": "Erscheinungsbild",
