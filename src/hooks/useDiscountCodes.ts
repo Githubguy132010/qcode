@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabaseClient'
 import type { DiscountCode, DiscountCodeFormData, SearchFilters } from '@/types/discount-code'
 
 const STORAGE_KEY = 'qcode-discount-codes'
 
 export function useDiscountCodes() {
+  const { user, loading: authLoading } = useAuth()
   const [codes, setCodes] = useState<DiscountCode[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
@@ -16,45 +19,103 @@ export function useDiscountCodes() {
     setIsClient(true)
   }, [])
 
-  // Load codes from localStorage
+  // Load codes from localStorage or Supabase
   useEffect(() => {
-    if (!isClient) return
-    
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsedCodes = JSON.parse(stored).map((code: Record<string, unknown>) => ({
-          ...code,
-          dateAdded: new Date(code.dateAdded as string),
-          expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
-          usageHistory: code.usageHistory ? (code.usageHistory as Array<{ date: string | Date; estimatedSavings?: number }>).map(usage => ({
-            ...usage,
-            date: new Date(usage.date)
-          })) : undefined,
-        }))
-        setCodes(parsedCodes)
+    if (authLoading || !isClient) return
+
+    const loadData = async () => {
+      setIsLoading(true)
+      if (user) {
+        // Fetch from Supabase
+        const { data, error } = await supabase
+          .from('codes')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('dateAdded', { ascending: false })
+
+        if (error) {
+          console.error('Error fetching codes from Supabase:', error)
+        } else if (data) {
+          const parsedCodes = data.map((code: any) => ({
+            ...code,
+            dateAdded: new Date(code.dateAdded),
+            expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
+            usageHistory: code.usageHistory ? code.usageHistory.map((usage: any) => ({
+              ...usage,
+              date: new Date(usage.date)
+            })) : [],
+          }))
+          setCodes(parsedCodes)
+        }
+      } else {
+        // Fetch from localStorage
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY)
+          if (stored) {
+            const parsedCodes = JSON.parse(stored).map((code: Record<string, unknown>) => ({
+              ...code,
+              dateAdded: new Date(code.dateAdded as string),
+              expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
+              usageHistory: code.usageHistory ? (code.usageHistory as Array<{ date: string | Date; estimatedSavings?: number }>).map(usage => ({
+                ...usage,
+                date: new Date(usage.date)
+              })) : [],
+            }))
+            setCodes(parsedCodes)
+          } else {
+            setCodes([]) // Clear codes if no user and no local data
+          }
+        } catch (error) {
+          console.error('Error loading discount codes from localStorage:', error)
+          setCodes([])
+        }
       }
-    } catch (error) {
-      console.error('Error loading discount codes:', error)
-    } finally {
       setIsLoading(false)
     }
-  }, [isClient])
 
-  // Save codes to localStorage
-  const saveCodes = useCallback((newCodes: DiscountCode[]) => {
-    if (!isClient) return
-    
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newCodes))
-      setCodes(newCodes)
-    } catch (error) {
-      console.error('Error saving discount codes:', error)
+    loadData()
+
+    // Set up Supabase real-time subscription
+    if (user) {
+      const channel = supabase
+        .channel('codes')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'codes', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            if (payload.eventType === 'INSERT') {
+              const newCode = {
+                ...payload.new,
+                dateAdded: new Date(payload.new.dateAdded),
+                expiryDate: payload.new.expiryDate ? new Date(payload.new.expiryDate) : undefined,
+              }
+              setCodes((currentCodes) => [newCode, ...currentCodes.filter(c => c.id !== newCode.id)])
+            } else if (payload.eventType === 'UPDATE') {
+              const updatedCode = {
+                ...payload.new,
+                dateAdded: new Date(payload.new.dateAdded),
+                expiryDate: payload.new.expiryDate ? new Date(payload.new.expiryDate) : undefined,
+              };
+              setCodes((currentCodes) =>
+                currentCodes.map((code) => (code.id === updatedCode.id ? updatedCode : code))
+              )
+            } else if (payload.eventType === 'DELETE') {
+              setCodes((currentCodes) => currentCodes.filter((code) => code.id !== payload.old.id))
+            }
+          }
+        )
+        .subscribe()
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
     }
-  }, [isClient])
+  }, [user, authLoading, isClient])
 
   // Add new discount code
-  const addCode = useCallback((formData: DiscountCodeFormData) => {
+  const addCode = useCallback(async (formData: DiscountCodeFormData) => {
+    if (!isClient) return null
+
     const newCode: DiscountCode = {
       id: uuidv4(),
       code: formData.code.trim(),
@@ -68,29 +129,81 @@ export function useDiscountCodes() {
       isArchived: false,
       dateAdded: new Date(),
       timesUsed: 0,
+      usageHistory: [],
     }
 
+    const originalCodes = codes
     const updatedCodes = [newCode, ...codes]
-    saveCodes(updatedCodes)
+    setCodes(updatedCodes) // Optimistic update
+
+    if (user) {
+      const { error } = await supabase.from('codes').insert({ ...newCode, user_id: user.id })
+      if (error) {
+        console.error('Error adding code to Supabase:', error)
+        setCodes(originalCodes) // Revert on failure
+        return null
+      }
+    } else {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCodes))
+      } catch (e) {
+        console.error('Error saving to localStorage:', e)
+        setCodes(originalCodes) // Revert on failure
+        return null
+      }
+    }
     return newCode
-  }, [codes, saveCodes])
+  }, [codes, user, isClient])
 
   // Update existing discount code
-  const updateCode = useCallback((id: string, updates: Partial<DiscountCode>) => {
+  const updateCode = useCallback(async (id: string, updates: Partial<DiscountCode>) => {
+    if (!isClient) return
+
+    const originalCodes = [...codes]
     const updatedCodes = codes.map(code =>
-      code.id === id ? {
-        ...code,
-        ...updates
-      } : code
+      code.id === id ? { ...code, ...updates } : code
     )
-    saveCodes(updatedCodes)
-  }, [codes, saveCodes])
+    setCodes(updatedCodes) // Optimistic update
+
+    if (user) {
+      const { error } = await supabase.from('codes').update(updates).eq('id', id)
+      if (error) {
+        console.error('Error updating code in Supabase:', error)
+        setCodes(originalCodes) // Revert on failure
+      }
+    } else {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCodes))
+      } catch (e) {
+        console.error('Error saving to localStorage:', e)
+        setCodes(originalCodes) // Revert on failure
+      }
+    }
+  }, [codes, user, isClient])
 
   // Delete discount code
-  const deleteCode = useCallback((id: string) => {
+  const deleteCode = useCallback(async (id: string) => {
+    if (!isClient) return
+
+    const originalCodes = [...codes]
     const updatedCodes = codes.filter(code => code.id !== id)
-    saveCodes(updatedCodes)
-  }, [codes, saveCodes])
+    setCodes(updatedCodes) // Optimistic update
+
+    if (user) {
+      const { error } = await supabase.from('codes').delete().eq('id', id)
+      if (error) {
+        console.error('Error deleting code from Supabase:', error)
+        setCodes(originalCodes) // Revert on failure
+      }
+    } else {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCodes))
+      } catch (e) {
+        console.error('Error saving to localStorage:', e)
+        setCodes(originalCodes) // Revert on failure
+      }
+    }
+  }, [codes, user, isClient])
 
   // Toggle favorite status
   const toggleFavorite = useCallback((id: string) => {

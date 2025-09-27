@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders, User } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useAuth } from '@/contexts/AuthContext'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
@@ -8,6 +9,7 @@ import { loadDemoData } from '@/utils/demo-data'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeSelector } from './ThemeSelector'
+import { AccountTab } from './AccountTab'
 import { modalVariants } from '@/lib/animations'
 import type { DeveloperSettings } from '@/types/changelog'
 
@@ -19,7 +21,7 @@ interface UnifiedSettingsModalProps {
   initialTab?: SettingsTab
 }
 
-type SettingsTab = 'general' | 'data' | 'appearance' | 'advanced'
+type SettingsTab = 'general' | 'account' | 'data' | 'appearance' | 'advanced'
 
 export function UnifiedSettingsModal({
   isOpen,
@@ -109,6 +111,7 @@ export function UnifiedSettingsModal({
 
   const tabs = [
     { id: 'general' as SettingsTab, label: t('settings.tabs.general', 'General'), icon: Settings },
+    { id: 'account' as SettingsTab, label: t('settings.tabs.account', 'Account'), icon: User },
     { id: 'data' as SettingsTab, label: t('settings.tabs.data', 'Data Management'), icon: Database },
     { id: 'appearance' as SettingsTab, label: t('settings.tabs.appearance', 'Appearance'), icon: Palette },
     { id: 'advanced' as SettingsTab, label: t('settings.tabs.advanced', 'Advanced'), icon: Sliders },
@@ -298,6 +301,9 @@ export function UnifiedSettingsModal({
                     )}
                   </motion.div>
                 )}
+
+                {/* Account Tab */}
+                {activeTab === 'account' && <AccountTab />}
 
                 {/* Data Management Tab */}
                 {activeTab === 'data' && (
