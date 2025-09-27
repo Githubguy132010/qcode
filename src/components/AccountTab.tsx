@@ -1,8 +1,11 @@
 'use client'
 
+'use client'
+
 import { useAuth } from '@/contexts/AuthContext'
 import { motion } from 'framer-motion'
-import { LogIn, LogOut, Github, User as UserIcon, Loader } from 'lucide-react'
+import Image from 'next/image'
+import { LogIn, LogOut, Github, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 export function AccountTab() {
@@ -34,9 +37,11 @@ export function AccountTab() {
       {user ? (
         <div className="space-y-4">
           <div className="theme-filter rounded-lg p-4 flex items-center gap-4">
-            <img
+            <Image
               src={user.user_metadata.avatar_url}
               alt="User avatar"
+              width={48}
+              height={48}
               className="w-12 h-12 rounded-full"
             />
             <div>

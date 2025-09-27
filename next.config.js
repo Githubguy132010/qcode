@@ -24,6 +24,16 @@ const nextConfig = {
   // Turbopack configuration
   // Note: Most Turbopack settings are now automatically configured
   // and don't need explicit configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/u/**',
+      },
+    ],
+  },
   
   // Webpack configuration for production builds
   webpack: (config, { dev, isServer }) => {

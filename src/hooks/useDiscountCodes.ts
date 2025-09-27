@@ -36,16 +36,16 @@ export function useDiscountCodes() {
         if (error) {
           console.error('Error fetching codes from Supabase:', error)
         } else if (data) {
-          const parsedCodes = data.map((code: any) => ({
+          const parsedCodes = data.map((code: Record<string, unknown>) => ({
             ...code,
-            dateAdded: new Date(code.dateAdded),
-            expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
-            usageHistory: code.usageHistory ? code.usageHistory.map((usage: any) => ({
+            dateAdded: new Date(code.dateAdded as string),
+            expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
+            usageHistory: code.usageHistory ? (code.usageHistory as Record<string, unknown>[]).map((usage: Record<string, unknown>) => ({
               ...usage,
-              date: new Date(usage.date)
+              date: new Date(usage.date as string)
             })) : [],
-          }))
-          setCodes(parsedCodes)
+          }));
+          setCodes(parsedCodes as DiscountCode[]);
         }
       } else {
         // Fetch from localStorage
@@ -88,14 +88,14 @@ export function useDiscountCodes() {
                 ...payload.new,
                 dateAdded: new Date(payload.new.dateAdded),
                 expiryDate: payload.new.expiryDate ? new Date(payload.new.expiryDate) : undefined,
-              }
+              } as DiscountCode;
               setCodes((currentCodes) => [newCode, ...currentCodes.filter(c => c.id !== newCode.id)])
             } else if (payload.eventType === 'UPDATE') {
               const updatedCode = {
                 ...payload.new,
                 dateAdded: new Date(payload.new.dateAdded),
                 expiryDate: payload.new.expiryDate ? new Date(payload.new.expiryDate) : undefined,
-              };
+              } as DiscountCode;
               setCodes((currentCodes) =>
                 currentCodes.map((code) => (code.id === updatedCode.id ? updatedCode : code))
               )

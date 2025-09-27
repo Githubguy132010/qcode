@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders, User } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAuth } from '@/contexts/AuthContext'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
