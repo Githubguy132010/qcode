@@ -5,7 +5,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { LogIn, LogOut, Github, Loader } from 'lucide-react'
+import { LogOut, Github, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { GoogleIcon } from './GoogleIcon'
 
