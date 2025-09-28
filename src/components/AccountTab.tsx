@@ -67,7 +67,7 @@ export function AccountTab() {
           <div className="flex flex-col gap-3 justify-center">
             <motion.button
               onClick={signInWithGitHub}
-              className="inline-flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-semibold py-3 px-5 rounded-lg shadow-md w-full"
+              className="inline-flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-semibold py-3 px-5 rounded-lg shadow-md w-full touch-manipulation"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -76,7 +76,7 @@ export function AccountTab() {
             </motion.button>
             <motion.button
               onClick={signInWithGoogle}
-              className="inline-flex items-center justify-center gap-3 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-600 w-full"
+              className="inline-flex items-center justify-center gap-3 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-3 px-5 rounded-lg shadow-md border border-gray-200 dark:border-gray-600 w-full touch-manipulation"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
