@@ -13,11 +13,16 @@ export function Header({ onSettingsClick, ...props }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, setThemeMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
   return (
     <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+        {/* Vercel Env Debug */}
+        <div className="text-center text-xs p-1 bg-red-500 text-white">
+          DEBUG: NEXT_PUBLIC_SUPABASE_URL is {supabaseUrl ? `SET (length: ${supabaseUrl.length})` : 'NOT SET'}
+        </div>
+        <div className="flex items-center justify-between mt-2">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2.5 rounded-xl shadow-lg">
