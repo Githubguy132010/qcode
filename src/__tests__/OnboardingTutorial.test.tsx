@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { OnboardingTutorial } from '@/components/OnboardingTutorial'
-import { render, screen, fireEvent } from '@testing-library/react'
 
 // Mock react-i18next
 jest.mock('react-i18next', () => ({

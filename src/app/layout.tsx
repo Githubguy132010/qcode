@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { HtmlLanguageAttribute } from "@/components/HtmlLanguageAttribute";
 import { headers } from "next/headers";
 
@@ -50,9 +51,11 @@ export default async function RootLayout({
         className={`font-sans antialiased min-h-screen transition-colors`}
       >
         <I18nProvider>
-          <HtmlLanguageAttribute>
-            {children}
-          </HtmlLanguageAttribute>
+          <AuthProvider>
+            <HtmlLanguageAttribute>
+              {children}
+            </HtmlLanguageAttribute>
+          </AuthProvider>
         </I18nProvider>
       </body>
     </html>

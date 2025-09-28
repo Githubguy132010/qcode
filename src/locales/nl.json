@@ -136,9 +136,18 @@
     "title": "Instellingen",
     "tabs": {
       "general": "Algemeen",
+      "account": "Account",
       "data": "Gegevensbeheer",
       "appearance": "Weergave",
       "advanced": "Geavanceerd"
+    },
+    "account": {
+      "title": "Account",
+      "subtitle": "Synchroniseer je gegevens over al je apparaten door in te loggen.",
+      "logout": "Uitloggen",
+      "signInTitle": "Inloggen met GitHub",
+      "signInSubtitle": "Schakel cloud-synchronisatie in om je kortingscodes veilig en overal toegankelijk te houden.",
+      "signInButton": "Inloggen met GitHub"
     },
     "appearance": {
       "title": "Weergave",
