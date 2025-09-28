@@ -145,10 +145,10 @@
       "title": "Account",
       "subtitle": "Synchroniseer je gegevens over al je apparaten door in te loggen.",
       "logout": "Uitloggen",
-      "signInTitle": "Sign in to sync",
+      "signInTitle": "Inloggen om te synchroniseren",
       "signInSubtitle": "Schakel cloud-synchronisatie in om je kortingscodes veilig en overal toegankelijk te houden.",
-      "signInWithGitHub": "Sign in with GitHub",
-      "signInWithGoogle": "Sign in with Google"
+      "signInWithGitHub": "Inloggen met GitHub",
+      "signInWithGoogle": "Inloggen met Google"
     },
     "appearance": {
       "title": "Weergave",

@@ -145,10 +145,10 @@
       "title": "Cuenta",
       "subtitle": "Sincroniza tus datos entre dispositivos iniciando sesión.",
       "logout": "Cerrar sesión",
-      "signInTitle": "Sign in to sync",
+      "signInTitle": "Iniciar sesión para sincronizar",
       "signInSubtitle": "Habilita la sincronización en la nube para mantener tus códigos de descuento seguros y accesibles en todas partes.",
-      "signInWithGitHub": "Sign in with GitHub",
-      "signInWithGoogle": "Sign in with Google"
+      "signInWithGitHub": "Iniciar sesión con GitHub",
+      "signInWithGoogle": "Iniciar sesión con Google"
     },
     "appearance": {
       "title": "Apariencia",
