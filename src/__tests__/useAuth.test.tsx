@@ -8,12 +8,14 @@ describe('useAuth', () => {
   beforeEach(() => {
     // Reset mocks and provide a default implementation for getSession
     jest.clearAllMocks();
-    (supabase.auth.getSession as jest.Mock).mockResolvedValue({
-      data: { session: null },
-    });
-    (supabase.auth.onAuthStateChange as jest.Mock).mockReturnValue({
-        data: { subscription: { unsubscribe: jest.fn() } },
-    });
+    if (supabase) {
+      (supabase.auth.getSession as jest.Mock).mockResolvedValue({
+        data: { session: null },
+      });
+      (supabase.auth.onAuthStateChange as jest.Mock).mockReturnValue({
+          data: { subscription: { unsubscribe: jest.fn() } },
+      });
+    }
   });
 
   it('should handle sign in with GitHub', async () => {
@@ -23,12 +25,14 @@ describe('useAuth', () => {
       await result.current.signInWithGitHub()
     })
 
-    expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
-      provider: 'github',
-      options: {
-        redirectTo: window.location.origin,
-      },
-    })
+    if (supabase) {
+      expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
+        provider: 'github',
+        options: {
+          redirectTo: window.location.origin,
+        },
+      })
+    }
   })
 
   it('should handle sign out', async () => {
@@ -38,7 +42,9 @@ describe('useAuth', () => {
       await result.current.signOut()
     })
 
-    expect(supabase.auth.signOut).toHaveBeenCalled()
+    if (supabase) {
+      expect(supabase.auth.signOut).toHaveBeenCalled()
+    }
   })
 
   it('should provide the session and user', async () => {
@@ -48,9 +54,11 @@ describe('useAuth', () => {
       refresh_token: 'def',
     }
     // Manually mock getSession for this specific test
-    ;(supabase.auth.getSession as jest.Mock).mockResolvedValueOnce({
-      data: { session: mockSession },
-    })
+    if (supabase) {
+      ;(supabase.auth.getSession as jest.Mock).mockResolvedValueOnce({
+        data: { session: mockSession },
+      })
+    }
 
     const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider });
 

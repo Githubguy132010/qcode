@@ -2,7 +2,7 @@
 
 import { createContext, useState, useEffect, useContext, ReactNode } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import type { Session, User } from '@supabase/supabase-js'
+import type { Session, User, AuthChangeEvent } from '@supabase/supabase-js'
 
 interface AuthContextType {
   session: Session | null
@@ -20,26 +20,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    }
+    let subscription: { unsubscribe?: () => void } | null = null;
 
-    getSession()
+    const initializeAuth = async () => {
+      if (!supabase) {
+        console.warn('Supabase client not available. Authentication will not work.');
+        setLoading(false);
+        return;
+      }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-    })
+      // Get initial session
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+
+      // Set up auth state change listener
+      const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      });
+      
+      subscription = authSubscription;
+    };
+
+    initializeAuth();
 
     return () => {
-      subscription?.unsubscribe()
-    }
+      if (subscription?.unsubscribe) {
+        subscription.unsubscribe();
+      }
+    };
   }, [])
 
   const signInWithGitHub = async () => {
+    if (!supabase) {
+      console.error('Supabase client not available. Cannot sign in.');
+      return Promise.reject(new Error('Supabase client not available'));
+    }
+    
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
@@ -49,6 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = async () => {
+    if (!supabase) {
+      console.error('Supabase client not available. Cannot sign out.');
+      return Promise.reject(new Error('Supabase client not available'));
+    }
+    
     await supabase.auth.signOut()
   }
 

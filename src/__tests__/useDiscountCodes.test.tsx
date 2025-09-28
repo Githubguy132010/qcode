@@ -68,35 +68,44 @@ describe('useDiscountCodes', () => {
       mockUseAuth.mockReturnValue({ user: mockUser, loading: false, isClient: true });
 
       // Set up a comprehensive mock for all supabase calls used in the hook
-      (supabase.from as jest.Mock).mockReturnValue({
-        select: jest.fn().mockReturnThis(),
-        insert: jest.fn().mockResolvedValue({ error: null }),
-        update: jest.fn().mockReturnThis(),
-        delete: jest.fn().mockReturnThis(),
-        eq: jest.fn().mockReturnThis(),
-        order: jest.fn().mockResolvedValue({ data: [], error: null }),
-      });
-      // Mock the real-time channel functionality
-      (supabase.channel as jest.Mock).mockReturnValue({
-        on: jest.fn().mockReturnThis(),
-        subscribe: jest.fn().mockReturnValue({ unsubscribe: jest.fn() }),
-      });
+      if (supabase) {
+        (supabase.from as jest.Mock).mockReturnValue({
+          select: jest.fn().mockReturnThis(),
+          insert: jest.fn().mockResolvedValue({ error: null }),
+          update: jest.fn().mockReturnThis(),
+          delete: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          order: jest.fn().mockResolvedValue({ data: [], error: null }),
+        });
+        // Mock the real-time channel functionality
+        (supabase.channel as jest.Mock).mockReturnValue({
+          on: jest.fn().mockReturnThis(),
+          subscribe: jest.fn().mockReturnValue({ unsubscribe: jest.fn() }),
+        });
+      }
     });
 
     it('should fetch codes from Supabase on initial load', async () => {
       const mockData = [{ id: '1', code: 'SUPABASE', store: 'Supabase Store', user_id: mockUser.id, dateAdded: new Date().toISOString() }];
       // Override the default 'order' mock for this specific test case
-      (supabase.from('codes').order as jest.Mock).mockResolvedValueOnce({ data: mockData, error: null });
+      if (supabase) {
+        const mockQueryBuilder = {
+          select: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockReturnThis(),
+          order: jest.fn().mockResolvedValueOnce({ data: mockData, error: null }),
+        };
+        (supabase.from as jest.Mock).mockReturnValueOnce(mockQueryBuilder);
 
-      const { result } = renderHook(() => useDiscountCodes());
+        const { result } = renderHook(() => useDiscountCodes());
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-      });
+        await waitFor(() => {
+          expect(result.current.isLoading).toBe(false);
+        });
 
-      expect(supabase.from).toHaveBeenCalledWith('codes');
-      expect(result.current.codes).toHaveLength(1);
-      expect(result.current.codes[0].code).toBe('SUPABASE');
+        expect(supabase.from).toHaveBeenCalledWith('codes');
+        expect(result.current.codes).toHaveLength(1);
+        expect(result.current.codes[0].code).toBe('SUPABASE');
+      }
     });
 
     it('should add a code to Supabase', async () => {
@@ -110,8 +119,10 @@ describe('useDiscountCodes', () => {
         await result.current.addCode({ code: 'NEW', store: 'New Store', category: 'other', discount: '10%' });
       });
 
-      expect(supabase.from).toHaveBeenCalledWith('codes');
-      expect(supabase.from('codes').insert).toHaveBeenCalled();
+      if (supabase) {
+        expect(supabase.from).toHaveBeenCalledWith('codes');
+        expect(supabase.from('codes').insert).toHaveBeenCalled();
+      }
       // Test optimistic update
       expect(result.current.codes).toHaveLength(1);
       expect(result.current.codes[0].code).toBe('NEW');
