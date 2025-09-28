@@ -7,10 +7,11 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { LogIn, LogOut, Github, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { GoogleIcon } from './GoogleIcon'
 
 export function AccountTab() {
   const { t } = useTranslation()
-  const { user, loading, signInWithGitHub, signOut } = useAuth()
+  const { user, loading, signInWithGitHub, signInWithGoogle, signOut } = useAuth()
 
   if (loading) {
     return (
@@ -61,18 +62,32 @@ export function AccountTab() {
         </div>
       ) : (
         <div className="theme-filter rounded-lg p-6 text-center">
-          <Github className="mx-auto h-12 w-12 theme-text-muted mb-4" />
-          <h4 className="text-lg font-semibold theme-text-primary mb-2">{t('settings.account.signInTitle', 'Sign in with GitHub')}</h4>
+          <div className="mx-auto flex justify-center items-center gap-4 h-12 w-auto theme-text-muted mb-4">
+            <Github className="h-12 w-12" />
+            <GoogleIcon className="h-12 w-12" />
+          </div>
+          <h4 className="text-lg font-semibold theme-text-primary mb-2">{t('settings.account.signInTitle', 'Sign in to sync')}</h4>
           <p className="text-sm theme-text-secondary mb-4">{t('settings.account.signInSubtitle', 'Enable cloud sync to keep your discount codes safe and accessible everywhere.')}</p>
-          <motion.button
-            onClick={signInWithGitHub}
-            className="inline-flex items-center gap-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-5 rounded-lg shadow-md"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <LogIn size={18} />
-            {t('settings.account.signInButton', 'Sign in with GitHub')}
-          </motion.button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <motion.button
+              onClick={signInWithGitHub}
+              className="inline-flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-5 rounded-lg shadow-md flex-1"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Github size={18} />
+              {t('settings.account.signInWithGitHub', 'Sign in with GitHub')}
+            </motion.button>
+            <motion.button
+              onClick={signInWithGoogle}
+              className="inline-flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-5 rounded-lg shadow-md border border-gray-200 flex-1"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <GoogleIcon className="h-5 w-5" />
+              {t('settings.account.signInWithGoogle', 'Sign in with Google')}
+            </motion.button>
+          </div>
         </div>
       )}
     </motion.div>
