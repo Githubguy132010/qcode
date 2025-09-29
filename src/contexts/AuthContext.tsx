@@ -3,6 +3,7 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { Session, User, AuthChangeEvent } from '@supabase/supabase-js'
+import { getURL } from '@/utils/url'
 
 interface AuthContextType {
   session: Session | null
@@ -63,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: getURL(),
       },
     })
   }
@@ -77,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: getURL(),
       },
     })
   }
