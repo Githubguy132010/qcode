@@ -29,7 +29,7 @@ describe('useAuth', () => {
       expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
         provider: 'github',
         options: {
-          redirectTo: 'http://localhost:3000/',
+          redirectTo: window.location.origin,
         },
       })
     }
@@ -46,7 +46,7 @@ describe('useAuth', () => {
       expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
         provider: 'google',
         options: {
-          redirectTo: 'http://localhost:3000/',
+          redirectTo: window.location.origin,
         },
       })
     }
