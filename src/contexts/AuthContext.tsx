@@ -9,6 +9,7 @@ interface AuthContextType {
   user: User | null
   loading: boolean
   signInWithGitHub: () => Promise<void>
+  signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -67,6 +68,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }
 
+  const signInWithGoogle = async () => {
+    if (!supabase) {
+      console.error('Supabase client not available. Cannot sign in.');
+      return Promise.reject(new Error('Supabase client not available'));
+    }
+
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    })
+  }
+
   const signOut = async () => {
     if (!supabase) {
       console.error('Supabase client not available. Cannot sign out.');
@@ -81,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     loading,
     signInWithGitHub,
+    signInWithGoogle,
     signOut,
   }
 

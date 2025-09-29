@@ -145,9 +145,10 @@
       "title": "Account",
       "subtitle": "Sync your data across devices by signing in.",
       "logout": "Log Out",
-      "signInTitle": "Sign in with GitHub",
+      "signInTitle": "Connect your account",
       "signInSubtitle": "Enable cloud sync to keep your discount codes safe and accessible everywhere.",
-      "signInButton": "Sign in with GitHub"
+      "signInWithGitHub": "Sign in with GitHub",
+      "signInWithGoogle": "Sign in with Google"
     },
     "appearance": {
       "title": "Appearance",

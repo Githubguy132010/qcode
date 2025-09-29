@@ -145,9 +145,10 @@
       "title": "Account",
       "subtitle": "Sincronizza i tuoi dati su tutti i dispositivi effettuando l'accesso.",
       "logout": "Esci",
-      "signInTitle": "Accedi con GitHub",
+      "signInTitle": "Collega il tuo account",
       "signInSubtitle": "Abilita la sincronizzazione cloud per mantenere i tuoi codici sconto sicuri e accessibili ovunque.",
-      "signInButton": "Accedi con GitHub"
+      "signInWithGitHub": "Accedi con GitHub",
+      "signInWithGoogle": "Accedi con Google"
     },
     "appearance": {
       "title": "Aspetto",

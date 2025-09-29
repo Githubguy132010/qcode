@@ -145,9 +145,10 @@
       "title": "Compte",
       "subtitle": "Synchronisez vos données sur tous vos appareils en vous connectant.",
       "logout": "Se déconnecter",
-      "signInTitle": "Se connecter avec GitHub",
+      "signInTitle": "Connectez votre compte",
       "signInSubtitle": "Activez la synchronisation cloud pour garder vos codes de réduction en sécurité et accessibles partout.",
-      "signInButton": "Se connecter avec GitHub"
+      "signInWithGitHub": "Se connecter avec GitHub",
+      "signInWithGoogle": "Se connecter avec Google"
     },
     "appearance": {
       "title": "Apparence",
