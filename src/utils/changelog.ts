@@ -1,5 +1,5 @@
 import type { ChangelogEntry, AIGeneratedSummary, ChangelogData } from '@/types/changelog'
-import i18n from '@/utils/i18n'
+import i18n from '@/lib/i18n'
 
 // Storage keys
 const LAST_VISIT_KEY = 'qcode-last-visit'

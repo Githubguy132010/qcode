@@ -1,70 +1,94 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { useLanguage } from '@/hooks/useLanguage';
 
-// Mock useLanguage so we can control current language and assert interactions
-const changeLanguageMock = jest.fn();
+// Mock the useLanguage hook
+jest.mock('@/hooks/useLanguage');
+const mockedUseLanguage = useLanguage as jest.Mock;
 
-jest.mock('@/hooks/useLanguage', () => {
-  return {
-    __esModule: true,
-    useLanguage: () => ({
-      language: 'en',
-      currentLanguage: 'en',
-      changeLanguage: changeLanguageMock,
-      supportedLanguages: ['auto', 'en', 'nl'] as const,
-    }),
-  };
-});
-
+// Mock i18next's useTranslation hook to prevent errors
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key, // Return the key itself for testing
+  }),
+}));
 
 describe('LanguageSwitcher', () => {
+  let changeLanguageMock: jest.Mock;
+
   beforeEach(() => {
-    changeLanguageMock.mockClear();
+    // Reset mocks before each test
+    changeLanguageMock = jest.fn();
+    mockedUseLanguage.mockReturnValue({
+      selection: 'auto',
+      resolvedLanguage: 'en',
+      changeLanguage: changeLanguageMock,
+    });
   });
 
-  it('renders all supported language options', () => {
+  it('renders the title, automatic option, and custom input field', () => {
     render(<LanguageSwitcher />);
-
-    // With the default i18n test mock, t() returns the key when not found.
-    // The component uses these keys:
+    expect(screen.getByText('settings.language.title')).toBeInTheDocument();
     expect(screen.getByText('settings.language.auto')).toBeInTheDocument();
-    expect(screen.getByText('settings.language.english')).toBeInTheDocument();
-    expect(screen.getByText('settings.language.dutch')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('e.g., fr')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Set' })).toBeInTheDocument();
   });
 
-  it('highlights the currently selected language', () => {
+  it('highlights the "Automatic" button when the selection is "auto"', () => {
+    render(<LanguageSwitcher />);
+    const autoButton = screen.getByText('settings.language.auto').closest('button');
+    expect(autoButton).toHaveClass('bg-blue-600');
+  });
+
+  it('calls changeLanguage with "auto" when the automatic button is clicked', () => {
+    render(<LanguageSwitcher />);
+    const autoButton = screen.getByText('settings.language.auto').closest('button');
+    fireEvent.click(autoButton!);
+    expect(changeLanguageMock).toHaveBeenCalledWith('auto');
+  });
+
+  it('allows user to type a custom language and set it', () => {
+    render(<LanguageSwitcher />);
+    const input = screen.getByPlaceholderText('e.g., fr');
+    const setButton = screen.getByRole('button', { name: 'Set' });
+
+    fireEvent.change(input, { target: { value: 'de' } });
+    fireEvent.click(setButton);
+
+    expect(changeLanguageMock).toHaveBeenCalledWith('de');
+  });
+
+  it('does not call changeLanguage if the custom language input is empty', () => {
+    render(<LanguageSwitcher />);
+    const setButton = screen.getByRole('button', { name: 'Set' });
+    fireEvent.click(setButton);
+    expect(changeLanguageMock).not.toHaveBeenCalled();
+  });
+
+  it('displays the current language when a custom language is selected', () => {
+    mockedUseLanguage.mockReturnValue({
+      selection: 'fr',
+      resolvedLanguage: 'fr',
+      changeLanguage: changeLanguageMock,
+    });
+
     render(<LanguageSwitcher />);
 
-    // Find the button that contains the English label and assert active styles are present
-    const englishButton = screen.getByText('settings.language.english').closest('button');
-    expect(englishButton).toBeInTheDocument();
-    // Active styles include a specific border color in the class string
-    expect(englishButton).toHaveClass('border-blue-500');
+    expect(screen.getByText(/Current language:/)).toBeInTheDocument();
+    expect(screen.getByText('fr')).toBeInTheDocument();
   });
 
-  it('changes language when a different option is clicked', () => {
-    render(<LanguageSwitcher />);
+  it('does not highlight the "Automatic" button when a custom language is selected', () => {
+    mockedUseLanguage.mockReturnValue({
+      selection: 'fr',
+      resolvedLanguage: 'fr',
+      changeLanguage: changeLanguageMock,
+    });
 
-    // Click on Dutch
-    const dutchButton = screen.getByText('settings.language.dutch').closest('button');
-    expect(dutchButton).toBeInTheDocument();
-
-    fireEvent.click(dutchButton!);
-
-    expect(changeLanguageMock).toHaveBeenCalledTimes(1);
-    expect(changeLanguageMock).toHaveBeenCalledWith('nl');
-  });
-
-  it('supports selecting Auto language', () => {
     render(<LanguageSwitcher />);
 
     const autoButton = screen.getByText('settings.language.auto').closest('button');
-    expect(autoButton).toBeInTheDocument();
-
-    fireEvent.click(autoButton!);
-
-    expect(changeLanguageMock).toHaveBeenCalledTimes(1);
-    expect(changeLanguageMock).toHaveBeenCalledWith('auto');
+    expect(autoButton).not.toHaveClass('bg-blue-600');
   });
 });

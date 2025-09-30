@@ -1,46 +1,38 @@
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 
-export type LanguageOption = 'auto' | 'en' | 'nl' | 'fr' | 'de' | 'it' | 'es';
-
 export const useLanguage = () => {
   const { i18n } = useTranslation();
-  const [language, setLanguage] = useState<LanguageOption>('auto');
-  
-  // Get the currently active language
-  const currentLanguage = i18n.language || 'en';
-  
-  // Initialize language state from localStorage
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('qcode-language') as LanguageOption | null;
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
-    } else {
-      // First-time visitor: default to 'auto' (detect system language)
-      setLanguage('auto');
-      localStorage.setItem('qcode-language', 'auto');
-    }
-  }, []);
+  // This state represents the user's selection in the UI
+  const [selection, setSelection] = useState<string>('auto');
 
-  // Handle language change
-  const changeLanguage = useCallback((newLanguage: LanguageOption) => {
-    setLanguage(newLanguage);
-    localStorage.setItem('qcode-language', newLanguage);
-    
-    // If auto, use browser language or default to English
-    if (newLanguage === 'auto') {
-      const browserLang = navigator.language.split('-')[0];
-      const supportedLanguage = ['en', 'nl', 'fr', 'de', 'it', 'es'].includes(browserLang) ? browserLang : 'en';
-      i18n.changeLanguage(supportedLanguage);
+  // Effect to sync the UI selection with the actual state from localStorage
+  useEffect(() => {
+    // This effect runs on the client side only
+    const savedLang = localStorage.getItem('qcode-language');
+    if (savedLang) {
+      setSelection(savedLang);
     } else {
-      i18n.changeLanguage(newLanguage);
+      setSelection('auto');
+    }
+  }, [i18n.resolvedLanguage]); // Update when language actually changes
+
+  const changeLanguage = useCallback((lang: string) => {
+    if (lang === 'auto') {
+      // To go back to auto-detection, we remove the override from localStorage
+      localStorage.removeItem('qcode-language');
+      // Then we need to trigger a re-detection and language change.
+      // A page reload is the most reliable way.
+      window.location.reload();
+    } else {
+      // i18next will change the language and the detector will cache it.
+      i18n.changeLanguage(lang);
     }
   }, [i18n]);
 
   return {
-    language,
-    currentLanguage,
+    selection, // The value for the UI ('auto' or a language code)
+    resolvedLanguage: i18n.resolvedLanguage, // The language currently rendered
     changeLanguage,
-    supportedLanguages: ['auto', 'en', 'nl', 'fr', 'de', 'it', 'es'] as const,
   };
 };

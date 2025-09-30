@@ -1,27 +1,22 @@
 import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { HtmlLanguageAttribute } from '../components/HtmlLanguageAttribute';
-import React from 'react';
+import { useLanguage } from '@/hooks/useLanguage';
 
-// Mock useLanguage to control currentLanguage returned to the component
-const useLanguageMock = jest.fn();
-
-jest.mock('@/hooks/useLanguage', () => ({
-  __esModule: true,
-  useLanguage: () => useLanguageMock(),
-}));
+// Mock the useLanguage hook
+jest.mock('@/hooks/useLanguage');
+const mockedUseLanguage = useLanguage as jest.Mock;
 
 describe('HtmlLanguageAttribute', () => {
   beforeEach(() => {
     // Reset document lang and mocks
     document.documentElement.lang = '';
-    localStorage.clear();
     jest.clearAllMocks();
   });
 
-  it('sets document.documentElement.lang to default full locale based on currentLanguage', async () => {
-    useLanguageMock.mockReturnValue({
-      currentLanguage: 'en-US',
+  it('sets document.documentElement.lang to the resolvedLanguage from the hook', async () => {
+    mockedUseLanguage.mockReturnValue({
+      resolvedLanguage: 'fr',
     });
 
     render(
@@ -31,42 +26,44 @@ describe('HtmlLanguageAttribute', () => {
     );
 
     await waitFor(() => {
-      expect(document.documentElement.lang).toBe('en-US');
+      expect(document.documentElement.lang).toBe('fr');
     });
   });
 
-  it('on first-time visitors (no saved language), uses browser language to set document lang', async () => {
-    // Simulate first-time visitor: no saved language
-    localStorage.removeItem('qcode-language');
+  it('updates document.documentElement.lang when the resolvedLanguage changes', async () => {
+    const { rerender } = render(
+      <HtmlLanguageAttribute>
+        <div>content</div>
+      </HtmlLanguageAttribute>
+    );
 
-    // Ensure the hook still returns something (component calls substring(0, 2) on it in the first effect)
-    useLanguageMock.mockReturnValue({
-      currentLanguage: 'en-US',
+    mockedUseLanguage.mockReturnValue({
+      resolvedLanguage: 'de',
     });
 
-    // Override navigator.language to nl-NL
-    const originalLang = Object.getOwnPropertyDescriptor(window.navigator, 'language');
-    Object.defineProperty(window.navigator, 'language', {
-      value: 'nl-NL',
-      configurable: true,
-    });
-
-    try {
-      render(
+    rerender(
         <HtmlLanguageAttribute>
-          <div>content</div>
+            <div>content</div>
         </HtmlLanguageAttribute>
-      );
+    )
 
-      // Two effects run: first sets default from currentLanguage, then first-time visitor logic sets 'nl-NL'
-      await waitFor(() => {
-        expect(document.documentElement.lang).toBe('nl-NL');
-      });
-    } finally {
-      // Restore navigator.language
-      if (originalLang) {
-        Object.defineProperty(window.navigator, 'language', originalLang);
-      }
-    }
+    await waitFor(() => {
+      expect(document.documentElement.lang).toBe('de');
+    });
+  });
+
+  it('does not set lang if resolvedLanguage is undefined', async () => {
+    mockedUseLanguage.mockReturnValue({
+      resolvedLanguage: undefined,
+    });
+
+    render(
+      <HtmlLanguageAttribute>
+        <div>content</div>
+      </HtmlLanguageAttribute>
+    );
+
+    // The lang attribute should not be set
+    expect(document.documentElement.lang).toBe('');
   });
 });
