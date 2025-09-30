@@ -35,6 +35,23 @@ describe('useAuth', () => {
     }
   })
 
+  it('should handle sign in with Google', async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider })
+
+    await act(async () => {
+      await result.current.signInWithGoogle()
+    })
+
+    if (supabase) {
+      expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin,
+        },
+      })
+    }
+  })
+
   it('should handle sign out', async () => {
     const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider })
 

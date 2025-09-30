@@ -3,12 +3,14 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import type { Session, User, AuthChangeEvent } from '@supabase/supabase-js'
+import { getURL } from '@/utils/url'
 
 interface AuthContextType {
   session: Session | null
   user: User | null
   loading: boolean
   signInWithGitHub: () => Promise<void>
+  signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -62,7 +64,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: getURL(),
+      },
+    })
+  }
+
+  const signInWithGoogle = async () => {
+    if (!supabase) {
+      console.error('Supabase client not available. Cannot sign in.');
+      return Promise.reject(new Error('Supabase client not available'));
+    }
+
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: getURL(),
       },
     })
   }
@@ -81,6 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     loading,
     signInWithGitHub,
+    signInWithGoogle,
     signOut,
   }
 

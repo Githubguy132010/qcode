@@ -145,9 +145,10 @@
       "title": "Konto",
       "subtitle": "Synchronisieren Sie Ihre Daten über Geräte hinweg, indem Sie sich anmelden.",
       "logout": "Abmelden",
-      "signInTitle": "Mit GitHub anmelden",
+      "signInTitle": "Anmelden zum Synchronisieren",
       "signInSubtitle": "Aktivieren Sie die Cloud-Synchronisierung, um Ihre Rabattcodes sicher und überall zugänglich zu halten.",
-      "signInButton": "Mit GitHub anmelden"
+      "signInWithGitHub": "Mit GitHub anmelden",
+      "signInWithGoogle": "Mit Google anmelden"
     },
     "appearance": {
       "title": "Erscheinungsbild",
