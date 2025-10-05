@@ -4,8 +4,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "20"
-		},
-		"ghcr.io/devcontainers-community/features/supabase-cli:1": {}
+		}
 	},
 	"customizations": {
 		"vscode": {
@@ -25,6 +24,6 @@
 		"--env-file",
 		".env"
 	],
-	"postCreateCommand": "pnpm install",
+	"postCreateCommand": "pnpm install && pnpm add -g supabase",
 	"remoteUser": "node"
 }
