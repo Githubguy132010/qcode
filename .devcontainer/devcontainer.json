@@ -12,7 +12,9 @@
 			"extensions": [
 				"dbaeumer.vscode-eslint",
 				"esbenp.prettier-vscode",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"kilocode.kilo-code",
+				"RooVeterinaryInc.roo-cline"
 			]
 		}
 	},
