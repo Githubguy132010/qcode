@@ -1,0 +1,103 @@
+{
+  "name": "QCode Next.js Development Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-jest",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-json",
+        "esbenp.prettier-vscode",
+        "christian-kohler.path-intellisense",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.vscode-jest",
+        "ms-playwright.playwright",
+        "supabase.supabase",
+        "ms-vscode.vscode-css-peek",
+        "zignd.html-css-class-completion",
+        "usernamehw.errorlens",
+        "ms-vscode.vscode-typescript-next",
+        "christian-kohler.npm-intellisense",
+        "ms-vscode.vscode-chrome-debug-core",
+        "ms-vscode.js-debug"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "shortest",
+        "typescript.suggest.autoImports": true,
+        "typescript.updateImportsOnFileMove.enabled": "always",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "jest.enableCodeLens": true,
+        "jest.showCoverageOnLoad": true,
+        "tailwindCSS.includeLanguages": {
+          "typescript": "html",
+          "typescriptreact": "html"
+        },
+        "tailwindCSS.experimental.classRegex": [
+          ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ],
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+        "emmet.includeLanguages": {
+          "typescript": "typescriptreact",
+          "javascript": "javascriptreact"
+        },
+        "css.validate": false,
+        "less.validate": false,
+        "scss.validate": false,
+        "editor.quickSuggestions": {
+          "strings": "on"
+        },
+        "path-intellisense.autoSlashAfterDirectory": true,
+        "path-intellisense.extensionOnImport": true,
+        "auto-rename-tag.activationOnLanguage": [
+          "html",
+          "xml",
+          "jsx",
+          "tsx"
+        ]
+      }
+    }
+  },
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js Development Server",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "pnpm install",
+  "postStartCommand": "echo 'Setting up environment variables for development...' && echo 'NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here' >> .env.local && echo 'NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here' >> .env.local && echo 'Environment setup complete!'",
+  "remoteUser": "node",
+  "mounts": [
+    "source=${localWorkspaceFolder}/.git,target=/workspaces/${localWorkspaceFolderBasename}/.git,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/node_modules,type=volume"
+  ]
+}
