@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.*
-/.pnpm_store
+.pnpm-store
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

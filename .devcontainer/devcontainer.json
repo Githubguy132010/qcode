@@ -1,5 +1,5 @@
 {
-	"name": "Next.js App",
+	"name": "Qcode devcontainer",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:20",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
