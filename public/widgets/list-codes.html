@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Codes</title>
+    <style>
+        body { font-family: sans-serif; }
+        .coupon { border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin-bottom: 10px; }
+        .coupon h3 { margin: 0; }
+        .coupon p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div id="coupons-container"></div>
+
+    <script>
+        function render(data) {
+            const container = document.getElementById('coupons-container');
+            container.innerHTML = '';
+            if (data.codes && data.codes.length > 0) {
+                data.codes.forEach(coupon => {
+                    const couponDiv = document.createElement('div');
+                    couponDiv.className = 'coupon';
+                    couponDiv.innerHTML = `
+                        <h3>${coupon.code}</h3>
+                        <p><strong>Store:</strong> ${coupon.store}</p>
+                        <p><strong>Description:</strong> ${coupon.description}</p>
+                        ${coupon.expiry_date ? `<p><strong>Expires:</strong> ${new Date(coupon.expiry_date).toLocaleDateString()}</p>` : ''}
+                        ${coupon.category ? `<p><strong>Category:</strong> ${coupon.category}</p>` : ''}
+                    `;
+                    container.appendChild(couponDiv);
+                });
+            } else {
+                container.innerHTML = '<p>No coupons found.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
